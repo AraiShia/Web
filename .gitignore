@@ -1,0 +1,30 @@
+# WordPress core files
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+
+# Log files
+*.log
+*.txt
+
+# Cache files
+*.cache
+wp-content/cache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Node.js dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
