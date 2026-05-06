@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Soinp Gaming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --bg-hover: #222222;
+            --accent: #00a864;
+            --text-primary: #ffffff;
+            --text-secondary: #999999;
+            --text-muted: #666666;
+            --border: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .promo-bar {
+            background: var(--accent);
+            color: #fff;
+            text-align: center;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        header {
+            background: var(--bg-dark);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 40px;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--text-primary);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 15, 15, 0.98);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            list-style: none;
+            padding: 8px 0;
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-menu li {
+            padding: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .dropdown-menu li:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 14px 25px;
+            font-size: 14px;
+            text-transform: none;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(0, 168, 100, 0.1);
+            color: var(--accent);
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .page-hero {
+            padding: 60px 0;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .page-hero p {
+            color: var(--text-secondary);
+            font-size: 17px;
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 12px 28px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-tab:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        .category-tab.active {
+            background: var(--text-primary);
+            border-color: var(--text-primary);
+            color: var(--bg-dark);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            background: var(--text-primary);
+            color: var(--bg-dark);
+        }
+
+        .sort-select {
+            padding: 10px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            padding: 40px 0 100px;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .product-image {
+            aspect-ratio: 4/3;
+            background: var(--bg-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-hot {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .badge-new {
+            background: var(--text-primary);
+            color: var(--bg-dark);
+        }
+
+        .badge-sale {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .product-details {
+            padding: 24px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .product-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .product-price .original {
+            font-size: 16px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        
+
+        .product-actions {
+            margin-top: 20px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+        }
+
+        .product-detail-view {
+            display: none;
+            padding: 40px 0 100px;
+        }
+
+        .product-detail-view.active {
+            display: block;
+        }
+
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .main-product-image {
+            aspect-ratio: 4/3;
+            background: var(--bg-hover);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            position: relative;
+        }
+
+        .product-info-detail h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .product-info-detail .product-category {
+            font-size: 13px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .product-price-detail {
+            margin: 24px 0;
+        }
+
+        .product-price-detail .current-price {
+            font-size: 42px;
+            font-weight: 800;
+        }
+
+        .product-price-detail .original-price {
+            font-size: 24px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            margin-left: 16px;
+        }
+
+        .product-description {
+            margin: 24px 0;
+            color: var(--text-secondary);
+        }
+
+        .product-features-detail ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-features-detail li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .option-group {
+            margin: 24px 0;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .option-btn.selected {
+            background: var(--text-primary);
+            color: var(--bg-dark);
+        }
+
+        
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .btn-add-cart-detail {
+            flex: 1;
+            padding: 18px 32px;
+            background: var(--text-primary);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-add-cart-detail:hover {
+            background: var(--accent);
+        }
+
+        .related-products {
+            margin-top: 80px;
+            padding-top: 60px;
+            border-top: 1px solid var(--border);
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .related-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .related-card-image {
+            aspect-ratio: 4/3;
+            background: var(--bg-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .related-card-details {
+            padding: 16px;
+        }
+
+        .related-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .related-card-price {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            padding: 60px 0 40px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 60px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col h4 {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            nav ul {
+                display: none;
+            }
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            .product-detail-grid {
+                grid-template-columns: 1fr;
+            }
+            .related-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="promo-bar">
+        <strong>$100 OFF</strong> on orders over $500 | <strong>10% OFF</strong> your first order with code <strong>GAMING2024</strong>
+    </div>
+
+    <header>
+        <div class="container">
+            <a href="preview.html" class="logo">SOINP</a>
+            <nav>
+                <ul>
+                    <li><a href="preview.html">Home</a></li>
+                    <li class="dropdown">
+                        <a href="products.html" class="active">Products ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="products.html?category=all">All Products</a></li>
+                            <li><a href="products.html?category=gaming-chairs">Gaming Chairs</a></li>
+                            <li><a href="products.html?category=gaming-desks">Gaming Desks</a></li>
+                            <li><a href="products.html?category=mouse-pads">Mouse Pads</a></li>
+                            <li><a href="products.html?category=accessories">Accessories</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="preview.html#features">Features</a></li>
+                    <li><a href="preview.html#about">About</a></li>
+                    <li><a href="preview.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <button class="icon-btn">🔍</button>
+                <button class="icon-btn">🛒</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-hero" id="page-hero">
+        <div class="container">
+            <h1 id="page-title">All Products</h1>
+            <p id="page-description">Discover our premium gaming furniture collection.</p>
+        </div>
+    </section>
+
+    <section class="products-section">
+        <div class="container">
+            <div class="category-tabs" id="category-tabs">
+                <button class="category-tab active" data-category="all">All Products</button>
+                <button class="category-tab" data-category="gaming-chairs">Gaming Chairs</button>
+                <button class="category-tab" data-category="gaming-desks">Gaming Desks</button>
+                <button class="category-tab" data-category="mouse-pads">Mouse Pads</button>
+                <button class="category-tab" data-category="accessories">Accessories</button>
+            </div>
+
+            <div class="filters" id="filters-bar">
+                <div class="filter-group">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Pro Series</button>
+                    <button class="filter-btn">Casual</button>
+                    <button class="filter-btn">Budget</button>
+                </div>
+                <select class="sort-select">
+                    <option>Sort by: Popular</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                </select>
+            </div>
+
+            <div class="products-grid" id="products-grid">
+                <div style="text-align:center; padding:60px 0; color:#666;">Loading products...</div>
+            </div>
+
+            <div class="product-detail-view" id="product-detail-view"></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="preview.html" class="logo">SOINP</a>
+                    <p style="color:#999; font-size:14px; margin:16px 0;">Premium gaming furniture built for champions.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="products.html?category=gaming-chairs">Gaming Chairs</a></li>
+                        <li><a href="products.html?category=gaming-desks">Gaming Desks</a></li>
+                        <li><a href="products.html?category=mouse-pads">Mouse Pads</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Newsletter</h4>
+                    <form style="margin-top:16px;">
+                        <input type="email" placeholder="Your email" style="width:100%; padding:12px; background:#222; border:1px solid #333; border-radius:6px; color:#fff;">
+                        <button type="submit" style="margin-top:10px; padding:10px 20px; background:#00a864; border:none; border-radius:6px; color:#fff;">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Soinp Gaming. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        var productsData = {
+            'gaming-chairs': [
+                { id: 1, slug: 'pro-gaming-chair-x1', name: 'Pro Gaming Chair X1', category: 'Pro Series', price: 299, originalPrice: 499, badge: 'hot', emoji: '🪑', desc: 'Ergonomic design with premium materials.', features: ['4D armrests', 'Adjustable lumbar support', 'Memory foam'] },
+                { id: 2, slug: 'pro-gaming-chair-x3', name: 'Pro Gaming Chair X3', category: 'Pro Series', price: 399, originalPrice: 599, badge: 'new', emoji: '🪑', desc: 'Upgraded with RGB lighting.', features: ['RGB lighting', 'Breathable mesh', '4D armrests'] },
+                { id: 3, slug: 'casual-gaming-chair', name: 'Casual Gaming Chair', category: 'Casual', price: 199, originalPrice: 299, badge: '', emoji: '🪑', desc: 'Comfortable casual design.', features: ['2D armrests', 'Fixed lumbar', 'High-density foam'] },
+                { id: 4, slug: 'starter-gaming-chair', name: 'Starter Gaming Chair', category: 'Budget', price: 149, originalPrice: 229, badge: 'sale', emoji: '🪑', desc: 'Great value option.', features: ['Basic armrests', 'Simple lumbar', 'Standard foam'] }
+            ],
+            'gaming-desks': [
+                { id: 101, slug: 'pro-gaming-desk-xl', name: 'Pro Gaming Desk XL', category: 'Pro Series', price: 349, originalPrice: 499, badge: 'new', emoji: '🖥️', desc: 'Spacious gaming desk with RGB.', features: ['RGB strips', 'Cable management', 'Carbon fiber'] },
+                { id: 102, slug: 'compact-gaming-desk', name: 'Compact Gaming Desk', category: 'Casual', price: 199, originalPrice: 279, badge: '', emoji: '🖥️', desc: 'Space-saving design.', features: ['Compact size', 'Headphone hook', 'Cup holder'] }
+            ],
+            'mouse-pads': [
+                { id: 201, slug: 'rgb-extended-mouse-pad', name: 'RGB Extended Mouse Pad', category: 'Pro Series', price: 79, originalPrice: 119, badge: 'hot', emoji: '🖱️', desc: 'XXL size with RGB.', features: ['15 RGB modes', 'Water-resistant', 'Non-slip base'] },
+                { id: 202, slug: 'speed-edition-mouse-pad', name: 'Speed Edition', category: 'Casual', price: 39, originalPrice: 59, badge: '', emoji: '🖱️', desc: 'Ultra-smooth surface.', features: ['Smooth surface', 'Low friction', 'Portable'] }
+            ],
+            'accessories': [
+                { id: 301, slug: 'gaming-headset-stand', name: 'Headset Stand', category: 'Accessories', price: 59, originalPrice: 89, badge: '', emoji: '🎧', desc: 'Premium aluminum stand.', features: ['Aluminum', 'RGB lighting', 'USB hub'] },
+                { id: 302, slug: 'cable-management-kit', name: 'Cable Kit', category: 'Accessories', price: 29, originalPrice: 49, badge: 'sale', emoji: '🔌', desc: 'Complete cable solution.', features: ['Clips', 'Velcro ties', 'Sleeves'] }
+            ]
+        };
+
+        var categoryInfo = {
+            'all': { title: 'All Products', description: 'Discover our premium gaming furniture collection.' },
+            'gaming-chairs': { title: 'Gaming Chairs', description: 'Premium gaming chairs for comfort and performance.' },
+            'gaming-desks': { title: 'Gaming Desks', description: 'Professional gaming desks with space-efficient designs.' },
+            'mouse-pads': { title: 'Mouse Pads', description: 'High-performance mouse pads.' },
+            'accessories': { title: 'Accessories', description: 'Essential gaming accessories.' }
+        };
+
+        function getParam(name) {
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function getCurrentCategory() {
+            var category = getParam('category');
+            if (category && categoryInfo[category]) {
+                return category;
+            }
+            return 'all';
+        }
+
+        function findProduct(slug) {
+            for (var category in productsData) {
+                var product = productsData[category].find(function(p) { return p.slug === slug; });
+                if (product) return product;
+            }
+            return null;
+        }
+
+        function createProductCard(product) {
+            var badgeHtml = product.badge ? '<span class="product-badge badge-' + product.badge + '">' + product.badge + '</span>' : '';
+            var originalPriceHtml = product.originalPrice ? '<span class="original">$' + product.originalPrice + '</span>' : '';
+            
+            return '<article class="product-card" data-slug="' + product.slug + '">' +
+                '<div class="product-image">' + badgeHtml + product.emoji + '</div>' +
+                '<div class="product-details">' +
+                '<div class="product-category">' + product.category + '</div>' +
+                '<h3 class="product-title">' + product.name + '</h3>' +
+                '<p class="product-desc">' + product.desc + '</p>' +
+                '<div class="product-price">$' + product.price + ' ' + originalPriceHtml + '</div>' +
+                '<div class="product-actions">' +
+                '<button class="btn btn-primary" onclick="goToProduct(\'' + product.slug + '\')">View Details</button>' +
+                '</div>' +
+                '</div>' +
+                '</article>';
+        }
+
+        function goToProduct(slug) {
+            window.location.href = 'products.html?product=' + slug;
+        }
+
+        function renderProducts(category) {
+            var grid = document.getElementById('products-grid');
+            var products = [];
+            
+            if (category === 'all') {
+                for (var key in productsData) {
+                    products = products.concat(productsData[key]);
+                }
+            } else if (productsData[category]) {
+                products = productsData[category];
+            }
+
+            if (products.length === 0) {
+                grid.innerHTML = '<div style="text-align:center; padding:60px 0; color:#666;">No products found</div>';
+                return;
+            }
+
+            grid.innerHTML = products.map(createProductCard).join('');
+        }
+
+        function renderProductDetail(product) {
+            var detailView = document.getElementById('product-detail-view');
+            var featuresHtml = product.features.map(function(f) { return '<li>' + f + '</li>'; }).join('');
+            
+            var relatedProducts = productsData[product.category] || [];
+            relatedProducts = relatedProducts.filter(function(p) { return p.slug !== product.slug; }).slice(0, 4);
+            var relatedHtml = relatedProducts.map(function(rp) {
+                return '<div class="related-card" onclick="goToProduct(\'' + rp.slug + '\')">' +
+                    '<div class="related-card-image">' + rp.emoji + '</div>' +
+                    '<div class="related-card-details">' +
+                    '<div class="related-card-title">' + rp.name + '</div>' +
+                    '<div class="related-card-price">$' + rp.price + '</div>' +
+                    '</div>' +
+                    '</div>';
+            }).join('');
+
+            detailView.innerHTML = 
+                '<div class="product-detail-grid">' +
+                '<div class="main-product-image">' + (product.badge ? '<span class="product-badge badge-' + product.badge + '">' + product.badge + '</span>' : '') + product.emoji + '</div>' +
+                '<div class="product-info-detail">' +
+                '<h1>' + product.name + '</h1>' +
+                '<div class="product-category">' + product.category + '</div>' +
+                '<div class="product-price-detail">' +
+                '<span class="current-price">$' + product.price + '</span>' +
+                (product.originalPrice ? '<span class="original-price">$' + product.originalPrice + '</span>' : '') +
+                '</div>' +
+                '<div class="product-description"><h3>Description</h3><p>' + product.desc + '</p></div>' +
+                '<div class="product-features-detail"><h3>Features</h3><ul>' + featuresHtml + '</ul></div>' +
+                '<div class="option-group"><label>Color</label><div class="option-buttons"><button class="option-btn selected">Black</button><button class="option-btn">Black/Red</button></div></div>' +
+                '<div class="action-buttons"><button class="btn-add-cart-detail">Request Quote</button></div>' +
+                '</div>' +
+                '</div>' +
+                (relatedHtml ? '<div class="related-products"><h3>Related Products</h3><div class="related-grid">' + relatedHtml + '</div></div>' : '');
+        }
+
+        function showProductDetail(slug) {
+            var product = findProduct(slug);
+            if (!product) return false;
+            
+            document.getElementById('products-grid').style.display = 'none';
+            document.getElementById('filters-bar').style.display = 'none';
+            document.getElementById('category-tabs').style.display = 'none';
+            document.getElementById('page-hero').style.display = 'none';
+            document.getElementById('product-detail-view').classList.add('active');
+            renderProductDetail(product);
+            return true;
+        }
+
+        function showProductsList() {
+            document.getElementById('products-grid').style.display = 'grid';
+            document.getElementById('filters-bar').style.display = 'flex';
+            document.getElementById('category-tabs').style.display = 'flex';
+            document.getElementById('page-hero').style.display = 'block';
+            document.getElementById('product-detail-view').classList.remove('active');
+        }
+
+        
+
+        function updatePageInfo(category) {
+            var info = categoryInfo[category];
+            if (info) {
+                document.getElementById('page-title').textContent = info.title;
+                document.getElementById('page-description').textContent = info.description;
+            }
+        }
+
+        function updateCategoryTabs(category) {
+            document.querySelectorAll('.category-tab').forEach(function(tab) {
+                tab.classList.remove('active');
+                if (tab.dataset.category === category) {
+                    tab.classList.add('active');
+                }
+            });
+        }
+
+        function init() {
+            var productSlug = getParam('product');
+            var currentCategory = getCurrentCategory();
+            
+            if (productSlug) {
+                var found = showProductDetail(productSlug);
+                if (!found) {
+                    showProductsList();
+                    updatePageInfo(currentCategory);
+                    updateCategoryTabs(currentCategory);
+                    renderProducts(currentCategory);
+                }
+            } else {
+                showProductsList();
+                updatePageInfo(currentCategory);
+                updateCategoryTabs(currentCategory);
+                renderProducts(currentCategory);
+            }
+
+            document.querySelectorAll('.category-tab').forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    var category = this.dataset.category;
+                    window.location.href = 'products.html?category=' + category;
+                });
+            });
+
+            document.querySelectorAll('.filter-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

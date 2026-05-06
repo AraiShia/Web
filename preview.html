@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soinp Gaming - Premium Gaming Furniture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d0d0d;
+            --secondary-color: #1a1a2e;
+            --accent-color: #00ff88;
+            --accent-color-hover: #00cc6a;
+            --neon-blue: #00d4ff;
+            --neon-purple: #9d4edd;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border-color: rgba(0, 255, 136, 0.2);
+            --gradient-start: #0f0f23;
+            --gradient-end: #1a1a2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* Discount Banner */
+        .discount-banner {
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue), var(--accent-color));
+            padding: 12px 0;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+            overflow: hidden;
+        }
+
+        .discount-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(50%); }
+        }
+
+        .discount-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .discount-badge {
+            background: rgba(0,0,0,0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 12px;
+            animation: pulse-badge 2s infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .discount-text {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .discount-code {
+            background: rgba(0,0,0,0.3);
+            padding: 4px 16px;
+            border-radius: 4px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--primary-color);
+        }
+
+        .banner-close {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .banner-close:hover {
+            opacity: 1;
+        }
+
+        /* Header Styles */
+        .site-header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: fixed;
+            top: 44px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .site-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-logo {
+            font-size: 32px;
+            font-weight: 900;
+            text-decoration: none;
+            color: var(--text-primary);
+            letter-spacing: 3px;
+            position: relative;
+        }
+
+        .site-logo::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            top: 50%;
+            right: -18px;
+            transform: translateY(-50%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--accent-color); }
+            50% { opacity: 0.5; box-shadow: 0 0 20px var(--accent-color); }
+        }
+
+        .main-navigation {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-navigation ul {
+            list-style: none;
+            display: flex;
+            gap: 50px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-navigation a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.3s ease;
+            padding: 10px 0;
+        }
+
+        .main-navigation a::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        .main-navigation a:hover {
+            color: var(--accent-color);
+        }
+
+        .main-navigation a:hover::before {
+            width: 100%;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-trigger {
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(13, 13, 13, 0.98);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            list-style: none;
+            padding: 8px 0;
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+            padding: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .dropdown-menu li:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            padding: 14px 25px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: none;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            gap: 12px;
+        }
+
+        .dropdown-menu a::before {
+            content: '▸';
+            color: var(--accent-color);
+            font-size: 10px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-color);
+            padding-left: 20px;
+        }
+
+        .dropdown-menu a:hover::before {
+            opacity: 1;
+        }
+
+        .dropdown-menu .badge {
+            margin-left: auto;
+            background: var(--neon-blue);
+            color: var(--primary-color);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .dropdown-menu .coming-soon {
+            opacity: 0.6;
+        }
+
+        .dropdown-menu .coming-soon a:hover {
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-icon:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        /* Hero Slider Section */
+        .hero-slider {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            margin-top: 116px;
+            overflow: hidden;
+        }
+
+        .slides-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(13, 13, 13, 0.9) 0%, rgba(26, 26, 46, 0.7) 50%, rgba(13, 13, 13, 0.8) 100%);
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .slide-inner {
+            max-width: 900px;
+            padding: 0 30px;
+        }
+
+        .slide-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 10px 30px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title span {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--neon-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .slide-buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #00cc6a 100%);
+            color: var(--primary-color);
+            padding: 20px 50px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 25px rgba(0, 255, 136, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(0, 255, 136, 0.6);
+        }
+
+        .cta-button-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            color: var(--text-primary);
+            padding: 20px 50px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .cta-button-secondary:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background: rgba(0, 255, 136, 0.08);
+        }
+
+        /* Slider Navigation */
+        .slider-nav {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
+            transform: scale(1.2);
+        }
+
+        .slider-arrows {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 10;
+        }
+
+        .slider-arrow {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .slider-arrow:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 8px 25px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-description {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 35px;
+        }
+
+        .category-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+            text-decoration: none;
+            display: block;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--neon-blue), var(--neon-purple));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 255, 136, 0.5);
+            box-shadow: 0 25px 70px rgba(0, 255, 136, 0.15);
+        }
+
+        .category-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-placeholder {
+            font-size: 100px;
+            transition: transform 0.5s ease;
+        }
+
+        .category-card:hover .category-placeholder {
+            transform: scale(1.1);
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            padding: 6px 18px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-badge.coming-soon {
+            background: var(--text-muted);
+            color: var(--text-primary);
+        }
+
+        .category-info {
+            padding: 30px;
+        }
+
+        .category-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .category-card:hover .category-title {
+            color: var(--accent-color);
+        }
+
+        .category-description {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .category-count {
+            font-size: 14px;
+            color: var(--neon-blue);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--neon-blue), var(--neon-purple));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(0, 255, 136, 0.5);
+            box-shadow: 0 25px 70px rgba(0, 255, 136, 0.15);
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-placeholder {
+            font-size: 100px;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-placeholder {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            padding: 6px 18px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-info {
+            padding: 30px;
+        }
+
+        .product-category {
+            font-size: 13px;
+            color: var(--neon-blue);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .product-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .product-card:hover .product-title {
+            color: var(--accent-color);
+        }
+
+        .product-description {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .product-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .product-price {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--accent-color);
+        }
+
+        .product-price span {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            margin-left: 12px;
+        }
+
+        .product-button {
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-button:hover {
+            background: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 120px 0;
+            background: rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 60%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(157, 78, 221, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            padding: 45px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.12) 0%, transparent 70%);
+            transition: transform 0.6s ease;
+        }
+
+        .feature-item:hover::before {
+            transform: scale(2.5);
+        }
+
+        .feature-item:hover {
+            border-color: rgba(0, 255, 136, 0.5);
+            transform: translateY(-8px);
+        }
+
+        .feature-icon {
+            font-size: 64px;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-description {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 44px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .about-text h2 span {
+            color: var(--accent-color);
+        }
+
+        .about-text p {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            line-height: 1.9;
+        }
+
+        .about-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .highlight-item {
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .highlight-item:hover {
+            border-color: var(--accent-color);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .highlight-number {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+        }
+
+        .highlight-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-image-placeholder {
+            font-size: 150px;
+            color: var(--accent-color);
+            opacity: 0.3;
+        }
+
+        .about-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 120px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-placeholder {
+            font-size: 80px;
+            color: var(--accent-color);
+            opacity: 0.5;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-placeholder {
+            transform: scale(1.2);
+            opacity: 0.8;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 255, 136, 0);
+            transition: background 0.3s ease;
+        }
+
+        .gallery-item:hover::before {
+            background: rgba(0, 255, 136, 0.15);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 50px;
+            color: var(--accent-color);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 120px 0;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .contact-info h2 {
+            font-size: 44px;
+            font-weight: 900;
+            margin-bottom: 25px;
+        }
+
+        .contact-info > p {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--accent-color);
+        }
+
+        .contact-text h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .contact-text p {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 50px;
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            font-size: 16px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 160px;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #00cc6a 100%);
+            color: var(--primary-color);
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Footer Styles */
+        .site-footer {
+            background: rgba(0, 0, 0, 0.6);
+            border-top: 1px solid var(--border-color);
+            padding: 80px 0 40px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1.5fr repeat(3, 1fr);
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-logo {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-primary);
+            letter-spacing: 3px;
+            text-decoration: none;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            top: 50%;
+            right: -18px;
+            transform: translateY(-50%);
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border-color: var(--accent-color);
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-newsletter p {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 15px;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .newsletter-button {
+            padding: 15px 22px;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 12px;
+            color: var(--primary-color);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-button:hover {
+            background: var(--accent-color-hover);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 35px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-bottom p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .footer-bottom-links a {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .slide-title {
+                font-size: 48px;
+            }
+            
+            .about-content,
+            .contact-content,
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .discount-content {
+                font-size: 12px;
+                gap: 15px;
+            }
+
+            .banner-close {
+                position: static;
+                transform: none;
+                margin-left: 10px;
+            }
+
+            .site-header {
+                top: 40px;
+            }
+
+            .site-header .container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .main-navigation ul {
+                gap: 25px;
+            }
+
+            .main-navigation a {
+                font-size: 13px;
+            }
+
+            .hero-slider {
+                margin-top: 180px;
+            }
+
+            .slide-title {
+                font-size: 36px;
+            }
+
+            .slide-subtitle {
+                font-size: 16px;
+            }
+
+            .slide-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-button,
+            .cta-button-secondary {
+                padding: 16px 40px;
+                font-size: 14px;
+            }
+
+            .slider-arrows {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-highlights {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .highlight-number {
+                font-size: 32px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-social {
+                justify-content: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--primary-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color-hover);
+        }
+
+        /* Selection Style */
+        ::selection {
+            background: rgba(0, 255, 136, 0.3);
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Discount Banner -->
+    <div class="discount-banner" id="discountBanner">
+        <div class="discount-content">
+            <span class="discount-badge">LIMITED TIME</span>
+            <span class="discount-text">$100 OFF $500+ | 10% OFF FIRST ORDER</span>
+            <span class="discount-code">GAMING2024</span>
+            <span style="color: var(--primary-color); font-weight: 600;">🎮</span>
+        </div>
+        <button class="banner-close" onclick="closeBanner()">✕</button>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <a href="#" class="site-logo">SOINP</a>
+            
+            <nav class="main-navigation">
+                <ul>
+                    <li><a href="#home">HOME</a></li>
+                    <li class="dropdown">
+                        <a href="products.html?category=all" class="dropdown-trigger">PRODUCTS ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="products.html?category=gaming-chairs">Gaming Chairs</a></li>
+                            <li><a href="products.html?category=gaming-desks">Gaming Desks</a></li>
+                            <li><a href="products.html?category=mouse-pads">Mouse Pads</a></li>
+                            <li><a href="products.html?category=accessories">Accessories</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#features">FEATURES</a></li>
+                    <li><a href="#about">ABOUT</a></li>
+                    <li><a href="#gallery">GALLERY</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <div class="header-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </div>
+                <div class="header-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-count">3</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Slider Section -->
+        <section class="hero-slider" id="home">
+            <div class="slides-container">
+                <div class="slide active">
+                    <div class="slide-bg" style="background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #0f0f23 100%);">
+                    </div>
+                    <div class="slide-content">
+                        <div class="slide-inner">
+                            <div class="slide-badge">NEW COLLECTION 2024</div>
+                            <h1 class="slide-title">
+                                UNLEASH YOUR <span>GAMING POTENTIAL</span>
+                            </h1>
+                            <p class="slide-subtitle">
+                                Discover premium gaming furniture built for champions. Perfect fusion of exceptional quality, ergonomic design and cutting-edge style.
+                            </p>
+                            <div class="slide-buttons">
+                                <a href="#products" class="cta-button">EXPLORE</a>
+                                <button class="cta-button-secondary">LEARN MORE</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="slide-bg" style="background: linear-gradient(135deg, #1a0a2e 0%, #2e1a3a 50%, #1a0a2e 100%);">
+                    </div>
+                    <div class="slide-content">
+                        <div class="slide-inner">
+                            <div class="slide-badge">PRO PLAYER CHOICE</div>
+                            <h1 class="slide-title">
+                                PRO-GRADE <span>GAMING CHAIRS</span>
+                            </h1>
+                            <p class="slide-subtitle">
+                                Built to withstand professional gaming. 4D armrests, adjustable lumbar support, breathable mesh for ultimate comfort during long gaming sessions.
+                            </p>
+                            <div class="slide-buttons">
+                                <a href="gaming-chairs.html" class="cta-button">SHOP NOW</a>
+                                <button class="cta-button-secondary">VIEW DETAILS</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="slide-bg" style="background: linear-gradient(135deg, #0a1a2e 0%, #1a2e3a 50%, #0a1a2e 100%);">
+                    </div>
+                    <div class="slide-content">
+                        <div class="slide-inner">
+                            <div class="slide-badge">REVOLUTIONARY DESIGN</div>
+                            <h1 class="slide-title">
+                                RGB <span>IMMERSION</span>
+                            </h1>
+                            <p class="slide-subtitle">
+                                16 million customizable RGB colors synced with your game. Create a unique immersive gaming environment.
+                            </p>
+                            <div class="slide-buttons">
+                                <a href="gaming-chairs.html" class="cta-button">EXPLORE RGB</a>
+                                <button class="cta-button-secondary">WATCH VIDEO</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-arrows">
+                <button class="slider-arrow prev" onclick="changeSlide(-1)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m15 18-6-6 6-6"/>
+                    </svg>
+                </button>
+                <button class="slider-arrow next" onclick="changeSlide(1)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="slider-nav">
+                <div class="slider-dot active" onclick="goToSlide(0)"></div>
+                <div class="slider-dot" onclick="goToSlide(1)"></div>
+                <div class="slider-dot" onclick="goToSlide(2)"></div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products-section" id="products">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">CATEGORIES</div>
+                    <h2 class="section-title">EXPLORE GEAR</h2>
+                    <p class="section-description">
+                        Browse our product categories and find the perfect gear for your gaming setup
+                    </p>
+                </div>
+                
+                <div class="products-grid">
+                    <a href="gaming-chairs.html" class="category-card">
+                        <div class="category-image-wrapper">
+                            <div class="category-placeholder">🪑</div>
+                            <div class="category-badge">HOT</div>
+                        </div>
+                        <div class="category-info">
+                            <h3 class="category-title">GAMING CHAIRS</h3>
+                            <p class="category-description">Professional gaming chairs with ergonomic design for ultimate comfort during long gaming sessions.</p>
+                            <div class="category-count">6 PRODUCTS</div>
+                        </div>
+                    </a>
+
+                    <a href="#" class="category-card">
+                        <div class="category-image-wrapper">
+                            <div class="category-placeholder">🖥️</div>
+                            <div class="category-badge coming-soon">COMING SOON</div>
+                        </div>
+                        <div class="category-info">
+                            <h3 class="category-title">GAMING DESKS</h3>
+                            <p class="category-description">Spacious desktop space with smart cable management for the perfect gaming station.</p>
+                            <div class="category-count">COMING SOON</div>
+                        </div>
+                    </a>
+
+                    <a href="#" class="category-card">
+                        <div class="category-image-wrapper">
+                            <div class="category-placeholder">🎮</div>
+                            <div class="category-badge coming-soon">COMING SOON</div>
+                        </div>
+                        <div class="category-info">
+                            <h3 class="category-title">ACCESSORIES</h3>
+                            <p class="category-description">Mouse pads, headset stands, wrist rests and more to enhance your gaming experience.</p>
+                            <div class="category-count">COMING SOON</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">WHY CHOOSE US</div>
+                    <h2 class="section-title">PREMIUM QUALITY</h2>
+                    <p class="section-description">
+                        Crafted for the ultimate gaming experience
+                    </p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <h3 class="feature-title">ERGONOMIC DESIGN</h3>
+                        <p class="feature-description">Optimized posture and comfort for extended gaming sessions.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💎</div>
+                        <h3 class="feature-title">PREMIUM MATERIALS</h3>
+                        <p class="feature-description">Premium materials for durability and long-lasting performance.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">RGB LIGHTING</h3>
+                        <p class="feature-description">16 million customizable RGB colors synced with your setup.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🌍</div>
+                        <h3 class="feature-title">GLOBAL SHIPPING</h3>
+                        <p class="feature-description">Fast worldwide delivery to 100+ countries.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🛡️</div>
+                        <h3 class="feature-title">5 YEAR WARRANTY</h3>
+                        <p class="feature-description">Backed by a 5-year warranty for peace of mind.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎧</div>
+                        <h3 class="feature-title">24/7 SUPPORT</h3>
+                        <p class="feature-description">Professional support available around the clock.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section" id="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>
+                            BORN FROM <span>PASSION</span>,<br>BUILT FOR <span>VICTORY</span>
+                        </h2>
+                        <p>
+                            Founded by gamers, built for gamers. We understand the needs of pro players and casual gamers alike, delivering furniture that elevates your gaming performance.
+                        </p>
+                        <p>
+                            Every product is meticulously designed, combining cutting-edge technology with exceptional craftsmanship. Join thousands of players who have upgraded their gaming experience.
+                        </p>
+                        <div class="about-highlights">
+                            <div class="highlight-item">
+                                <div class="highlight-number">50K+</div>
+                                <div class="highlight-label">HAPPY PLAYERS</div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="highlight-number">100+</div>
+                                <div class="highlight-label">COUNTRIES</div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="highlight-number">10+</div>
+                                <div class="highlight-label">YEARS EXPERIENCE</div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="highlight-number">24/7</div>
+                                <div class="highlight-label">SUPPORT</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div class="about-image-placeholder">🎮</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="gallery-section" id="gallery">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-badge">GALLERY</div>
+                    <h2 class="section-title">GAMING SETUPS</h2>
+                    <p class="section-description">
+                        See how our products create the perfect gaming environment
+                    </p>
+                </div>
+                
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">🖥️</div>
+                        <div class="gallery-overlay">+</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">🪑</div>
+                        <div class="gallery-overlay">+</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">⌨️</div>
+                        <div class="gallery-overlay">+</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">🎧</div>
+                        <div class="gallery-overlay">+</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">🕹️</div>
+                        <div class="gallery-overlay">+</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">📺</div>
+                        <div class="gallery-overlay">+</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section" id="contact">
+            <div class="container">
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h2>CONTACT US</h2>
+                        <p>
+                            Have questions about our products? Our team is ready to assist you.
+                            Contact us to find your perfect gaming furniture.
+                        </p>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <div class="contact-icon">📧</div>
+                                <div class="contact-text">
+                                    <h4>EMAIL</h4>
+                                    <p>support@soinpgaming.com</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">📞</div>
+                                <div class="contact-text">
+                                    <h4>PHONE</h4>
+                                    <p>+86 400-888-8888</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <div class="contact-icon">📍</div>
+                                <div class="contact-text">
+                                    <h4>ADDRESS</h4>
+                                    <p>Tianhe District, Guangzhou, China</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <label for="name">NAME</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">EMAIL</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">SUBJECT</label>
+                            <input type="text" id="subject" name="subject" placeholder="How can we help?" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">MESSAGE</label>
+                            <textarea id="message" name="message" placeholder="Enter your message..." required></textarea>
+                        </div>
+                        <button type="submit" class="submit-button">SEND MESSAGE</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="footer-logo">SOINP</a>
+                    <p>Premium gaming furniture built for champions. Elevate your gaming experience with exceptional quality and cutting-edge design.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>CATEGORIES</h3>
+                    <ul class="footer-links">
+                        <li><a href="gaming-chairs.html">Gaming Chairs</a></li>
+                        <li><a href="#products">Gaming Desks</a></li>
+                        <li><a href="#products">Mouse Pads</a></li>
+                        <li><a href="#products">Accessories</a></li>
+                        <li><a href="#products">New Arrivals</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>CUSTOMER SUPPORT</h3>
+                    <ul class="footer-links">
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">Warranty</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section footer-newsletter">
+                    <h3>NEWSLETTER</h3>
+                    <p>Subscribe for latest offers, exclusive events and product updates.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your email" required>
+                        <button type="submit" class="newsletter-button">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13"></path>
+                                <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Soinp Gaming. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Discount Banner Close
+        function closeBanner() {
+            document.getElementById('discountBanner').style.display = 'none';
+            document.querySelector('.site-header').style.top = '0';
+            document.querySelector('.hero-slider').style.marginTop = '72px';
+        }
+
+        // Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        let slideInterval;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                dots[i].classList.remove('active');
+            });
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            showSlide(currentSlide);
+            resetInterval();
+        }
+
+        function changeSlide(direction) {
+            if (direction > 0) {
+                nextSlide();
+            } else {
+                prevSlide();
+            }
+            resetInterval();
+        }
+
+        function resetInterval() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        // Auto-advance slides
+        slideInterval = setInterval(nextSlide, 5000);
+
+        // Header scroll effect
+        const header = document.querySelector('.site-header');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.scrollY;
+            
+            if (currentScroll > 50) {
+                header.style.background = 'rgba(0, 0, 0, 0.98)';
+                header.style.boxShadow = '0 0 40px rgba(0, 255, 136, 0.1)';
+            } else {
+                header.style.background = 'rgba(0, 0, 0, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Form submission
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will contact you soon.');
+            this.reset();
+        });
+
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for subscribing! You will receive our latest updates.');
+            this.reset();
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -100px 0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.category-card, .feature-item, .highlight-item, .gallery-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
