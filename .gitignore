@@ -28,3 +28,8 @@ node_modules/
 # Build artifacts
 dist/
 build/
+
+# Theme specific
+images/*.jpg
+images/*.png
+images/*.webp
