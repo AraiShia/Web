@@ -25,7 +25,14 @@ add_action('after_setup_theme', 'soinp_gaming_register_nav_menus');
  * Enqueue styles.
  */
 function soinp_gaming_enqueue_styles() {
-    wp_enqueue_style('soinp-gaming-style', get_stylesheet_uri(), array(), '1.0.0', 'all');
+    // 主样式表 - 使用文件修改时间作为版本号，自动刷新缓存
+    $style_path = get_stylesheet_directory() . '/style.css';
+    $style_version = file_exists($style_path) ? filemtime($style_path) : '2.0.0';
+    
+    wp_enqueue_style('soinp-gaming-style', get_stylesheet_uri(), array(), $style_version, 'all');
+    
+    // Google Fonts
+    wp_enqueue_style('soinp-gaming-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap', array(), null);
 }
 add_action('wp_enqueue_scripts', 'soinp_gaming_enqueue_styles');
 
