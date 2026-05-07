@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Soinp Gaming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="sidebar">
+            <div class="logo-section">
+                <h1 class="admin-logo">SOINP</h1>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li class="active">
+                        <a href="#dashboard" onclick="showSection('dashboard')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#products" onclick="showSection('products')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 7h-9"/>
+                                <path d="M14 17H5"/>
+                                <path d="M17 17c0-2-3-4.5-3-7.5S14 4 14 4"/>
+                                <path d="M5 17c0-2 3-4.5 3-7.5S5 4 5 4"/>
+                            </svg>
+                            <span>Products</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#content" onclick="showSection('content')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10 9 9 9 8 9"/>
+                            </svg>
+                            <span>Page Content</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#orders" onclick="showSection('orders')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                                <line x1="3" y1="6" x2="21" y2="6"/>
+                                <path d="M16 10a4 4 0 0 1-8 0"/>
+                            </svg>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#settings" onclick="showSection('settings')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="logout-section">
+                <button class="logout-btn" onclick="logout()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-box">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="top-right">
+                    <div class="notification-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">Admin</span>
+                        <div class="user-avatar">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <h2>Dashboard</h2>
+                    <p>Welcome back, Admin</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon products">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 7h-9"/>
+                                <path d="M14 17H5"/>
+                                <path d="M17 17c0-2-3-4.5-3-7.5S14 4 14 4"/>
+                                <path d="M5 17c0-2 3-4.5 3-7.5S5 4 5 4"/>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Products</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orders">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                                <line x1="3" y1="6" x2="21" y2="6"/>
+                                <path d="M16 10a4 4 0 0 1-8 0"/>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value">28</div>
+                            <div class="stat-label">Orders</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"/>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value">$45,231</div>
+                            <div class="stat-label">Revenue</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon customers">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value">1,245</div>
+                            <div class="stat-label">Customers</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-content">
+                    <div class="recent-orders">
+                        <h3>Recent Orders</h3>
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Product</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#ORD-001</td>
+                                    <td>John Doe</td>
+                                    <td>Pro Gaming Chair X1</td>
+                                    <td>$299</td>
+                                    <td><span class="status completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#ORD-002</td>
+                                    <td>Jane Smith</td>
+                                    <td>Ergonomic Chair Pro</td>
+                                    <td>$449</td>
+                                    <td><span class="status processing">Processing</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#ORD-003</td>
+                                    <td>Mike Johnson</td>
+                                    <td>RGB Gaming Chair</td>
+                                    <td>$399</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="showSection('products'); document.getElementById('add-product-btn').click()">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 5v14"/>
+                                    <path d="M5 12h14"/>
+                                </svg>
+                                <span>Add Product</span>
+                            </button>
+                            <button class="action-btn" onclick="showSection('content')">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                    <polyline points="14 2 14 8 20 8"/>
+                                    <line x1="16" y1="13" x2="8" y2="13"/>
+                                    <line x1="16" y1="17" x2="8" y2="17"/>
+                                    <polyline points="10 9 9 9 8 9"/>
+                                </svg>
+                                <span>Edit Content</span>
+                            </button>
+                            <button class="action-btn" onclick="showSection('orders')">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                                    <line x1="3" y1="6" x2="21" y2="6"/>
+                                    <path d="M16 10a4 4 0 0 1-8 0"/>
+                                </svg>
+                                <span>View Orders</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="content-section">
+                <div class="section-header">
+                    <h2>Products</h2>
+                    <button id="add-product-btn" class="add-btn" onclick="openProductModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14"/>
+                            <path d="M5 12h14"/>
+                        </svg>
+                        <span>Add Product</span>
+                    </button>
+                </div>
+                <div class="filter-bar">
+                    <select id="category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="gaming-chairs">Gaming Chairs</option>
+                        <option value="gaming-desks">Gaming Desks</option>
+                        <option value="accessories">Accessories</option>
+                    </select>
+                    <input type="text" id="search-product" placeholder="Search products...">
+                </div>
+                <div class="products-list" id="products-list">
+                    <div style="text-align:center; padding:60px; color:#666;">Loading products...</div>
+                </div>
+            </section>
+
+            <!-- Content Section -->
+            <section id="content" class="content-section">
+                <div class="section-header">
+                    <h2>Page Content</h2>
+                </div>
+                <div class="content-grid">
+                    <div class="content-card" onclick="editContent('home')">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                        <h3>Home Page</h3>
+                        <p>Hero content, banners, featured products</p>
+                    </div>
+                    <div class="content-card" onclick="editContent('about')">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        <h3>About Page</h3>
+                        <p>Company information, highlights, stats</p>
+                    </div>
+                    <div class="content-card" onclick="editContent('contact')">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        <h3>Contact Page</h3>
+                        <p>Contact information, form settings</p>
+                    </div>
+                    <div class="content-card" onclick="editContent('products')">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 7h-9"/>
+                            <path d="M14 17H5"/>
+                            <path d="M17 17c0-2-3-4.5-3-7.5S14 4 14 4"/>
+                            <path d="M5 17c0-2 3-4.5 3-7.5S5 4 5 4"/>
+                        </svg>
+                        <h3>Products Page</h3>
+                        <p>Category descriptions, filters</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="orders" class="content-section">
+                <div class="section-header">
+                    <h2>Orders</h2>
+                </div>
+                <table class="orders-table full">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Email</th>
+                            <th>Product</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD-001</td>
+                            <td>John Doe</td>
+                            <td>john@example.com</td>
+                            <td>Pro Gaming Chair X1</td>
+                            <td>$299</td>
+                            <td><span class="status completed">Completed</span></td>
+                            <td>2024-01-15</td>
+                            <td><button class="view-btn">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-002</td>
+                            <td>Jane Smith</td>
+                            <td>jane@example.com</td>
+                            <td>Ergonomic Chair Pro</td>
+                            <td>$449</td>
+                            <td><span class="status processing">Processing</span></td>
+                            <td>2024-01-14</td>
+                            <td><button class="view-btn">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-003</td>
+                            <td>Mike Johnson</td>
+                            <td>mike@example.com</td>
+                            <td>RGB Gaming Chair</td>
+                            <td>$399</td>
+                            <td><span class="status pending">Pending</span></td>
+                            <td>2024-01-13</td>
+                            <td><button class="view-btn">View</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="content-section">
+                <div class="section-header">
+                    <h2>Settings</h2>
+                </div>
+                <div class="settings-form">
+                    <div class="form-section">
+                        <h3>General Settings</h3>
+                        <div class="form-row">
+                            <label>Site Name</label>
+                            <input type="text" value="Soinp Gaming">
+                        </div>
+                        <div class="form-row">
+                            <label>Site Email</label>
+                            <input type="email" value="support@soinpgaming.com">
+                        </div>
+                        <div class="form-row">
+                            <label>Currency</label>
+                            <select>
+                                <option>USD - US Dollar</option>
+                                <option>CNY - Chinese Yuan</option>
+                                <option>EUR - Euro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h3>Discount Banner</h3>
+                        <div class="form-row">
+                            <label>Enable Banner</label>
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="banner-toggle" checked>
+                                <label for="banner-toggle"></label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Discount Text</label>
+                            <input type="text" value="Up to 30% Off - Limited Time Only!">
+                        </div>
+                        <div class="form-row">
+                            <label>Discount Code</label>
+                            <input type="text" value="SOINP2024">
+                        </div>
+                    </div>
+                    <div class="form-row actions">
+                        <button class="save-btn">Save Changes</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal-content admin-modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Product</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form class="product-form" id="product-form">
+                <div class="form-row">
+                    <label>Product Name</label>
+                    <input type="text" id="product-name" required>
+                </div>
+                <div class="form-row">
+                    <label>Category</label>
+                    <select id="product-category" required>
+                        <option value="gaming-chairs">Gaming Chairs</option>
+                        <option value="gaming-desks">Gaming Desks</option>
+                        <option value="accessories">Accessories</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label>Price</label>
+                    <input type="number" id="product-price" required>
+                </div>
+                <div class="form-row">
+                    <label>Original Price (Optional)</label>
+                    <input type="number" id="product-original-price">
+                </div>
+                <div class="form-row">
+                    <label>Badge (Optional)</label>
+                    <input type="text" id="product-badge" placeholder="Hot, New, Sale">
+                </div>
+                <div class="form-row">
+                    <label>Description</label>
+                    <textarea id="product-description" rows="4" required></textarea>
+                </div>
+                <div class="form-row">
+                    <label>Features (comma separated)</label>
+                    <input type="text" id="product-features" placeholder="Feature 1, Feature 2, Feature 3">
+                </div>
+                <div class="form-row">
+                    <label>Stock</label>
+                    <input type="number" id="product-stock" value="0">
+                </div>
+                <div class="form-row actions">
+                    <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="save-btn">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Content Editor Modal -->
+    <div class="modal-overlay" id="content-modal">
+        <div class="modal-content admin-modal large">
+            <div class="modal-header">
+                <h3 id="content-modal-title">Edit Home Page Content</h3>
+                <button class="modal-close" onclick="closeContentModal()">&times;</button>
+            </div>
+            <form class="content-form" id="content-form">
+                <input type="hidden" id="content-page">
+                <div class="form-row">
+                    <label>Hero Title</label>
+                    <input type="text" id="hero-title" value="UNLEASH YOUR GAMING POTENTIAL">
+                </div>
+                <div class="form-row">
+                    <label>Hero Subtitle</label>
+                    <textarea id="hero-subtitle" rows="3">Discover premium gaming furniture built for champions. Perfect fusion of exceptional quality, ergonomic design and cutting-edge style.</textarea>
+                </div>
+                <div class="form-row">
+                    <label>Features Title</label>
+                    <input type="text" id="features-title" value="WHY CHOOSE US">
+                </div>
+                <div class="form-row">
+                    <label>About Title</label>
+                    <input type="text" id="about-title" value="BORN FROM PASSION, BUILT FOR VICTORY">
+                </div>
+                <div class="form-row">
+                    <label>About Description</label>
+                    <textarea id="about-description" rows="4">Founded by gamers, built for gamers. We understand the needs of pro players and casual gamers alike, delivering furniture that elevates your gaming performance.</textarea>
+                </div>
+                <div class="form-row actions">
+                    <button type="button" class="cancel-btn" onclick="closeContentModal()">Cancel</button>
+                    <button type="submit" class="save-btn">Save Content</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
