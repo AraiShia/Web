@@ -89,16 +89,16 @@ add_action('widgets_init', 'soinp_gaming_widgets_init');
 /**
  * Custom template tags for this theme.
  */
-require get_template_directory() . '/inc/template-tags.php';
+// require get_template_directory() . '/inc/template-tags.php';
 
 /**
  * Custom functions that act independently of the theme templates.
  */
-require get_template_directory() . '/inc/extras.php';
+// require get_template_directory() . '/inc/extras.php';
 
 /**
  * Load Jetpack compatibility file.
  */
-if (defined('JETPACK__VERSION')) {
-    require get_template_directory() . '/inc/jetpack.php';
-}
+// if (defined('JETPACK__VERSION')) {
+//     require get_template_directory() . '/inc/jetpack.php';
+// }
