@@ -292,46 +292,7 @@ body {
     opacity: 1;
 }
 
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
 
-.header-icon {
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.header-icon:hover {
-    background: rgba(0, 255, 136, 0.1);
-    border-color: var(--accent-color);
-    color: var(--accent-color);
-}
-
-.cart-count {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: var(--accent-color);
-    color: var(--primary-color);
-    font-size: 11px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 10px;
-    min-width: 20px;
-    text-align: center;
-}
 
 /* Hero Slider Section */
 .hero-slider {
