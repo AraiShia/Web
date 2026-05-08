@@ -1,0 +1,43 @@
+# WordPress core files
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+
+# 环境变量（包含敏感信息）
+.env
+.env.local
+.env.production
+
+# Log files
+*.log
+*.txt
+
+# Cache files
+*.cache
+wp-content/cache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Node.js dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+
+# Theme specific
+images/*.jpg
+images/*.png
+images/*.webp
+
+# Uploads
+uploads/
