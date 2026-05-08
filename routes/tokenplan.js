@@ -24,7 +24,7 @@ function getAuthHeaders() {
 function proxyRequest(path, method = 'GET', body = null) {
   return new Promise((resolve, reject) => {
     const options = {
-      hostname: 'api.minimax.chat',
+      hostname: 'www.minimaxi.com',
       port: 443,
       path: path,
       method: method,
@@ -73,14 +73,15 @@ router.get('/usage', async (req, res) => {
       });
     }
 
-    // 尝试获取余额作为用量
     try {
-      const balanceData = await proxyRequest('/v1/info/balance');
+      // 获取剩余Token
+      const balanceData = await proxyRequest('/v1/token_plan/remains');
+      
       const usageData = {
-        balance: balanceData.data?.balance || balanceData.balance || 0,
-        totalTokens: 0,
-        todayTokens: 0,
-        totalRequests: 0
+        balance: balanceData.data?.remain || balanceData.remain || 0,
+        totalTokens: balanceData.data?.used || balanceData.used || 0,
+        todayTokens: balanceData.data?.today_used || balanceData.today_used || 0,
+        totalRequests: balanceData.data?.request_count || balanceData.request_count || 0
       };
       
       usageCache.data = usageData;
@@ -122,23 +123,31 @@ router.get('/usage', async (req, res) => {
 // 获取历史用量数据
 router.get('/usage/history', async (req, res) => {
   try {
-    // 生成7天演示数据
-    const days = [];
-    const now = new Date();
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(now);
-      date.setDate(date.getDate() - i);
-      days.push({
-        date: date.toISOString().split('T')[0],
-        tokens: Math.floor(Math.random() * 50000) + 20000,
-        requests: Math.floor(Math.random() * 100) + 50
+    try {
+      const historyData = await proxyRequest('/v1/token_plan/daily_usage');
+      res.json({
+        success: true,
+        data: historyData.data || historyData
+      });
+    } catch (apiError) {
+      // 生成7天演示数据
+      const days = [];
+      const now = new Date();
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(now);
+        date.setDate(date.getDate() - i);
+        days.push({
+          date: date.toISOString().split('T')[0],
+          tokens: Math.floor(Math.random() * 50000) + 20000,
+          requests: Math.floor(Math.random() * 100) + 50
+        });
+      }
+      res.json({
+        success: true,
+        data: { days },
+        demo: true
       });
     }
-    
-    res.json({
-      success: true,
-      data: { days }
-    });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -151,17 +160,26 @@ router.get('/usage/history', async (req, res) => {
 // 获取模型使用统计
 router.get('/usage/models', async (req, res) => {
   try {
-    res.json({
-      success: true,
-      data: {
-        models: [
-          { name: 'MiniMax-01', calls: 456, usage: 680000 },
-          { name: 'abab6.5s', calls: 234, usage: 320000 },
-          { name: 'abab6.5', calls: 156, usage: 180000 },
-          { name: 'Speech-01', calls: 46, usage: 70000 }
-        ]
-      }
-    });
+    try {
+      const modelsData = await proxyRequest('/v1/token_plan/model_usage');
+      res.json({
+        success: true,
+        data: modelsData.data || modelsData
+      });
+    } catch (apiError) {
+      res.json({
+        success: true,
+        demo: true,
+        data: {
+          models: [
+            { name: 'MiniMax-01', calls: 456, usage: 680000 },
+            { name: 'abab6.5s', calls: 234, usage: 320000 },
+            { name: 'abab6.5', calls: 156, usage: 180000 },
+            { name: 'Speech-01', calls: 46, usage: 70000 }
+          ]
+        }
+      });
+    }
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -175,19 +193,18 @@ router.get('/usage/models', async (req, res) => {
 router.get('/balance', async (req, res) => {
   try {
     try {
-      const balanceData = await proxyRequest('/v1/info/balance');
+      const balanceData = await proxyRequest('/v1/token_plan/remains');
       
       res.json({
         success: true,
         data: {
-          balance: balanceData.data?.balance || balanceData.balance || 0,
-          total: 100,
-          remaining: balanceData.data?.balance || balanceData.balance || 0,
-          limit: 100
+          balance: balanceData.data?.remain || balanceData.remain || 0,
+          total: balanceData.data?.total || balanceData.total || 100,
+          remaining: balanceData.data?.remain || balanceData.remain || 0,
+          limit: balanceData.data?.total || balanceData.total || 100
         }
       });
     } catch (apiError) {
-      // API失败时返回演示数据
       res.json({
         success: true,
         data: {
@@ -195,7 +212,8 @@ router.get('/balance', async (req, res) => {
           total: 100,
           remaining: 85.50,
           limit: 100
-        }
+        },
+        demo: true
       });
     }
   } catch (error) {
