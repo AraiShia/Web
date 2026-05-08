@@ -161,6 +161,10 @@ function showProductDetail(slug) {
     document.getElementById('product-detail-view').classList.add('active');
     renderProductDetail(product);
     
+    var category = getCurrentCategory();
+    var newUrl = '/products.html?category=' + category + '&product=' + slug;
+    history.pushState({ category: category, product: slug }, '', newUrl);
+    
     window.scrollTo(0, 0);
     return true;
 }
@@ -259,6 +263,18 @@ function init() {
         });
         
         cards.forEach(function(card) { grid.appendChild(card); });
+    });
+    
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.product) {
+            showProductDetail(e.state.product);
+        } else {
+            showProductsList();
+            var category = getCurrentCategory();
+            updatePageInfo(category);
+            updateCategoryTabs(category);
+            renderProducts(category);
+        }
     });
 }
 
