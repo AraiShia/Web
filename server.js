@@ -34,12 +34,14 @@ const productRoutes = require('./routes/products');
 const contentRoutes = require('./routes/content');
 const contactRoutes = require('./routes/contact');
 const newsletterRoutes = require('./routes/newsletter');
+const tokenplanRoutes = require('./routes/tokenplan');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/tokenplan', tokenplanRoutes);
 
 // 静态文件
 app.use(express.static(path.join(__dirname, 'public')));
@@ -55,6 +57,10 @@ app.get('/login', (req, res) => {
 
 app.get('/products.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'products.html'));
+});
+
+app.get('/tokenplan-monitor', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'tokenplan-monitor.html'));
 });
 
 // 404 处理
