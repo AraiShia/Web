@@ -1,13 +1,21 @@
 const express = require('express');
+const Joi = require('joi');
+const validate = require('../middleware/validate');
+
 const router = express.Router();
 
-router.post('/', (req, res) => {
+// 验证规则
+const newsletterSchema = Joi.object({
+  email: Joi.string().email().required(),
+});
+
+router.post('/', validate(newsletterSchema), (req, res, next) => {
   try {
     const { email } = req.body;
     console.log('Newsletter subscription:', email);
-    res.json({ message: 'Successfully subscribed to newsletter!' });
+    res.json({ message: '订阅成功！' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 });
 

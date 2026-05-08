@@ -4,6 +4,11 @@ wp-content/uploads/
 wp-content/upgrade/
 wp-content/backup-db/
 
+# 环境变量（包含敏感信息）
+.env
+.env.local
+.env.production
+
 # Log files
 *.log
 *.txt
@@ -33,3 +38,6 @@ build/
 images/*.jpg
 images/*.png
 images/*.webp
+
+# Uploads
+uploads/
