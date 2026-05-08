@@ -114,24 +114,24 @@ function initContactForm() {
 }
 
 // Featured Products Loading
+var featuredProductsData = [
+    { id: 1, slug: 'pro-gaming-chair-x1', name: 'Pro Gaming Chair X1', category: 'Pro Series', price: 299, originalPrice: 499, badge: 'Hot', description: 'Ergonomic design with premium materials for ultimate comfort during long gaming sessions.' },
+    { id: 2, slug: 'pro-gaming-chair-x3', name: 'Pro Gaming Chair X3', category: 'Pro Series', price: 399, originalPrice: 599, badge: 'New', description: 'Upgraded with RGB lighting and advanced ergonomic features.' },
+    { id: 3, slug: 'ergo-pro-chair', name: 'Ergo Pro Chair', category: 'Pro Series', price: 449, originalPrice: 699, badge: 'Hot', description: 'Professional-grade ergonomic chair with advanced support features.' },
+    { id: 4, slug: 'rgb-elite-chair', name: 'RGB Elite Chair', category: 'Pro Series', price: 349, originalPrice: 499, badge: 'Sale', description: 'Immersive RGB lighting meets premium comfort.' },
+    { id: 5, slug: 'pro-gaming-desk', name: 'Pro Gaming Desk', category: 'Gaming Desks', price: 499, originalPrice: 699, badge: 'Hot', description: 'Large gaming desk with cable management and RGB lighting.' },
+    { id: 6, slug: 'xl-gaming-mousepad', name: 'XL Gaming Mousepad', category: 'Accessories', price: 49, originalPrice: 79, badge: '', description: 'Extra-large mousepad for complete keyboard and mouse coverage.' }
+];
+
 function loadFeaturedProducts() {
     const container = document.getElementById('featured-products');
     if (!container) return;
 
-    fetch('/api/products')
-    .then(response => response.json())
-    .then(data => {
-        const products = data.products;
-        if (products.length > 0) {
-            container.innerHTML = products.slice(0, 6).map(createProductCard).join('');
-        } else {
-            container.innerHTML = '<div style="text-align:center; padding:60px 0; color:#666;">No products available</div>';
-        }
-    })
-    .catch(error => {
-        console.error('Error loading products:', error);
-        container.innerHTML = '<div style="text-align:center; padding:60px 0; color:#666;">Failed to load products</div>';
-    });
+    if (featuredProductsData.length > 0) {
+        container.innerHTML = featuredProductsData.slice(0, 6).map(createProductCard).join('');
+    } else {
+        container.innerHTML = '<div style="text-align:center; padding:60px 0; color:#666;">No products available</div>';
+    }
 }
 
 function createProductCard(product) {
