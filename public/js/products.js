@@ -44,7 +44,7 @@ function findProduct(slug) {
 }
 
 function createProductCard(product) {
-    return '<div class="product-card" onclick="showProductDetail(\'' + product.slug + '\')">' +
+    return '<div class="product-card">' +
         '<div class="product-image-wrapper">' +
         '<span class="product-placeholder">' + product.emoji + '</span>' +
         '</div>' +
@@ -52,7 +52,7 @@ function createProductCard(product) {
         '<span class="product-category">' + product.category + '</span>' +
         '<h3 class="product-title">' + product.name + '</h3>' +
         '<p class="product-description">' + product.desc + '</p>' +
-        '<button class="product-button">VIEW DETAILS</button>' +
+        '<button class="product-button" onclick="event.stopPropagation(); showProductDetail(\'' + product.slug + '\')">VIEW DETAILS</button>' +
         '</div>' +
         '</div>';
 }
@@ -123,7 +123,7 @@ function renderProductDetail(product) {
         '</div>' +
         '</div>' +
         '<div class="action-buttons">' +
-        '<button class="btn-add-cart-detail">ADD TO QUOTE</button>' +
+        '<button class="btn-add-cart-detail" onclick="alert(\'Coming soon\')">ADD TO QUOTE</button>' +
         '</div>' +
         '</div>' +
         '</div>' +

@@ -771,9 +771,9 @@ body {
 
 .product-button {
     display: inline-block;
-    background: transparent;
-    border: 1px solid var(--accent-color);
-    color: var(--accent-color);
+    background: var(--accent-color);
+    border: none;
+    color: var(--primary-color);
     padding: 12px 32px;
     border-radius: 8px;
     font-weight: 700;
@@ -787,11 +787,9 @@ body {
 }
 
 .product-button:hover {
-    background: transparent;
-    border-color: var(--accent-color);
-    color: var(--accent-color);
-    transform: none;
-    box-shadow: none;
+    background: var(--accent-color-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
 }
 
 /* Features Section */

@@ -136,7 +136,7 @@ function loadFeaturedProducts() {
 
 function createProductCard(product) {
     return `
-        <div class="product-card" onclick="showProductDetail('${product.slug}')">
+        <div class="product-card">
             <div class="product-image-wrapper">
                 <span class="product-placeholder">🪑</span>
             </div>
@@ -144,7 +144,7 @@ function createProductCard(product) {
                 <span class="product-category">${product.category}</span>
                 <h3 class="product-title">${product.name}</h3>
                 <p class="product-description">${product.description}</p>
-                <button class="product-button">VIEW DETAILS</button>
+                <button class="product-button" onclick="event.stopPropagation(); window.location.href='/products.html?product=${product.slug}'">VIEW DETAILS</button>
             </div>
         </div>
     `;
@@ -204,7 +204,7 @@ function showProductDetail(slug) {
                     </div>
                 </div>
                 <div class="action-buttons">
-                    <button class="btn-add-cart-detail">ADD TO QUOTE</button>
+                    <button class="btn-add-cart-detail" onclick="alert('Coming soon')">ADD TO QUOTE</button>
                 </div>
             </div>
         `;
