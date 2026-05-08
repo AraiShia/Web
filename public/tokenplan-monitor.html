@@ -62,6 +62,10 @@
       background: #2ecc71;
     }
 
+    .status-dot.demo {
+      background: #f39c12;
+    }
+
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.5; }
@@ -235,6 +239,18 @@
       margin-bottom: 20px;
     }
 
+    .warning-message {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      color: #856404;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .balance-bar {
       height: 8px;
       background: #e9ecef;
@@ -282,7 +298,7 @@
       </div>
     </header>
 
-    <div id="errorContainer"></div>
+    <div id="messageContainer"></div>
 
     <div class="stats-grid">
       <div class="stat-card">
@@ -290,7 +306,7 @@
         <div class="stat-value" id="totalTokens">--</div>
         <div class="stat-change positive" id="tokensChange">
           <span>↑</span>
-          <span id="tokensChangeValue">计算中...</span>
+          <span id="tokensChangeValue">--</span>
         </div>
       </div>
 
@@ -298,7 +314,7 @@
         <h3>今日消耗</h3>
         <div class="stat-value" id="todayTokens">--</div>
         <div class="stat-change" id="todayChange">
-          <span id="todayChangeValue">计算中...</span>
+          <span id="todayChangeValue">--</span>
         </div>
       </div>
 
@@ -307,7 +323,7 @@
         <div class="stat-value" id="totalRequests">--</div>
         <div class="stat-change positive" id="requestsChange">
           <span>↑</span>
-          <span id="requestsChangeValue">计算中...</span>
+          <span id="requestsChangeValue">--</span>
         </div>
       </div>
 
@@ -381,10 +397,10 @@
     let trendChart = null;
     let modelChart = null;
     let updateInterval = null;
+    let isDemoMode = false;
 
     // 初始化图表
     function initCharts() {
-      // 趋势图
       const trendCtx = document.getElementById('trendChart').getContext('2d');
       trendChart = new Chart(trendCtx, {
         type: 'line',
@@ -424,7 +440,6 @@
         }
       });
 
-      // 模型分布图
       const modelCtx = document.getElementById('modelChart').getContext('2d');
       modelChart = new Chart(modelCtx, {
         type: 'doughnut',
@@ -467,39 +482,51 @@
     }
 
     // 更新状态指示器
-    function updateStatus(connected, message) {
+    function updateStatus(connected, message, demo = false) {
       const dot = document.getElementById('statusDot');
       const statusText = document.getElementById('connectionStatus');
       
-      if (connected) {
+      dot.classList.remove('connected', 'demo');
+      
+      if (demo) {
+        dot.classList.add('demo');
+      } else if (connected) {
         dot.classList.add('connected');
-      } else {
-        dot.classList.remove('connected');
       }
+      
       statusText.textContent = message;
     }
 
-    // 显示错误
-    function showError(message) {
-      const container = document.getElementById('errorContainer');
-      container.innerHTML = `<div class="error-message">${message}</div>`;
-      setTimeout(() => {
-        container.innerHTML = '';
-      }, 5000);
+    // 显示消息
+    function showMessage(message, type = 'error') {
+      const container = document.getElementById('messageContainer');
+      if (type === 'error') {
+        container.innerHTML = `<div class="error-message">${message}</div>`;
+      } else if (type === 'warning') {
+        container.innerHTML = `<div class="warning-message">⚠️ ${message}</div>`;
+      }
+    }
+
+    // 清除消息
+    function clearMessage() {
+      document.getElementById('messageContainer').innerHTML = '';
     }
 
     // 获取数据
     async function fetchData() {
       try {
+        clearMessage();
+        
         const [usageRes, historyRes, modelsRes, balanceRes] = await Promise.all([
-          fetch('/api/tokenplan/usage'),
-          fetch('/api/tokenplan/usage/history?days=7'),
-          fetch('/api/tokenplan/usage/models'),
-          fetch('/api/tokenplan/balance')
+          fetch('/api/tokenplan/usage').catch(e => ({ ok: false, error: e })),
+          fetch('/api/tokenplan/usage/history?days=7').catch(e => ({ ok: false, error: e })),
+          fetch('/api/tokenplan/usage/models').catch(e => ({ ok: false, error: e })),
+          fetch('/api/tokenplan/balance').catch(e => ({ ok: false, error: e }))
         ]);
 
+        // 检查是否有请求失败
         if (!usageRes.ok || !historyRes.ok || !modelsRes.ok || !balanceRes.ok) {
-          throw new Error('API请求失败');
+          throw new Error('API请求失败，请检查服务器配置');
         }
 
         const usageData = await usageRes.json();
@@ -507,30 +534,49 @@
         const modelsData = await modelsRes.json();
         const balanceData = await balanceRes.json();
 
-        if (!usageData.success || !balanceData.success) {
-          throw new Error(usageData.message || balanceData.message || '获取数据失败');
+        if (!usageData.success) {
+          throw new Error(usageData.message || '获取用量数据失败');
         }
 
-        updateStatus(true, '已连接');
+        // 检查是否为演示模式
+        isDemoMode = usageData.demo === true;
+        
+        if (isDemoMode) {
+          updateStatus(true, '演示模式', true);
+          showMessage('当前为演示数据，请检查API密钥配置', 'warning');
+        } else {
+          updateStatus(true, '已连接');
+        }
+
         updateDashboard(usageData.data, historyData.data, modelsData.data, balanceData.data);
         
       } catch (error) {
         console.error('获取数据失败:', error);
         updateStatus(false, '连接失败');
-        showError('无法获取数据: ' + error.message);
+        showMessage('无法获取数据: ' + error.message, 'error');
+        
+        // 即使失败也更新显示
+        document.getElementById('tokensChangeValue').textContent = '获取失败';
+        document.getElementById('todayChangeValue').textContent = '获取失败';
+        document.getElementById('requestsChangeValue').textContent = '获取失败';
       }
     }
 
     // 更新仪表板
     function updateDashboard(usage, history, models, balance) {
       // 更新统计数据
-      document.getElementById('totalTokens').textContent = formatNumber(usage.totalTokens || 0);
-      document.getElementById('todayTokens').textContent = formatNumber(usage.todayTokens || 0);
-      document.getElementById('totalRequests').textContent = formatNumber(usage.totalRequests || 0);
+      document.getElementById('totalTokens').textContent = formatNumber(usage?.totalTokens || 0);
+      document.getElementById('todayTokens').textContent = formatNumber(usage?.todayTokens || 0);
+      document.getElementById('totalRequests').textContent = formatNumber(usage?.totalRequests || 0);
+      
+      // 更新变化值
+      document.getElementById('tokensChangeValue').textContent = isDemoMode ? '演示数据' : '正常';
+      document.getElementById('todayChangeValue').textContent = isDemoMode ? '演示数据' : '正常';
+      document.getElementById('requestsChangeValue').textContent = isDemoMode ? '演示数据' : '正常';
       
       // 更新余额
-      const balanceValue = balance.balance || balance.remaining || 0;
-      const totalBalance = balance.total || balance.limit || 100;
+      const balanceValue = balance?.balance || balance?.remaining || 0;
+      const totalBalance = balance?.total || balance?.limit || 100;
       document.getElementById('balance').textContent = '$' + balanceValue.toFixed(2);
       
       const usedPercent = Math.min((balanceValue / totalBalance) * 100, 100);
@@ -538,7 +584,7 @@
       document.getElementById('balanceInfo').textContent = `剩余 ${usedPercent.toFixed(1)}%`;
 
       // 更新趋势图
-      if (history && history.days) {
+      if (history && history.days && history.days.length > 0) {
         const labels = history.days.map(d => d.date);
         const data = history.days.map(d => d.tokens);
         
@@ -548,7 +594,7 @@
       }
 
       // 更新模型分布图
-      if (models && models.models) {
+      if (models && models.models && models.models.length > 0) {
         const modelNames = models.models.map(m => m.name);
         const modelUsage = models.models.map(m => m.usage);
         
@@ -592,10 +638,8 @@
 
     // 启动实时更新
     function startRealTimeUpdates() {
-      // 每60秒自动刷新
       updateInterval = setInterval(fetchData, 60000);
       
-      // 页面可见性变化时调整更新频率
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
           clearInterval(updateInterval);
