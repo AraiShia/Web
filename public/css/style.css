@@ -784,12 +784,19 @@ body {
     transition: all 0.3s ease;
     text-decoration: none;
     margin-top: 15px;
+    position: relative;
+    overflow: hidden;
 }
 
 .product-button:hover {
     background: var(--accent-color-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
+}
+
+.product-button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
 }
 
 /* Features Section */

@@ -135,6 +135,7 @@ function loadFeaturedProducts() {
 }
 
 function createProductCard(product) {
+    const url = '/products.html?product=' + product.slug;
     return `
         <div class="product-card">
             <div class="product-image-wrapper">
@@ -144,7 +145,7 @@ function createProductCard(product) {
                 <span class="product-category">${product.category}</span>
                 <h3 class="product-title">${product.name}</h3>
                 <p class="product-description">${product.description}</p>
-                <button class="product-button" onclick="event.stopPropagation(); window.location.href='/products.html?product=${product.slug}'">VIEW DETAILS</button>
+                <a href="${url}" class="product-button">VIEW DETAILS</a>
             </div>
         </div>
     `;
