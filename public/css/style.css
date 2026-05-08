@@ -772,7 +772,7 @@ body {
 .product-button {
     display: inline-block;
     background: transparent;
-    border: 1px solid rgba(0, 255, 136, 0.3);
+    border: none;
     color: var(--accent-color);
     padding: 12px 32px;
     border-radius: 8px;
@@ -788,7 +788,6 @@ body {
 
 .product-button:hover {
     background: var(--accent-color);
-    border-color: var(--accent-color);
     color: #000;
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
