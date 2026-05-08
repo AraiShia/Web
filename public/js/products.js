@@ -44,19 +44,14 @@ function findProduct(slug) {
 }
 
 function createProductCard(product) {
-    var badgeHtml = product.badge ? '<span class="product-badge">' + product.badge + '</span>' : '';
-    var originalPriceHtml = product.originalPrice ? '<span>$' + product.originalPrice + '</span>' : '';
-    
     return '<div class="product-card" onclick="showProductDetail(\'' + product.slug + '\')">' +
         '<div class="product-image-wrapper">' +
         '<span class="product-placeholder">' + product.emoji + '</span>' +
-        badgeHtml +
         '</div>' +
         '<div class="product-info">' +
         '<span class="product-category">' + product.category + '</span>' +
         '<h3 class="product-title">' + product.name + '</h3>' +
         '<p class="product-description">' + product.desc + '</p>' +
-        '<div class="product-price">$' + product.price + originalPriceHtml + '</div>' +
         '<button class="product-button">VIEW DETAILS</button>' +
         '</div>' +
         '</div>';
@@ -87,10 +82,8 @@ function renderProducts(category) {
 
 function renderProductDetail(product) {
     var detailView = document.getElementById('product-detail-view');
-    var badgeHtml = product.badge ? '<span class="product-badge">' + product.badge + '</span>' : '';
-    var originalPriceHtml = product.originalPrice ? '<span class="original-price">$' + product.originalPrice + '</span>' : '';
     var featuresHtml = product.features.map(function(f) { return '<li>✓ ' + f + '</li>'; }).join('');
-    
+
     var relatedProducts = [];
     for (var key in productsData) {
         relatedProducts = relatedProducts.concat(productsData[key]);
@@ -101,24 +94,18 @@ function renderProductDetail(product) {
             '<div class="related-card-image">' + rp.emoji + '</div>' +
             '<div class="related-card-details">' +
             '<h4 class="related-card-title">' + rp.name + '</h4>' +
-            '<div class="related-card-price">$' + rp.price + '</div>' +
             '</div>' +
             '</div>';
     }).join('');
-    
+
     detailView.innerHTML = '<div class="container">' +
         '<div class="product-detail-grid">' +
         '<div class="main-product-image">' +
         '<span>' + product.emoji + '</span>' +
-        badgeHtml +
         '</div>' +
         '<div class="product-info-detail">' +
         '<span class="product-category">' + product.category + '</span>' +
         '<h1>' + product.name + '</h1>' +
-        '<div class="product-price-detail">' +
-        '<span class="current-price">$' + product.price + '</span>' +
-        originalPriceHtml +
-        '</div>' +
         '<div class="product-description">' +
         '<h3>DESCRIPTION</h3>' +
         '<p>' + product.desc + '</p>' +

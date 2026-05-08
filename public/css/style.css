@@ -726,18 +726,9 @@ body {
     transform: scale(1.1);
 }
 
+/* badge已隐藏 */
 .product-badge {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: var(--accent-color);
-    color: var(--primary-color);
-    padding: 6px 18px;
-    border-radius: 25px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    display: none;
 }
 
 .product-info {
@@ -772,27 +763,19 @@ body {
     line-height: 1.7;
 }
 
-.product-price {
-    font-size: 32px;
-    font-weight: 900;
-    color: var(--accent-color);
-}
-
-.product-price span {
-    font-size: 18px;
-    font-weight: 400;
-    color: var(--text-muted);
-    text-decoration: line-through;
-    margin-left: 12px;
+/* 价格和标识已隐藏 */
+.product-price,
+.product-badge {
+    display: none;
 }
 
 .product-button {
     display: inline-block;
-    background: transparent;
-    border: 1px solid var(--accent-color);
-    color: var(--accent-color);
-    padding: 14px 28px;
-    border-radius: 50px;
+    background: linear-gradient(135deg, var(--accent-color) 0%, #00cc6a 100%);
+    border: none;
+    color: var(--primary-color);
+    padding: 12px 32px;
+    border-radius: 8px;
     font-weight: 700;
     font-size: 13px;
     text-transform: uppercase;
@@ -804,8 +787,8 @@ body {
 }
 
 .product-button:hover {
-    background: var(--accent-color);
-    color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
 }
 
 /* Features Section */

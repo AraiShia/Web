@@ -139,15 +139,11 @@ function createProductCard(product) {
         <div class="product-card" onclick="showProductDetail('${product.slug}')">
             <div class="product-image-wrapper">
                 <span class="product-placeholder">🪑</span>
-                ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
             </div>
             <div class="product-info">
                 <span class="product-category">${product.category}</span>
                 <h3 class="product-title">${product.name}</h3>
                 <p class="product-description">${product.description}</p>
-                <div class="product-price">
-                    $${product.price}${product.originalPrice ? ` <span>$${product.originalPrice}</span>` : ''}
-                </div>
                 <button class="product-button">VIEW DETAILS</button>
             </div>
         </div>
@@ -185,15 +181,10 @@ function showProductDetail(slug) {
         detailContainer.innerHTML = `
             <div class="main-product-image">
                 <span>🪑</span>
-                ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
             </div>
             <div class="product-info-detail">
                 <span class="product-category">${product.category}</span>
                 <h1>${product.name}</h1>
-                <div class="product-price-detail">
-                    <span class="current-price">$${product.price}</span>
-                    ${product.originalPrice ? `<span class="original-price">$${product.originalPrice}</span>` : ''}
-                </div>
                 <div class="product-description-detail">
                     <h3>DESCRIPTION</h3>
                     <p>${product.description}</p>
