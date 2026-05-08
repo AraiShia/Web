@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Soinp Gaming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d0d0d;
+            --secondary-color: #1a1a2e;
+            --accent-color: #00ff88;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 60px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--text-primary);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            top: 50%;
+            right: -25px;
+            transform: translateY(-50%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px var(--accent-color); }
+            50% { box-shadow: 0 0 25px var(--accent-color); }
+        }
+
+        .tagline {
+            color: var(--text-muted);
+            margin-bottom: 45px;
+            font-size: 14px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-group {
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            font-size: 15px;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .remember-me input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-color);
+        }
+
+        .remember-me span {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .login-btn {
+            padding: 18px;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #00cc6a 100%);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 15px;
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(0, 255, 136, 0.5);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .forgot-password {
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .forgot-password a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .forgot-password a:hover {
+            color: #00cc6a;
+        }
+
+        .error-message {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            color: #ff6b6b;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            color: var(--accent-color);
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1 class="logo">SOINP</h1>
+        <p class="tagline">Admin Panel Login</p>
+        
+        <div class="error-message" id="error-message"></div>
+        <div class="success-message" id="success-message"></div>
+        
+        <form class="login-form" id="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="admin@soinpgaming.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            <div class="remember-me">
+                <input type="checkbox" id="remember">
+                <span>Remember me</span>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        
+        <p class="forgot-password">
+            Forgot your password? <a href="#">Click here</a>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.querySelector('.login-btn');
+            
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+            
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+            
+            fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    localStorage.setItem('token', data.token);
+                    document.getElementById('success-message').textContent = 'Login successful! Redirecting...';
+                    document.getElementById('success-message').style.display = 'block';
+                    
+                    setTimeout(() => {
+                        window.location.href = '/admin.html';
+                    }, 1500);
+                } else {
+                    document.getElementById('error-message').textContent = data.message || 'Login failed';
+                    document.getElementById('error-message').style.display = 'block';
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Login';
+                }
+            })
+            .catch(error => {
+                document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
+                document.getElementById('error-message').style.display = 'block';
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            });
+        });
+    </script>
+</body>
+</html>
