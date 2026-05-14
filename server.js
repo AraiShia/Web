@@ -25,6 +25,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 路由
+const fs = require('fs');
 const productRoutes = require('./routes/products');
 const contactRoutes = require('./routes/contact');
 const newsletterRoutes = require('./routes/newsletter');
@@ -34,6 +35,54 @@ app.use('/api/products', productRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/upload', uploadRoutes);
+
+// Sitemap.xml - 自动生成
+app.get('/sitemap.xml', (req, res) => {
+  const products = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/products.json'), 'utf-8'));
+  const baseUrl = process.env.SITE_URL || 'https://soinp.com';
+
+  const productUrls = products
+    .filter(p => p.isActive !== false)
+    .map(p => `
+  <url>
+    <loc>${baseUrl}/products.html?product=${p.slug}</loc>
+    <lastmod>${p.updatedAt || new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('');
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${baseUrl}/</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/products.html</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>${productUrls}
+</urlset>`;
+
+  res.header('Content-Type', 'application/xml');
+  res.send(sitemap);
+});
+
+// robots.txt
+app.get('/robots.txt', (req, res) => {
+  const baseUrl = process.env.SITE_URL || 'https://soinp.com';
+  res.type('text/plain').send(`User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /api/
+
+Sitemap: ${baseUrl}/sitemap.xml
+`);
+});
 
 // 页面路由
 app.get('/', (req, res) => {
