@@ -7,10 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #0d0d0b;
+            --primary-color: #0d0d0d;
             --secondary-color: #1a1a2e;
             --accent-color: #00ff88;
-            --feishu-color: #3370ff;
             --text-primary: #ffffff;
             --text-secondary: #a0a0a0;
             --text-muted: #666666;
@@ -75,75 +74,105 @@
             font-size: 14px;
         }
 
-        .login-methods {
+        .login-form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
+        }
+
+        .form-group {
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            font-size: 15px;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .remember-me input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-color);
+        }
+
+        .remember-me span {
+            font-size: 14px;
+            color: var(--text-secondary);
         }
 
         .login-btn {
             padding: 18px;
-            background: linear-gradient(135deg, var(--feishu-color) 0%, #1a5cd9 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #00cc6a 100%);
+            color: var(--primary-color);
             border: none;
             border-radius: 15px;
-            font-weight: 700;
+            font-weight: 800;
             font-size: 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 25px rgba(51, 112, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            box-shadow: 0 4px 25px rgba(0, 255, 136, 0.3);
         }
 
         .login-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 35px rgba(51, 112, 255, 0.5);
+            box-shadow: 0 8px 35px rgba(0, 255, 136, 0.5);
         }
 
-        .login-btn:active {
-            transform: translateY(0);
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .login-btn svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .skip-btn {
-            padding: 14px 24px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--accent-color);
-            font-weight: 600;
+        .forgot-password {
+            margin-top: 20px;
             font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .skip-btn:hover {
-            background: rgba(0, 255, 136, 0.15);
-            border-color: var(--accent-color);
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 15px;
             color: var(--text-muted);
-            font-size: 13px;
-            margin: 10px 0;
         }
 
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border-color);
+        .forgot-password a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .forgot-password a:hover {
+            color: #00cc6a;
         }
 
         .error-message {
@@ -154,7 +183,6 @@
             color: #ff6b6b;
             font-size: 14px;
             display: none;
-            margin-bottom: 20px;
         }
 
         .success-message {
@@ -165,26 +193,6 @@
             color: var(--accent-color);
             font-size: 14px;
             display: none;
-            margin-bottom: 20px;
-        }
-
-        .user-info {
-            display: none;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .user-info h3 {
-            color: var(--accent-color);
-            margin-bottom: 10px;
-        }
-
-        .user-info p {
-            color: var(--text-secondary);
-            font-size: 14px;
         }
     </style>
 </head>
@@ -195,78 +203,89 @@
         
         <div class="error-message" id="error-message"></div>
         <div class="success-message" id="success-message"></div>
-        <div class="user-info" id="user-info">
-            <h3>Welcome!</h3>
-            <p id="user-name"></p>
-        </div>
         
-        <div class="login-methods" id="login-methods">
-            <button class="login-btn" onclick="loginWithFeishu()">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-                Login with Feishu (飞书)
-            </button>
-            
-            <div class="divider">or</div>
-            
-            <button class="skip-btn" onclick="skipLogin()">
-                Skip (Local Dev Only)
-            </button>
-        </div>
+        <form class="login-form" id="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="admin@soinpgaming.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            <div class="remember-me">
+                <input type="checkbox" id="remember">
+                <span>Remember me</span>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        
+        <p class="forgot-password">
+            Forgot your password? <a href="#">Click here</a>
+        </p>
     </div>
 
     <script>
-        // 检查 URL 参数
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-        const userName = urlParams.get('name');
-        const error = urlParams.get('error');
-        const errorMsg = urlParams.get('msg');
-
-        // 处理飞书回调
-        if (token) {
-            // 保存 token
-            localStorage.setItem('token', token);
-            
-            // 显示成功信息
-            document.getElementById('login-methods').style.display = 'none';
-            document.getElementById('success-message').textContent = 'Login successful! Redirecting...';
-            document.getElementById('success-message').style.display = 'block';
-            
-            // 显示用户信息
-            if (userName) {
-                document.getElementById('user-name').textContent = `Logged in as: ${decodeURIComponent(userName)}`;
-                document.getElementById('user-info').style.display = 'block';
-            }
-            
-            // 跳转到管理后台
-            setTimeout(() => {
+        // 本地开发模式：直接设置模拟 token 跳过登录
+        const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        
+        if (isLocalDev) {
+            // 添加跳过登录按钮
+            const container = document.querySelector('.login-container');
+            const skipBtn = document.createElement('button');
+            skipBtn.textContent = 'Skip Login (Local Dev)';
+            skipBtn.style.cssText = 'margin-top:20px;padding:12px 24px;background:rgba(0,255,136,0.1);border:1px solid var(--border-color);border-radius:10px;color:var(--accent-color);cursor:pointer;font-weight:600;';
+            skipBtn.onclick = function() {
+                localStorage.setItem('token', 'dev-token-local');
                 window.location.href = '/admin.html';
-            }, 1500);
-        } else if (error) {
-            // 显示错误
-            document.getElementById('error-message').textContent = errorMsg || 'Authentication failed';
-            document.getElementById('error-message').style.display = 'block';
+            };
+            container.appendChild(skipBtn);
         }
 
-        // 飞书登录
-        function loginWithFeishu() {
-            window.location.href = '/api/auth/feishu';
-        }
-
-        // 跳过登录（仅本地开发）
-        function skipLogin() {
-            const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            if (!isLocalDev) {
-                alert('Skip login is only available in local development!');
-                return;
-            }
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.querySelector('.login-btn');
             
-            localStorage.setItem('token', 'dev-token-local');
-            window.location.href = '/admin.html';
-        }
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+            
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+            
+            fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    localStorage.setItem('token', data.token);
+                    document.getElementById('success-message').textContent = 'Login successful! Redirecting...';
+                    document.getElementById('success-message').style.display = 'block';
+                    
+                    setTimeout(() => {
+                        window.location.href = '/admin.html';
+                    }, 1500);
+                } else {
+                    document.getElementById('error-message').textContent = data.message || 'Login failed';
+                    document.getElementById('error-message').style.display = 'block';
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Login';
+                }
+            })
+            .catch(error => {
+                document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
+                document.getElementById('error-message').style.display = 'block';
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            });
+        });
     </script>
 </body>
 </html>

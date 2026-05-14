@@ -2,18 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const session = require('express-session');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Session 配置 (用于 OAuth state)
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'feishu-session-secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }
-}));
 
 // CORS 配置
 const corsOptions = {
@@ -38,13 +29,11 @@ const productRoutes = require('./routes/products');
 const contactRoutes = require('./routes/contact');
 const newsletterRoutes = require('./routes/newsletter');
 const uploadRoutes = require('./routes/upload');
-const feishuAuthRoutes = require('./routes/feishu-auth');
 
 app.use('/api/products', productRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/upload', uploadRoutes);
-app.use('/api/auth', feishuAuthRoutes);
 
 // 页面路由
 app.get('/', (req, res) => {
