@@ -1,21 +1,19 @@
 const express = require('express');
-const Joi = require('joi');
-const validate = require('../middleware/validate');
 
 const router = express.Router();
 
-// 验证规则
-const newsletterSchema = Joi.object({
-  email: Joi.string().email().required(),
-});
-
-router.post('/', validate(newsletterSchema), (req, res, next) => {
+router.post('/', (req, res) => {
   try {
     const { email } = req.body;
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ message: 'Invalid email address' });
+    }
+
     console.log('Newsletter subscription:', email);
-    res.json({ message: '订阅成功！' });
+    res.json({ message: 'Subscribed successfully!' });
   } catch (error) {
-    next(error);
+    res.status(500).json({ message: 'Failed to process subscription' });
   }
 });
 

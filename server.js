@@ -1,14 +1,21 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const errorHandler = require('./middleware/errorHandler');
+const session = require('express-session');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS 配置 - 限制允许的来源
+// Session 配置 (用于 OAuth state)
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'feishu-session-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }
+}));
+
+// CORS 配置
 const corsOptions = {
   origin: process.env.CORS_ORIGIN
     ? process.env.CORS_ORIGIN.split(',').map(s => s.trim())
@@ -19,32 +26,31 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true, limit: '1mb' }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// 数据库连接
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
-// 路由
-const authRoutes = require('./routes/auth');
-const productRoutes = require('./routes/products');
-const contentRoutes = require('./routes/content');
-const contactRoutes = require('./routes/contact');
-const newsletterRoutes = require('./routes/newsletter');
-
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/content', contentRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/newsletter', newsletterRoutes);
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
 // 静态文件
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 路由
+const productRoutes = require('./routes/products');
+const contactRoutes = require('./routes/contact');
+const newsletterRoutes = require('./routes/newsletter');
+const uploadRoutes = require('./routes/upload');
+const feishuAuthRoutes = require('./routes/feishu-auth');
+
+app.use('/api/products', productRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/auth', feishuAuthRoutes);
+
 // 页面路由
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
@@ -53,17 +59,10 @@ app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-app.get('/products.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'products.html'));
-});
-
 // 404 处理
 app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'public', 'index.html'));
 });
-
-// 全局错误处理中间件（必须放在所有路由之后）
-app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

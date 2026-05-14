@@ -1,24 +1,29 @@
 const express = require('express');
-const Joi = require('joi');
-const validate = require('../middleware/validate');
 
 const router = express.Router();
 
-// 验证规则
-const contactSchema = Joi.object({
-  name: Joi.string().required().min(2).max(100),
-  email: Joi.string().email().required(),
-  subject: Joi.string().required().min(2).max(200),
-  message: Joi.string().required().min(10).max(5000),
-});
-
-router.post('/', validate(contactSchema), (req, res, next) => {
+router.post('/', (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
-    console.log('Contact form submitted:', { name, email, subject, message });
-    res.json({ message: '消息已收到，我们会尽快与您联系！' });
+
+    // 简单验证
+    if (!name || name.length < 2 || name.length > 100) {
+      return res.status(400).json({ message: 'Invalid name (2-100 characters)' });
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ message: 'Invalid email address' });
+    }
+    if (!subject || subject.length < 2) {
+      return res.status(400).json({ message: 'Subject is required' });
+    }
+    if (!message || message.length < 10) {
+      return res.status(400).json({ message: 'Message must be at least 10 characters' });
+    }
+
+    console.log('Contact form submitted:', { name, email, subject });
+    res.json({ message: 'Message received! We will contact you soon.' });
   } catch (error) {
-    next(error);
+    res.status(500).json({ message: 'Failed to process contact form' });
   }
 });
 

@@ -12,46 +12,40 @@ function getCurrentCategory() {
     return category || 'all';
 }
 
-var productsData = {
-    'gaming-chairs': [
-        { id: 1, slug: 'pro-gaming-chair-x1', name: 'Pro Gaming Chair X1', category: 'Pro Series', price: 299, originalPrice: 499, badge: 'Hot', emoji: '🪑', desc: 'Ergonomic design with premium materials for ultimate comfort during long gaming sessions.', features: ['4D armrests', 'Adjustable lumbar support', 'Memory foam cushion', 'Breathable mesh', 'Steel frame', '5-year warranty'] },
-        { id: 2, slug: 'pro-gaming-chair-x3', name: 'Pro Gaming Chair X3', category: 'Pro Series', price: 399, originalPrice: 599, badge: 'New', emoji: '🪑', desc: 'Upgraded with RGB lighting and advanced ergonomic features.', features: ['RGB lighting', 'Breathable mesh', '4D armrests', 'Memory foam', 'Reclining backrest', 'Adjustable headrest'] },
-        { id: 3, slug: 'casual-gaming-chair', name: 'Casual Gaming Chair', category: 'Casual', price: 199, originalPrice: 299, badge: '', emoji: '🪑', desc: 'Comfortable casual design perfect for everyday use.', features: ['2D armrests', 'Fixed lumbar', 'High-density foam', 'Durable PU leather', 'Easy assembly'] },
-        { id: 4, slug: 'ergo-pro-chair', name: 'Ergo Pro Chair', category: 'Pro Series', price: 449, originalPrice: 699, badge: 'Hot', emoji: '🪑', desc: 'Professional-grade ergonomic chair with advanced support features.', features: ['Dynamic lumbar support', '4D armrests', 'Breathable fabric', 'Multi-tilt mechanism', 'Weight capacity 300lbs'] },
-        { id: 5, slug: 'rgb-elite-chair', name: 'RGB Elite Chair', category: 'Pro Series', price: 349, originalPrice: 499, badge: 'Sale', emoji: '🪑', desc: 'Immersive RGB lighting meets premium comfort.', features: ['16.8M RGB colors', 'Sync with games', '4D armrests', 'Memory foam', 'USB powered'] },
-        { id: 6, slug: 'budget-gamer-chair', name: 'Budget Gamer Chair', category: 'Budget', price: 149, originalPrice: 199, badge: '', emoji: '🪑', desc: 'Affordable gaming chair without compromising on quality.', features: ['2D armrests', 'Basic lumbar', 'PU leather', 'Easy assembly', '1-year warranty'] }
-    ],
-    'gaming-desks': [
-        { id: 7, slug: 'pro-gaming-desk', name: 'Pro Gaming Desk', category: 'Pro Series', price: 499, originalPrice: 699, badge: 'Hot', emoji: '🖥️', desc: 'Large gaming desk with cable management and RGB lighting.', features: ['RGB lighting', 'Cable management', 'Carbon fiber surface', 'Steel frame', 'Weight capacity 200lbs'] },
-        { id: 8, slug: 'compact-gaming-desk', name: 'Compact Gaming Desk', category: 'Casual', price: 299, originalPrice: 399, badge: '', emoji: '🖥️', desc: 'Space-efficient gaming desk for smaller setups.', features: ['Compact design', 'Cable management', 'Sturdy frame', 'Easy assembly', 'Water-resistant surface'] }
-    ],
-    'mouse-pads': [
-        { id: 9, slug: 'xl-gaming-mousepad', name: 'XL Gaming Mousepad', category: 'Accessories', price: 49, originalPrice: 79, badge: 'Hot', emoji: '🖱️', desc: 'Extra-large mousepad for complete keyboard and mouse coverage.', features: ['900x400mm size', 'Anti-slip base', 'Smooth surface', 'Water-resistant', 'Stitched edges'] },
-        { id: 10, slug: 'rgb-mousepad', name: 'RGB Gaming Mousepad', category: 'Accessories', price: 69, originalPrice: 99, badge: 'New', emoji: '🖱️', desc: 'RGB illuminated mousepad with 14 lighting modes.', features: ['14 RGB modes', 'USB powered', 'Smooth surface', 'Anti-slip rubber base', 'Touch controls'] }
-    ],
-    'accessories': [
-        { id: 11, slug: 'headset-stand', name: 'Gaming Headset Stand', category: 'Accessories', price: 39, originalPrice: 59, badge: '', emoji: '🎧', desc: 'Sturdy headset stand with USB hub and RGB lighting.', features: ['USB 3.0 hub', 'RGB lighting', 'Sturdy aluminum', 'Non-slip base', 'Universal fit'] },
-        { id: 12, slug: 'wrist-rest', name: 'Ergonomic Wrist Rest', category: 'Accessories', price: 29, originalPrice: 39, badge: '', emoji: '⌨️', desc: 'Memory foam wrist rest for keyboard and mouse.', features: ['Memory foam', 'Breathable fabric', 'Non-slip base', 'Ergonomic design', 'Easy to clean'] }
-    ]
-};
-
-function findProduct(slug) {
-    for (var category in productsData) {
-        var product = productsData[category].find(function(p) { return p.slug === slug; });
-        if (product) return product;
+// 从 API 加载产品数据
+function fetchProducts(category) {
+    var url = '/api/products';
+    if (category && category !== 'all') {
+        url += '?category=' + category;
     }
-    return null;
+
+    return fetch(url)
+    .then(function(response) { return response.json(); })
+    .then(function(data) { return data.products || []; })
+    .catch(function(error) {
+        console.error('Error loading products:', error);
+        return [];
+    });
 }
 
 function createProductCard(product) {
-    return '<div class="product-card">' +
+    var imageHtml = product.images && product.images.length > 0
+        ? '<img src="' + product.images[0] + '" alt="' + product.name + '">'
+        : '<span class="product-placeholder">🪑</span>';
+
+    var badgeHtml = product.badge
+        ? '<span class="product-badge">' + product.badge + '</span>'
+        : '';
+
+    return '<div class="product-card" onclick="goToProduct(\'' + product.slug + '\')">' +
         '<div class="product-image-wrapper">' +
-        '<span class="product-placeholder">' + product.emoji + '</span>' +
+        imageHtml +
+        badgeHtml +
         '</div>' +
         '<div class="product-info">' +
         '<span class="product-category">' + product.category + '</span>' +
         '<h3 class="product-title">' + product.name + '</h3>' +
-        '<p class="product-description">' + product.desc + '</p>' +
+        '<p class="product-description">' + product.description + '</p>' +
         '<button class="product-button" onclick="event.stopPropagation(); showProductDetail(\'' + product.slug + '\')">VIEW DETAILS</button>' +
         '</div>' +
         '</div>';
@@ -63,96 +57,191 @@ function goToProduct(slug) {
 
 function renderProducts(category) {
     var grid = document.getElementById('products-grid');
-    var products = [];
-    
-    if (category === 'all') {
-        for (var key in productsData) {
-            products = products.concat(productsData[key]);
+    grid.innerHTML = '<div style="text-align:center; padding:60px 0; color:#666;">Loading products...</div>';
+
+    fetchProducts(category).then(function(products) {
+        if (products.length > 0) {
+            grid.innerHTML = products.map(createProductCard).join('');
+        } else {
+            grid.innerHTML = '<div style="text-align:center; padding:60px 0; color:#666;">No products found</div>';
         }
-    } else if (productsData[category]) {
-        products = productsData[category];
-    }
-    
-    if (products.length > 0) {
-        grid.innerHTML = products.map(createProductCard).join('');
-    } else {
-        grid.innerHTML = '<div style="text-align:center; padding:60px 0; color:#666;">No products found</div>';
-    }
+    });
 }
 
 function renderProductDetail(product) {
     var detailView = document.getElementById('product-detail-view');
-    var featuresHtml = product.features.map(function(f) { return '<li>✓ ' + f + '</li>'; }).join('');
 
-    var relatedProducts = [];
-    for (var key in productsData) {
-        relatedProducts = relatedProducts.concat(productsData[key]);
+    var features = product.features || [];
+    var featuresHtml = features.map(function(f) { return '<li>✓ ' + f + '</li>'; }).join('');
+
+    var images = product.images || [];
+
+    // 构建图片轮播 HTML
+    var carouselHtml = '';
+    if (images.length > 0) {
+        var imgsHtml = images.map(function(src, i) {
+            return '<img src="' + src + '" alt="' + product.name + ' ' + (i + 1) + '"' + (i === 0 ? ' class="active"' : '') + ' onerror="this.style.display=\'none\'">';
+        }).join('');
+
+        var dotsHtml = images.length > 1 ? images.map(function(_, i) {
+            return '<button class="carousel-dot' + (i === 0 ? ' active' : '') + '" onclick="goToSlide(' + i + ')"></button>';
+        }).join('') : '';
+
+        var navHtml = images.length > 1 ?
+            '<button class="carousel-nav prev" onclick="prevSlide()">&#10094;</button>' +
+            '<button class="carousel-nav next" onclick="nextSlide()">&#10095;</button>' : '';
+
+        var thumbsHtml = images.length > 1 ?
+            '<div class="thumbnail-strip">' + images.map(function(src, i) {
+                return '<div class="thumbnail-item' + (i === 0 ? ' active' : '') + '" onclick="goToSlide(' + i + ')">' +
+                    '<img src="' + src + '" alt="Thumb ' + (i + 1) + '">' +
+                    '</div>';
+            }).join('') + '</div>' : '';
+
+        carouselHtml = '<div class="image-carousel" id="image-carousel">' +
+            imgsHtml + navHtml + dotsHtml +
+            '</div>';
+        thumbsHtml = images.length > 1 ?
+            '<div class="thumbnail-strip">' + images.map(function(src, i) {
+                return '<div class="thumbnail-item' + (i === 0 ? ' active' : '') + '" onclick="goToSlide(' + i + ')">' +
+                    '<img src="' + src + '" alt="Thumb ' + (i + 1) + '">' +
+                    '</div>';
+            }).join('') + '</div>' : '';
+    } else {
+        carouselHtml = '<span style="font-size:80px;">🪑</span>';
     }
-    relatedProducts = relatedProducts.filter(function(p) { return p.slug !== product.slug; }).slice(0, 4);
-    var relatedHtml = relatedProducts.map(function(rp) {
-        return '<div class="related-card" onclick="showProductDetail(\'' + rp.slug + '\')">' +
-            '<div class="related-card-image">' + rp.emoji + '</div>' +
-            '<div class="related-card-details">' +
-            '<h4 class="related-card-title">' + rp.name + '</h4>' +
+
+    // 加载相关产品
+    fetchProducts('all').then(function(allProducts) {
+        var relatedProducts = allProducts
+            .filter(function(p) { return p.slug !== product.slug; })
+            .slice(0, 4);
+
+        var relatedHtml = relatedProducts.map(function(rp) {
+            var rpImage = rp.images && rp.images.length > 0
+                ? '<img src="' + rp.images[0] + '" alt="' + rp.name + '" onerror="this.style.display=\'none\'">'
+                : '<span>🪑</span>';
+            return '<div class="related-card" onclick="showProductDetail(\'' + rp.slug + '\')">' +
+                '<div class="related-card-image">' + rpImage + '</div>' +
+                '<div class="related-card-details">' +
+                '<h4 class="related-card-title">' + rp.name + '</h4>' +
+                '</div>' +
+                '</div>';
+        }).join('');
+
+        detailView.innerHTML = '<div class="container">' +
+            '<div class="product-detail-grid">' +
+            '<div class="product-gallery">' +
+            '<div class="main-product-image">' +
+            carouselHtml +
+            '</div>' +
+            thumbsHtml +
+            '</div>' +
+            '<div class="product-info-detail">' +
+            '<span class="product-category">' + product.category + '</span>' +
+            '<h1>' + product.name + '</h1>' +
+            '<div class="product-description">' +
+            '<h3>DESCRIPTION</h3>' +
+            '<p>' + product.description + '</p>' +
+            '</div>' +
+            '<div class="product-features-detail">' +
+            '<h3>FEATURES</h3>' +
+            '<ul>' + featuresHtml + '</ul>' +
+            '</div>' +
+            '<div class="option-group">' +
+            '<label>COLOR</label>' +
+            '<div class="option-buttons">' +
+            '<button class="option-btn selected">BLACK</button>' +
+            '<button class="option-btn">WHITE</button>' +
+            '<button class="option-btn">BLUE</button>' +
+            '</div>' +
+            '</div>' +
+            '<div class="action-buttons">' +
+            '<button class="btn-add-cart-detail" onclick="alert(\'Coming soon\')">ADD TO QUOTE</button>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="related-products">' +
+            '<div class="section-header">' +
+            '<span class="section-badge">RELATED</span>' +
+            '<h2 class="section-title">RELATED PRODUCTS</h2>' +
+            '</div>' +
+            '<div class="related-grid">' + relatedHtml + '</div>' +
             '</div>' +
             '</div>';
-    }).join('');
+    });
+}
 
-    detailView.innerHTML = '<div class="container">' +
-        '<div class="product-detail-grid">' +
-        '<div class="main-product-image">' +
-        '<span>' + product.emoji + '</span>' +
-        '</div>' +
-        '<div class="product-info-detail">' +
-        '<span class="product-category">' + product.category + '</span>' +
-        '<h1>' + product.name + '</h1>' +
-        '<div class="product-description">' +
-        '<h3>DESCRIPTION</h3>' +
-        '<p>' + product.desc + '</p>' +
-        '</div>' +
-        '<div class="product-features-detail">' +
-        '<h3>FEATURES</h3>' +
-        '<ul>' + featuresHtml + '</ul>' +
-        '</div>' +
-        '<div class="option-group">' +
-        '<label>COLOR</label>' +
-        '<div class="option-buttons">' +
-        '<button class="option-btn selected">BLACK</button>' +
-        '<button class="option-btn">WHITE</button>' +
-        '<button class="option-btn">BLUE</button>' +
-        '</div>' +
-        '</div>' +
-        '<div class="action-buttons">' +
-        '<button class="btn-add-cart-detail" onclick="alert(\'Coming soon\')">ADD TO QUOTE</button>' +
-        '</div>' +
-        '</div>' +
-        '</div>' +
-        '<div class="related-products">' +
-        '<div class="section-header">' +
-        '<span class="section-badge">RELATED</span>' +
-        '<h2 class="section-title">RELATED PRODUCTS</h2>' +
-        '</div>' +
-        '<div class="related-grid">' + relatedHtml + '</div>' +
-        '</div>' +
-        '</div>';
+// 轮播控制
+var currentSlide = 0;
+var totalSlides = 0;
+
+function updateCarousel() {
+    var carousel = document.getElementById('image-carousel');
+    if (!carousel) return;
+
+    var imgs = carousel.querySelectorAll('img');
+    var dots = carousel.querySelectorAll('.carousel-dot');
+    var thumbs = document.querySelectorAll('.thumbnail-item');
+
+    imgs.forEach(function(img, i) {
+        img.classList.toggle('active', i === currentSlide);
+    });
+    dots.forEach(function(dot, i) {
+        dot.classList.toggle('active', i === currentSlide);
+    });
+    thumbs.forEach(function(thumb, i) {
+        thumb.classList.toggle('active', i === currentSlide);
+    });
+}
+
+function goToSlide(index) {
+    currentSlide = index;
+    updateCarousel();
+}
+
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateCarousel();
+}
+
+function prevSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateCarousel();
 }
 
 function showProductDetail(slug) {
-    var product = findProduct(slug);
-    if (!product) return false;
-    
-    document.getElementById('products-grid').style.display = 'none';
-    document.getElementById('filters-bar').style.display = 'none';
-    document.getElementById('category-tabs').parentElement.style.display = 'none';
-    document.getElementById('page-hero').style.display = 'none';
-    document.getElementById('product-detail-view').classList.add('active');
-    renderProductDetail(product);
-    
-    var category = getCurrentCategory();
-    var newUrl = '/products.html?category=' + category + '&product=' + slug;
-    history.pushState({ category: category, product: slug }, '', newUrl);
-    
-    window.scrollTo(0, 0);
+    // 从 API 获取单个产品
+    fetch('/api/products/' + slug)
+    .then(function(response) {
+        if (!response.ok) throw new Error('Product not found');
+        return response.json();
+    })
+    .then(function(product) {
+        if (!product || product.message) throw new Error('Not found');
+
+        // 初始化轮播
+        currentSlide = 0;
+        totalSlides = (product.images || []).length;
+
+        document.getElementById('products-grid').style.display = 'none';
+        document.getElementById('filters-bar').style.display = 'none';
+        document.getElementById('category-tabs').parentElement.style.display = 'none';
+        document.getElementById('page-hero').style.display = 'none';
+        document.getElementById('product-detail-view').classList.add('active');
+        renderProductDetail(product);
+
+        var category = getCurrentCategory();
+        var newUrl = '/products.html?category=' + category + '&product=' + slug;
+        history.pushState({ category: category, product: slug }, '', newUrl);
+
+        window.scrollTo(0, 0);
+    })
+    .catch(function(error) {
+        console.error('Error loading product:', error);
+        alert('Product not found');
+    });
+
     return true;
 }
 
@@ -168,7 +257,7 @@ function showProductsList() {
 function updatePageInfo(category) {
     var titleEl = document.getElementById('page-title');
     var descEl = document.getElementById('page-description');
-    
+
     var titles = {
         'all': 'ALL PRODUCTS',
         'gaming-chairs': 'GAMING CHAIRS',
@@ -176,7 +265,7 @@ function updatePageInfo(category) {
         'mouse-pads': 'MOUSE PADS',
         'accessories': 'ACCESSORIES'
     };
-    
+
     var descriptions = {
         'all': 'Discover our premium gaming furniture collection',
         'gaming-chairs': 'Professional gaming chairs with ergonomic design',
@@ -184,7 +273,7 @@ function updatePageInfo(category) {
         'mouse-pads': 'Premium mousepads for precision gaming',
         'accessories': 'Enhance your setup with our accessories'
     };
-    
+
     titleEl.textContent = titles[category] || 'ALL PRODUCTS';
     descEl.textContent = descriptions[category] || 'Discover our premium gaming furniture collection';
 }
@@ -201,7 +290,7 @@ function updateCategoryTabs(category) {
 function init() {
     var currentCategory = getCurrentCategory();
     var productSlug = getParam('product');
-    
+
     if (productSlug) {
         showProductDetail(productSlug);
     } else {
@@ -209,7 +298,7 @@ function init() {
         updateCategoryTabs(currentCategory);
         renderProducts(currentCategory);
     }
-    
+
     document.querySelectorAll('.category-tab').forEach(function(tab) {
         tab.addEventListener('click', function() {
             var category = this.dataset.category;
@@ -217,41 +306,37 @@ function init() {
             updateCategoryTabs(category);
             renderProducts(category);
             showProductsList();
-            
+
             var url = new URL(window.location);
             url.searchParams.set('category', category);
             url.searchParams.delete('product');
             window.history.pushState({}, '', url);
         });
     });
-    
+
     document.querySelectorAll('.filter-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
             this.classList.add('active');
         });
     });
-    
+
     document.getElementById('sort-select').addEventListener('change', function() {
-        var sortValue = this.value;
         var grid = document.getElementById('products-grid');
         var cards = Array.from(grid.children);
-        
+
         cards.sort(function(a, b) {
-            var priceA = parseFloat(a.querySelector('.product-price').textContent.replace('$', ''));
-            var priceB = parseFloat(b.querySelector('.product-price').textContent.replace('$', ''));
-            
-            if (sortValue === 'price-low') {
-                return priceA - priceB;
-            } else if (sortValue === 'price-high') {
-                return priceB - priceA;
-            }
+            var priceA = parseFloat(a.querySelector('.product-price') ? a.querySelector('.product-price').textContent.replace('$', '') : '0');
+            var priceB = parseFloat(b.querySelector('.product-price') ? b.querySelector('.product-price').textContent.replace('$', '') : '0');
+
+            if (this.value === 'price-low') return priceA - priceB;
+            if (this.value === 'price-high') return priceB - priceA;
             return 0;
-        });
-        
+        }.bind(this));
+
         cards.forEach(function(card) { grid.appendChild(card); });
     });
-    
+
     window.addEventListener('popstate', function(e) {
         if (e.state && e.state.product) {
             showProductDetail(e.state.product);

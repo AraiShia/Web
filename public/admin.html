@@ -173,7 +173,7 @@
                 <div class="dashboard-content">
                     <div class="recent-orders">
                         <h3>Recent Orders</h3>
-                        <table class="orders-table">
+                        <!-- <table class="orders-table">
                             <thead>
                                 <tr>
                                     <th>Order ID</th>
@@ -206,7 +206,7 @@
                                     <td><span class="status pending">Pending</span></td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table> -->
                     </div>
                     <div class="quick-actions">
                         <h3>Quick Actions</h3>
@@ -430,6 +430,7 @@
                     <select id="product-category" required>
                         <option value="gaming-chairs">Gaming Chairs</option>
                         <option value="gaming-desks">Gaming Desks</option>
+                        <option value="mouse-pads">Mouse Pads</option>
                         <option value="accessories">Accessories</option>
                     </select>
                 </div>
@@ -444,6 +445,22 @@
                 <div class="form-row">
                     <label>Badge (Optional)</label>
                     <input type="text" id="product-badge" placeholder="Hot, New, Sale">
+                </div>
+                <div class="form-row">
+                    <label>Product Images</label>
+                    <div class="image-upload-area" id="image-upload-area">
+                        <input type="file" id="product-image" accept="image/*" style="display:none;" onchange="handleImageUpload(this)">
+                        <div class="upload-placeholder" onclick="document.getElementById('product-image').click()">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <polyline points="21 15 16 10 5 21"/>
+                            </svg>
+                            <p>Click to upload image</p>
+                            <span>PNG, JPG, WEBP up to 5MB</span>
+                        </div>
+                        <div class="uploaded-images" id="uploaded-images"></div>
+                    </div>
                 </div>
                 <div class="form-row">
                     <label>Description</label>

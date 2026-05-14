@@ -1,119 +1,154 @@
 const express = require('express');
-const Joi = require('joi');
-const Product = require('../models/Product');
-const auth = require('../middleware/auth');
-const validate = require('../middleware/validate');
+const fs = require('fs');
+const path = require('path');
 
 const router = express.Router();
 
-// 验证规则
-const productCreateSchema = Joi.object({
-  name: Joi.string().required().min(2).max(100),
-  category: Joi.string().required().valid('gaming-chairs', 'gaming-desks', 'mouse-pads', 'accessories'),
-  price: Joi.number().required().min(0),
-  originalPrice: Joi.number().min(0).optional(),
-  badge: Joi.string().max(20).optional(),
-  description: Joi.string().required().min(10).max(2000),
-  features: Joi.array().items(Joi.string().max(100)).max(20).optional(),
-  images: Joi.array().items(Joi.string().uri()).max(10).optional(),
-  stock: Joi.number().integer().min(0).default(0),
-  isActive: Joi.boolean().default(true),
-});
+const DATA_FILE = path.join(__dirname, '../data/products.json');
 
-const productUpdateSchema = Joi.object({
-  name: Joi.string().min(2).max(100).optional(),
-  category: Joi.string().valid('gaming-chairs', 'gaming-desks', 'mouse-pads', 'accessories').optional(),
-  price: Joi.number().min(0).optional(),
-  originalPrice: Joi.number().min(0).optional(),
-  badge: Joi.string().max(20).optional(),
-  description: Joi.string().min(10).max(2000).optional(),
-  features: Joi.array().items(Joi.string().max(100)).max(20).optional(),
-  images: Joi.array().items(Joi.string().uri()).max(10).optional(),
-  stock: Joi.number().integer().min(0).optional(),
-  isActive: Joi.boolean().optional(),
-});
-
-// 公开路由 - 获取产品列表
-router.get('/', async (req, res, next) => {
+// 读取产品数据
+function readProducts() {
   try {
-    const { category, page = 1, limit = 10 } = req.query;
-    const pageNum = Math.max(1, parseInt(page) || 1);
-    const limitNum = Math.min(50, Math.max(1, parseInt(limit) || 10));
-    let query = { isActive: true };
+    const raw = fs.readFileSync(DATA_FILE, 'utf-8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error('Error reading products file:', err.message);
+    return [];
+  }
+}
 
-    if (category && category !== 'all') {
-      query.category = category;
-    }
+// 写入产品数据
+function writeProducts(products) {
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(products, null, 2), 'utf-8');
+    return true;
+  } catch (err) {
+    console.error('Error writing products file:', err.message);
+    return false;
+  }
+}
 
-    const [products, total] = await Promise.all([
-      Product.find(query)
-        .select('name slug category price originalPrice badge description images stock')
-        .lean()
-        .skip((pageNum - 1) * limitNum)
-        .limit(limitNum),
-      Product.countDocuments(query),
-    ]);
+// 生成唯一 ID
+function generateId() {
+  return 'prod-' + Date.now() + '-' + Math.random().toString(36).substring(2, 8);
+}
 
-    res.json({ products, total, page: pageNum, limit: limitNum });
-  } catch (error) {
-    next(error);
+// 获取产品列表
+router.get('/', (req, res) => {
+  const { category } = req.query;
+  let products = readProducts();
+
+  if (category && category !== 'all') {
+    products = products.filter(p => p.category === category);
+  }
+
+  // 只返回活跃产品
+  products = products.filter(p => p.isActive !== false);
+
+  res.json({ products, total: products.length });
+});
+
+// 获取单个产品 (支持 ID 或 slug)
+router.get('/:idOrSlug', (req, res) => {
+  const products = readProducts();
+  const param = req.params.idOrSlug;
+
+  // 先尝试按 ID 查找，再按 slug 查找
+  let product = products.find(p => p.id === param && p.isActive !== false);
+  if (!product) {
+    product = products.find(p => p.slug === param && p.isActive !== false);
+  }
+
+  if (!product) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  res.json(product);
+});
+
+// 创建产品
+router.post('/', (req, res) => {
+  const products = readProducts();
+
+  const newProduct = {
+    id: generateId(),
+    slug: req.body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    name: req.body.name,
+    category: req.body.category,
+    price: Number(req.body.price),
+    originalPrice: req.body.originalPrice ? Number(req.body.originalPrice) : null,
+    badge: req.body.badge || '',
+    description: req.body.description,
+    features: req.body.features || [],
+    images: req.body.images || [],
+    stock: Number(req.body.stock) || 0,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  products.push(newProduct);
+
+  if (writeProducts(products)) {
+    res.status(201).json(newProduct);
+  } else {
+    res.status(500).json({ message: 'Failed to save product' });
   }
 });
 
-// 公开路由 - 获取单个产品
-router.get('/:slug', async (req, res, next) => {
-  try {
-    const product = await Product.findOne({ slug: req.params.slug, isActive: true }).lean();
-    if (!product) {
-      return res.status(404).json({ message: '产品未找到' });
-    }
-    res.json(product);
-  } catch (error) {
-    next(error);
+// 更新产品
+router.put('/:id', (req, res) => {
+  const products = readProducts();
+  const index = products.findIndex(p => p.id === req.params.id);
+
+  if (index === -1) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  const updated = {
+    ...products[index],
+    name: req.body.name !== undefined ? req.body.name : products[index].name,
+    category: req.body.category !== undefined ? req.body.category : products[index].category,
+    price: req.body.price !== undefined ? Number(req.body.price) : products[index].price,
+    originalPrice: req.body.originalPrice !== undefined ? (req.body.originalPrice ? Number(req.body.originalPrice) : null) : products[index].originalPrice,
+    badge: req.body.badge !== undefined ? req.body.badge : products[index].badge,
+    description: req.body.description !== undefined ? req.body.description : products[index].description,
+    features: req.body.features !== undefined ? req.body.features : products[index].features,
+    images: req.body.images !== undefined ? req.body.images : products[index].images,
+    stock: req.body.stock !== undefined ? Number(req.body.stock) : products[index].stock,
+    isActive: req.body.isActive !== undefined ? req.body.isActive : products[index].isActive,
+    updatedAt: new Date().toISOString(),
+  };
+
+  // 如果名称变了，更新 slug
+  if (req.body.name && req.body.name !== products[index].name) {
+    updated.slug = req.body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  products[index] = updated;
+
+  if (writeProducts(products)) {
+    res.json(updated);
+  } else {
+    res.status(500).json({ message: 'Failed to update product' });
   }
 });
 
-// 受保护路由 - 创建产品
-router.post('/', auth, validate(productCreateSchema), async (req, res, next) => {
-  try {
-    const product = new Product({
-      ...req.body,
-      slug: req.body.name.toLowerCase().replace(/\s+/g, '-'),
-    });
-    await product.save();
-    res.status(201).json(product);
-  } catch (error) {
-    next(error);
-  }
-});
+// 删除产品
+router.delete('/:id', (req, res) => {
+  let products = readProducts();
+  const index = products.findIndex(p => p.id === req.params.id);
 
-// 受保护路由 - 更新产品
-router.put('/:id', auth, validate(productUpdateSchema), async (req, res, next) => {
-  try {
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      { ...req.body, updatedAt: Date.now() },
-      { new: true, runValidators: true }
-    );
-    if (!product) {
-      return res.status(404).json({ message: '产品未找到' });
-    }
-    res.json(product);
-  } catch (error) {
-    next(error);
+  if (index === -1) {
+    return res.status(404).json({ message: 'Product not found' });
   }
-});
 
-// 受保护路由 - 删除产品
-router.delete('/:id', auth, async (req, res, next) => {
-  try {
-    const product = await Product.findByIdAndDelete(req.params.id);
-    if (!product) {
-      return res.status(404).json({ message: '产品未找到' });
-    }
-    res.json({ message: '产品已成功删除' });
-  } catch (error) {
-    next(error);
+  products.splice(index, 1);
+
+  if (writeProducts(products)) {
+    res.json({ message: 'Product deleted successfully' });
+  } else {
+    res.status(500).json({ message: 'Failed to delete product' });
   }
 });
 
