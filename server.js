@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,16 +34,18 @@ app.use('/uploads', express.static(UPLOAD_DIR));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 路由
-const fs = require('fs');
+const authRoutes = require('./routes/auth');
+const { requireAuth } = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const contactRoutes = require('./routes/contact');
 const newsletterRoutes = require('./routes/newsletter');
 const uploadRoutes = require('./routes/upload');
 
-app.use('/api/products', productRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/products', requireAuth, productRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
-app.use('/api/upload', uploadRoutes);
+app.use('/api/upload', requireAuth, uploadRoutes);
 
 // Sitemap.xml - 自动生成
 app.get('/sitemap.xml', (req, res) => {
