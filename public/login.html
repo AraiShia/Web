@@ -264,7 +264,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (data.token) {
+                if (data.success && data.token) {
                     localStorage.setItem('token', data.token);
                     document.getElementById('success-message').textContent = 'Login successful! Redirecting...';
                     document.getElementById('success-message').style.display = 'block';
