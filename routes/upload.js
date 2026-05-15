@@ -5,10 +5,19 @@ const sharp = require('sharp');
 const fs = require('fs');
 const router = express.Router();
 
-// 配置文件上传 - 先保存到临时目录
+// Hostinger 配置：上传目录在 public_html 外，避免 Git 更新丢失
+// 本地开发用 ./uploads，Hostinger 生产环境用 ../public_html/uploads
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, '../uploads');
+
+// 确保上传目录存在
+if (!fs.existsSync(UPLOAD_DIR)) {
+  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+}
+
+// 配置文件上传
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../uploads'));
+    cb(null, UPLOAD_DIR);
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -62,7 +71,7 @@ router.post('/image', upload.single('image'), async (req, res) => {
   const tempPath = req.file.path;
   const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
   const finalFilename = `product-${uniqueSuffix}.jpg`;
-  const finalPath = path.join(__dirname, '../uploads', finalFilename);
+  const finalPath = path.join(UPLOAD_DIR, finalFilename);
 
   try {
     // 压缩图片
@@ -76,7 +85,10 @@ router.post('/image', upload.single('image'), async (req, res) => {
       fs.unlinkSync(tempPath);
     }
 
-    const imageUrl = `/uploads/${finalFilename}`;
+    // 返回相对 URL（根据 UPLOAD_DIR 决定前缀）
+    const isPublicHtml = UPLOAD_DIR.includes('public_html');
+    const imageUrl = isPublicHtml ? `/uploads/${finalFilename}` : `/uploads/${finalFilename}`;
+
     res.json({
       success: true,
       url: imageUrl,
@@ -101,7 +113,7 @@ router.post('/images', upload.array('images', 5), async (req, res) => {
     const tempPath = file.path;
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     const finalFilename = `product-${uniqueSuffix}.jpg`;
-    const finalPath = path.join(__dirname, '../uploads', finalFilename);
+    const finalPath = path.join(UPLOAD_DIR, finalFilename);
 
     try {
       const compressed = await compressImage(tempPath, finalPath);
