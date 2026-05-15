@@ -2212,7 +2212,7 @@ body {
 }
 
 .related-card-image {
-    height: 200px;
+    height: 400px;
     background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
     display: flex;
     align-items: center;
