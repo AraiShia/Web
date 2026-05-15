@@ -42,7 +42,8 @@ const newsletterRoutes = require('./routes/newsletter');
 const uploadRoutes = require('./routes/upload');
 
 app.use('/api/auth', authRoutes);
-app.use('/api/products', requireAuth, productRoutes);
+// 产品路由：GET 公开，其他操作需要认证（在路由内部处理）
+app.use('/api/products', productRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/upload', requireAuth, uploadRoutes);

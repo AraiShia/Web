@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { requireAuth } = require('./auth');
 
 const router = express.Router();
 
@@ -66,8 +67,8 @@ router.get('/:idOrSlug', (req, res) => {
   res.json(product);
 });
 
-// 创建产品
-router.post('/', (req, res) => {
+// 创建产品（需要认证）
+router.post('/', requireAuth, (req, res) => {
   const products = readProducts();
 
   const newProduct = {
@@ -96,8 +97,8 @@ router.post('/', (req, res) => {
   }
 });
 
-// 更新产品
-router.put('/:id', (req, res) => {
+// 更新产品（需要认证）
+router.put('/:id', requireAuth, (req, res) => {
   const products = readProducts();
   const index = products.findIndex(p => p.id === req.params.id);
 
@@ -134,8 +135,8 @@ router.put('/:id', (req, res) => {
   }
 });
 
-// 删除产品
-router.delete('/:id', (req, res) => {
+// 删除产品（需要认证）
+router.delete('/:id', requireAuth, (req, res) => {
   let products = readProducts();
   const index = products.findIndex(p => p.id === req.params.id);
 

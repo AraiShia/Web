@@ -17,6 +17,10 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 // 登录
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
+  
+  // 调试日志
+  console.log('Login attempt:', { email, password, body: req.body });
+  console.log('Expected:', { ADMIN_EMAIL, ADMIN_PASSWORD });
 
   if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
     const token = generateToken();
