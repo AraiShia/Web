@@ -5,7 +5,8 @@ const { requireAuth } = require('./auth');
 
 const router = express.Router();
 
-const DATA_FILE = path.join( process.env.PERSIST_DIR || "/home/u367835843/persistent", "data", "products.json");
+const DATA_FILE = path.join(__dirname, '../../persistent/data/products.json');
+console.log('DATA_FILE =', DATA_FILE);
 
 // 读取产品数据
 function readProducts() {
