@@ -1,4 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // 检查登录状态
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = '/login.html';
+        return;
+    }
+
+    // 验证 token 有效
+    fetch('/api/auth/verify', {
+        headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(response => {
+        if (!response.ok) {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        }
+    })
+    .catch(() => {
+        localStorage.removeItem('token');
+        window.location.href = '/login.html';
+    });
+
     // 根据 URL hash 显示对应板块
     const hash = window.location.hash.replace('#', '') || 'dashboard';
     showSection(hash);
@@ -46,9 +68,20 @@ function loadProducts() {
     const container = document.getElementById('products-list');
     if (!container) return;
 
-    fetch('/api/products')
-    .then(response => response.json())
+    const token = localStorage.getItem('token');
+    fetch('/api/products', {
+        headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(response => {
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+            return;
+        }
+        return response.json();
+    })
     .then(data => {
+        if (!data) return;
         const products = data.products;
         if (products && products.length > 0) {
             container.innerHTML = products.map(product => createProductCard(product)).join('');
@@ -102,8 +135,10 @@ function handleImageUpload(input) {
     const uploadArea = document.getElementById('image-upload-area');
     uploadArea.innerHTML += '<div class="upload-progress"><div class="upload-progress-bar" style="width: 0%"></div></div>';
 
+    const token = localStorage.getItem('token');
     fetch('/api/upload/image', {
         method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token },
         body: formData
     })
     .then(response => response.json())
@@ -254,9 +289,13 @@ document.getElementById('product-form').addEventListener('submit', function(e) {
     const url = isEdit ? `/api/products/${editingProductId}` : '/api/products';
     const method = isEdit ? 'PUT' : 'POST';
 
+    const token = localStorage.getItem('token');
     fetch(url, {
         method: method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
         body: JSON.stringify(productData),
     })
     .then(response => response.json())
@@ -273,8 +312,16 @@ document.getElementById('product-form').addEventListener('submit', function(e) {
 });
 
 function editProduct(id) {
-    fetch(`/api/products/${id}`)
+    const token = localStorage.getItem('token');
+    fetch(`/api/products/${id}`, {
+        headers: { 'Authorization': 'Bearer ' + token }
+    })
     .then(response => {
+        if (response.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+            return;
+        }
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
@@ -314,8 +361,10 @@ function editProduct(id) {
 function deleteProduct(id) {
     if (!confirm('Are you sure you want to delete this product?')) return;
     
+    const token = localStorage.getItem('token');
     fetch(`/api/products/${id}`, {
         method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token }
     })
     .then(response => response.json())
     .then(() => {
