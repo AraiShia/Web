@@ -29,6 +29,14 @@ const DATA_DIR = path.join(__dirname, '../persistent/data');
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
+// 如果 persistent 中没有 products.json，从项目默认数据初始化
+const PERSISTENT_PRODUCTS = path.join(DATA_DIR, 'products.json');
+const DEFAULT_PRODUCTS = path.join(__dirname, 'data/products.json');
+if (!fs.existsSync(PERSISTENT_PRODUCTS) && fs.existsSync(DEFAULT_PRODUCTS)) {
+  fs.copyFileSync(DEFAULT_PRODUCTS, PERSISTENT_PRODUCTS);
+  console.log('Initialized products.json from default data');
+}
+
 // 静态文件
 app.use('/uploads', express.static(UPLOAD_DIR));
 app.use(express.static(path.join(__dirname, 'public')));
