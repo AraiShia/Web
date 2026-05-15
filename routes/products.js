@@ -4,7 +4,7 @@ const path = require('path');
 
 const router = express.Router();
 
-const DATA_FILE = path.join(__dirname, '../data/products.json');
+const DATA_FILE = path.join(__dirname, '../persistent/data/products.json');
 
 // 读取产品数据
 function readProducts() {
