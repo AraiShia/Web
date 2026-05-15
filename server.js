@@ -20,8 +20,13 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
-// Hostinger 配置：上传目录在 public_html 外，避免 Git 更新丢失
-const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, 'uploads');
+// Hostinger 配置：数据和上传目录在 persistent 文件夹，避免 Git 更新丢失
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, '../persistent/uploads');
+const DATA_DIR = path.join(__dirname, '../persistent/data');
+
+// 确保目录存在
+if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
 // 静态文件
 app.use('/uploads', express.static(UPLOAD_DIR));
@@ -41,7 +46,7 @@ app.use('/api/upload', uploadRoutes);
 
 // Sitemap.xml - 自动生成
 app.get('/sitemap.xml', (req, res) => {
-  const products = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/products.json'), 'utf-8'));
+  const products = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'products.json'), 'utf-8'));
   const baseUrl = process.env.SITE_URL || 'https://soinp.com';
 
   const productUrls = products
