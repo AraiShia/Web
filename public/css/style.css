@@ -808,6 +808,28 @@ body {
     transform: translateY(-1px);
 }
 
+.product-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.product-actions .product-button {
+    flex: 1;
+    margin-top: 0;
+    padding: 10px 16px;
+    font-size: 12px;
+}
+
+.product-actions .inquiry-btn {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid var(--accent-color);
+}
+
+.product-actions .inquiry-btn:hover {
+    background: var(--accent-color);
+}
+
 /* Features Section */
 .features-section {
     padding: 120px 0;

@@ -46,13 +46,44 @@ function createProductCard(product) {
         '<span class="product-category">' + product.category + '</span>' +
         '<h3 class="product-title">' + product.name + '</h3>' +
         '<p class="product-description">' + product.description + '</p>' +
+        '<div class="product-actions">' +
         '<button class="product-button" onclick="event.stopPropagation(); showProductDetail(\'' + product.slug + '\')">VIEW DETAILS</button>' +
+        '<button class="product-button inquiry-btn" onclick="event.stopPropagation(); addToInquiryCartFromList(\'' + product.name + '\', this)">+ INQUIRY</button>' +
+        '</div>' +
         '</div>' +
         '</div>';
 }
 
 function goToProduct(slug) {
     window.location.href = '/products.html?product=' + slug;
+}
+
+// Add product to inquiry cart from product list
+function addToInquiryCartFromList(productName, btn) {
+    if (typeof inquiryCart !== 'undefined') {
+        if (!inquiryCart.includes(productName)) {
+            inquiryCart.push(productName);
+            // Update display if modal is open
+            if (typeof updateInquiryCartDisplay === 'function') {
+                updateInquiryCartDisplay();
+            }
+            // Show feedback
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Added';
+            btn.style.background = 'rgba(0, 255, 136, 0.3)';
+            btn.style.color = 'var(--accent-color)';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+                btn.style.color = '';
+            }, 1500);
+        } else {
+            btn.textContent = 'Already in cart';
+            setTimeout(() => {
+                btn.textContent = '+ INQUIRY';
+            }, 1500);
+        }
+    }
 }
 
 function renderProducts(category) {

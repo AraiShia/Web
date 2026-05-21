@@ -124,6 +124,10 @@ app.get('/cookie-policy', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'cookie-policy.html'));
 });
 
+app.get('/terms-of-service', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'terms-of-service.html'));
+});
+
 // 404 处理
 app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'public', 'index.html'));
