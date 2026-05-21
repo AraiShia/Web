@@ -32,8 +32,137 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Cookie Toggle Switch Styles */
+        .cookie-toggle {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        .cookie-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .cookie-toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255,255,255,0.1);
+            transition: .3s;
+            border-radius: 26px;
+            border: 1px solid var(--border-color);
+        }
+        .cookie-toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        .cookie-toggle input:checked + .cookie-toggle-slider {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        .cookie-toggle input:checked + .cookie-toggle-slider:before {
+            transform: translateX(24px);
+        }
+        .cookie-toggle input:focus + .cookie-toggle-slider {
+            box-shadow: 0 0 5px var(--accent-color);
+        }
+    </style>
 </head>
 <body>
+    <!-- Cookie Consent Banner -->
+    <div id="cookie-banner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: linear-gradient(135deg, #1a1a2e 0%, #0d0d0d 100%); border-top: 2px solid var(--accent-color); z-index: 9999; padding: 25px; box-shadow: 0 -10px 40px rgba(0,0,0,0.5);">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+                <h3 style="color: var(--accent-color); margin-bottom: 10px; font-size: 18px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 8px;">
+                        <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+                        <path d="M8.5 8.5v.01"></path>
+                        <path d="M16 15.5v.01"></path>
+                        <path d="M12 12v.01"></path>
+                        <path d="M11 17v.01"></path>
+                        <path d="M7 14v.01"></path>
+                    </svg>
+                    We Value Your Privacy
+                </h3>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin: 0;">
+                    We use cookies to enhance your browsing experience and analyze our traffic. 
+                    By clicking "Accept All", you consent to our use of cookies. 
+                    <a href="privacy-policy.html" style="color: var(--accent-color); text-decoration: underline;">Privacy Policy</a> 
+                    | <a href="cookie-policy.html" target="_blank" style="color: var(--accent-color); text-decoration: underline;">Cookie Policy</a>
+                </p>
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <button onclick="acceptCookies()" style="padding: 12px 28px; background: linear-gradient(135deg, var(--accent-color) 0%, #00cc6a 100%); color: #0d0d0d; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; white-space: nowrap;">
+                    Accept All
+                </button>
+                <button onclick="acceptEssentialCookies()" style="padding: 12px 28px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; white-space: nowrap;">
+                    Essential Only
+                </button>
+                <button onclick="openCookieSettings()" style="padding: 12px 20px; background: transparent; color: var(--text-muted); border: none; border-radius: 10px; font-weight: 500; cursor: pointer; transition: all 0.3s ease;">
+                    Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Settings Modal -->
+    <div id="cookie-settings-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #0d0d0d 100%); border: 1px solid var(--border-color); border-radius: 20px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="color: var(--accent-color); margin: 0; font-size: 24px;">Cookie Preferences</h2>
+                <button onclick="closeCookieSettings()" style="background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer;">&times;</button>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px;">
+                    <div>
+                        <h4 style="color: var(--text-primary); margin: 0 0 5px 0;">Essential Cookies</h4>
+                        <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Required for the website to function properly</p>
+                    </div>
+                    <span style="color: var(--accent-color); font-weight: 600;">Always On</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px;">
+                    <div>
+                        <h4 style="color: var(--text-primary); margin: 0 0 5px 0;">Analytics Cookies</h4>
+                        <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Help us improve our website</p>
+                    </div>
+                    <label class="cookie-toggle">
+                        <input type="checkbox" id="analytics-cookies" checked>
+                        <span class="cookie-toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px;">
+                    <div>
+                        <h4 style="color: var(--text-primary); margin: 0 0 5px 0;">Marketing Cookies</h4>
+                        <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Used to deliver personalized advertisements</p>
+                    </div>
+                    <label class="cookie-toggle">
+                        <input type="checkbox" id="marketing-cookies">
+                        <span class="cookie-toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <button onclick="saveCookieSettings()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent-color) 0%, #00cc6a 100%); color: #0d0d0d; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 16px;">
+                Save Preferences
+            </button>
+        </div>
+    </div>
+
     <!-- Discount Banner -->
     <div class="discount-banner" id="discountBanner">
         <div class="container">
@@ -347,22 +476,48 @@
                     </div>
                     <form class="contact-form" id="contact-form">
                         <div class="form-group">
-                            <label for="name">NAME</label>
-                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                            <label for="name">YOUR NAME <span style="color: var(--accent-color);">*</span></label>
+                            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">EMAIL</label>
-                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                            <label for="email">EMAIL <span style="color: var(--accent-color);">*</span></label>
+                            <input type="email" id="email" name="email" placeholder="your@company.com" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">PHONE</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+1 234 567 8900">
+                            </div>
+                            <div class="form-group">
+                                <label for="company">COMPANY</label>
+                                <input type="text" id="company" name="company" placeholder="Your company name">
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="subject">SUBJECT</label>
-                            <input type="text" id="subject" name="subject" placeholder="How can we help?" required>
+                            <label for="product">INTERESTED PRODUCT</label>
+                            <select id="product" name="product" class="form-select">
+                                <option value="">Select a product category (optional)</option>
+                                <option value="Gaming Chairs">Gaming Chairs</option>
+                                <option value="Gaming Desks">Gaming Desks</option>
+                                <option value="Accessories">Accessories</option>
+                                <option value="OEM / Custom">OEM / Custom Design</option>
+                                <option value="Bulk Order">Bulk Order Inquiry</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="message">MESSAGE</label>
-                            <textarea id="message" name="message" placeholder="Enter your message..." required></textarea>
+                            <label for="message">YOUR MESSAGE <span style="color: var(--accent-color);">*</span></label>
+                            <textarea id="message" name="message" placeholder="Tell us about your requirements, quantity needed, destination country..." required></textarea>
                         </div>
-                        <button type="submit" class="submit-button">SEND MESSAGE</button>
+                        <div class="privacy-consent" style="margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px;">
+                            <input type="checkbox" id="privacy-check" required style="margin-top: 3px; width: 18px; height: 18px; accent-color: var(--accent-color);">
+                            <label for="privacy-check" style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; cursor: pointer;">
+                                I agree to the processing of my personal data in accordance with the 
+                                <a href="#" onclick="openPrivacyModal(); return false;" style="color: var(--accent-color); text-decoration: underline;">Privacy Policy</a>.
+                                <span style="color: var(--accent-color);">*</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="submit-button">SEND INQUIRY</button>
                     </form>
                 </div>
             </div>
@@ -436,9 +591,9 @@
             <div class="footer-bottom">
                 <p>&copy; 2026 Soinp Gaming. All rights reserved.</p>
                 <div class="footer-bottom-links">
-                    <a href="#">Privacy Policy</a>
+                    <a href="privacy-policy.html" style="color: var(--accent-color); font-weight: 600;">Privacy Policy</a>
+                    <a href="cookie-policy.html">Cookie Policy</a>
                     <a href="#">Terms of Service</a>
-                    <a href="#">Cookie Policy</a>
                 </div>
             </div>
         </div>
@@ -452,6 +607,170 @@
         </div>
     </div>
 
+    <!-- Privacy Policy Modal -->
+    <div class="modal-overlay" id="privacy-modal" style="display: none;">
+        <div class="modal-content" style="max-width: 800px; max-height: 80vh; overflow-y: auto;">
+            <button class="modal-close" onclick="closePrivacyModal()">&times;</button>
+            <div class="privacy-modal-content">
+                <h2 style="margin-bottom: 20px; color: var(--accent-color);">Privacy Policy Summary</h2>
+                <div style="color: var(--text-secondary); line-height: 1.8;">
+                    <p style="margin-bottom: 15px;"><strong>Information We Collect:</strong> We collect your name, email, and message when you contact us. This information is used solely to respond to your inquiry.</p>
+                    
+                    <p style="margin-bottom: 15px;"><strong>How We Use Your Data:</strong> Your information is used to process your inquiry and communicate with you about our products and services.</p>
+                    
+                    <p style="margin-bottom: 15px;"><strong>Data Protection:</strong> We implement security measures to protect your personal information and do not share it with third parties except as necessary to fulfill your request.</p>
+                    
+                    <p style="margin-bottom: 15px;"><strong>Your Rights:</strong> You have the right to access, correct, or delete your personal data. Contact us at privacy@soinpgaming.com for any privacy-related requests.</p>
+                    
+                    <p style="margin-bottom: 20px;"><strong>Retention:</strong> We retain your information only as long as necessary to fulfill the purposes for which it was collected.</p>
+                </div>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px;">
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">For the complete Privacy Policy, please visit:</p>
+                    <a href="privacy-policy.html" target="_blank" class="submit-button" style="display: inline-block; text-decoration: none; text-align: center;">View Full Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/main.js"></script>
+    <script>
+        // ==================== Cookie Consent Management ====================
+        
+        // Check if user has already made cookie consent choice
+        function hasCookieConsent() {
+            return localStorage.getItem('cookieConsent') !== null;
+        }
+        
+        // Get cookie consent preferences
+        function getCookieConsent() {
+            const consent = localStorage.getItem('cookieConsent');
+            return consent ? JSON.parse(consent) : null;
+        }
+        
+        // Show cookie banner if no consent yet
+        function initCookieBanner() {
+            if (!hasCookieConsent()) {
+                document.getElementById('cookie-banner').style.display = 'block';
+            } else {
+                applyCookieSettings(getCookieConsent());
+            }
+        }
+        
+        // Accept all cookies
+        function acceptCookies() {
+            const consent = {
+                essential: true,
+                analytics: true,
+                marketing: true,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('cookieConsent', JSON.stringify(consent));
+            document.getElementById('cookie-banner').style.display = 'none';
+            applyCookieSettings(consent);
+            console.log('All cookies accepted');
+        }
+        
+        // Accept only essential cookies
+        function acceptEssentialCookies() {
+            const consent = {
+                essential: true,
+                analytics: false,
+                marketing: false,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('cookieConsent', JSON.stringify(consent));
+            document.getElementById('cookie-banner').style.display = 'none';
+            applyCookieSettings(consent);
+            console.log('Only essential cookies accepted');
+        }
+        
+        // Open cookie settings modal
+        function openCookieSettings() {
+            document.getElementById('cookie-settings-modal').style.display = 'flex';
+            const consent = getCookieConsent();
+            if (consent) {
+                document.getElementById('analytics-cookies').checked = consent.analytics;
+                document.getElementById('marketing-cookies').checked = consent.marketing;
+            }
+        }
+        
+        // Close cookie settings modal
+        function closeCookieSettings() {
+            document.getElementById('cookie-settings-modal').style.display = 'none';
+        }
+        
+        // Save custom cookie settings
+        function saveCookieSettings() {
+            const consent = {
+                essential: true,
+                analytics: document.getElementById('analytics-cookies').checked,
+                marketing: document.getElementById('marketing-cookies').checked,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('cookieConsent', JSON.stringify(consent));
+            document.getElementById('cookie-banner').style.display = 'none';
+            closeCookieSettings();
+            applyCookieSettings(consent);
+            console.log('Custom cookie settings saved:', consent);
+        }
+        
+        // Apply cookie settings (enable/disable scripts)
+        function applyCookieSettings(consent) {
+            // Analytics cookies - Google Analytics
+            if (consent.analytics) {
+                // Enable Google Analytics
+                window['ga-disable-G-66K6Q4C47N'] = false;
+                console.log('Analytics cookies enabled');
+            } else {
+                // Disable Google Analytics
+                window['ga-disable-G-66K6Q4C47N'] = true;
+                console.log('Analytics cookies disabled');
+            }
+            
+            // Marketing cookies would be handled here
+            if (consent.marketing) {
+                console.log('Marketing cookies enabled');
+            } else {
+                console.log('Marketing cookies disabled');
+            }
+        }
+        
+        // Initialize cookie banner on page load
+        document.addEventListener('DOMContentLoaded', initCookieBanner);
+        
+        // Close cookie settings modal when clicking outside
+        document.getElementById('cookie-settings-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCookieSettings();
+            }
+        });
+        
+        // ==================== Privacy Modal Functions ====================
+        
+        function openPrivacyModal() {
+            document.getElementById('privacy-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closePrivacyModal() {
+            document.getElementById('privacy-modal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('privacy-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePrivacyModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePrivacyModal();
+                closeCookieSettings();
+            }
+        });
+    </script>
 </body>
 </html>

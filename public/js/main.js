@@ -91,8 +91,16 @@ function initContactForm() {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         
+        const submitBtn = form.querySelector('.submit-button');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'SENDING...';
+        
         const formData = new FormData(form);
         const data = Object.fromEntries(formData);
+        
+        // Add privacy consent flag
+        data.privacyConsent = document.getElementById('privacy-check').checked;
         
         fetch('/api/contact', {
             method: 'POST',
@@ -103,12 +111,20 @@ function initContactForm() {
         })
         .then(response => response.json())
         .then(result => {
-            alert('Message sent successfully!');
-            form.reset();
+            if (result.success) {
+                alert(result.message || 'Your inquiry has been submitted! We will contact you within 24 hours.');
+                form.reset();
+            } else {
+                alert(result.message || 'Failed to submit inquiry. Please try again.');
+            }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Failed to send message. Please try again.');
+            alert('Failed to submit inquiry. Please try again.');
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
         });
     });
 }

@@ -48,11 +48,10 @@ const productRoutes = require('./routes/products');
 const contactRoutes = require('./routes/contact');
 const newsletterRoutes = require('./routes/newsletter');
 const uploadRoutes = require('./routes/upload');
-
 app.use('/api/auth', authRoutes);
-// 产品路由：GET 公开，其他操作需要认证（在路由内部处理）
+app.use('/api/inquiries', requireAuth, require('./routes/inquiries'));
 app.use('/api/products', productRoutes);
-app.use('/api/contact', contactRoutes);
+app.use('/api/contact', require('./routes/contact'));
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/upload', requireAuth, uploadRoutes);
 
@@ -115,6 +114,14 @@ app.get('/admin', (req, res) => {
 
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+app.get('/privacy-policy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'privacy-policy.html'));
+});
+
+app.get('/cookie-policy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'cookie-policy.html'));
 });
 
 // 404 处理

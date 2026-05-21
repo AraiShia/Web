@@ -480,3 +480,198 @@ function filterProducts() {
         console.error('Error filtering products:', error);
     });
 }
+
+// ==================== Inquiry Management ====================
+
+// Load inquiries on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadInquiriesCount();
+});
+
+// Load inquiries count for badge
+function loadInquiriesCount() {
+    const token = localStorage.getItem('token');
+    fetch('/api/inquiries/count/unread', {
+        headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const badge = document.getElementById('inquiry-badge');
+        if (badge) {
+            if (data.unreadCount > 0) {
+                badge.textContent = data.unreadCount;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    })
+    .catch(err => console.error('Error loading inquiry count:', err));
+}
+
+// Load inquiries list
+function loadInquiries() {
+    const container = document.getElementById('inquiries-list');
+    if (!container) return;
+
+    const token = localStorage.getItem('token');
+    fetch('/api/inquiries', {
+        headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.inquiries && data.inquiries.length > 0) {
+            // Update stats
+            document.getElementById('total-inquiries').textContent = data.total;
+            document.getElementById('unread-inquiries').textContent = data.inquiries.filter(i => !i.isRead).length;
+
+            container.innerHTML = data.inquiries.map(inquiry => createInquiryCard(inquiry)).join('');
+        } else {
+            container.innerHTML = '<div style="text-align:center; padding:60px; color:#666;">No inquiries yet</div>';
+        }
+    })
+    .catch(error => {
+        console.error('Error loading inquiries:', error);
+        container.innerHTML = '<div style="text-align:center; padding:60px; color:#ff6b6b;">Failed to load inquiries</div>';
+    });
+}
+
+// Create inquiry card HTML
+function createInquiryCard(inquiry) {
+    const date = new Date(inquiry.createdAt);
+    const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const statusClass = inquiry.isRead ? 'read' : 'unread';
+    const statusText = inquiry.isRead ? 'Read' : 'New';
+
+    return `
+        <div class="inquiry-card ${statusClass}" onclick="viewInquiry('${inquiry.id}')">
+            <div class="inquiry-header">
+                <div class="inquiry-status ${statusClass}">${statusText}</div>
+                <div class="inquiry-date">${formattedDate}</div>
+            </div>
+            <div class="inquiry-info">
+                <h4>${inquiry.name}</h4>
+                <p class="inquiry-email">${inquiry.email}</p>
+                ${inquiry.company ? `<p class="inquiry-company">${inquiry.company}</p>` : ''}
+                ${inquiry.product ? `<p class="inquiry-product"><strong>Product:</strong> ${inquiry.product}</p>` : ''}
+            </div>
+            <div class="inquiry-preview">${inquiry.message.substring(0, 100)}${inquiry.message.length > 100 ? '...' : ''}</div>
+        </div>
+    `;
+}
+
+// View inquiry details
+function viewInquiry(id) {
+    const token = localStorage.getItem('token');
+    fetch(`/api/inquiries/${id}`, {
+        headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.inquiry) {
+            const inq = data.inquiry;
+            const date = new Date(inq.createdAt);
+            const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+
+            document.getElementById('inquiry-detail').innerHTML = `
+                <div class="inquiry-detail-content">
+                    <div class="detail-row">
+                        <span class="detail-label">Name:</span>
+                        <span class="detail-value">${inq.name}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value"><a href="mailto:${inq.email}">${inq.email}</a></span>
+                    </div>
+                    ${inq.phone ? `<div class="detail-row"><span class="detail-label">Phone:</span><span class="detail-value">${inq.phone}</span></div>` : ''}
+                    ${inq.company ? `<div class="detail-row"><span class="detail-label">Company:</span><span class="detail-value">${inq.company}</span></div>` : ''}
+                    ${inq.product ? `<div class="detail-row"><span class="detail-label">Product:</span><span class="detail-value">${inq.product}</span></div>` : ''}
+                    <div class="detail-row">
+                        <span class="detail-label">Submitted:</span>
+                        <span class="detail-value">${formattedDate}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status:</span>
+                        <span class="detail-value ${inq.isRead ? 'read' : 'unread'}">${inq.isRead ? 'Read' : 'Unread'}</span>
+                    </div>
+                    <div class="detail-message">
+                        <span class="detail-label">Message:</span>
+                        <div class="message-box">${inq.message}</div>
+                    </div>
+                    <div class="detail-actions">
+                        <a href="mailto:${inq.email}?subject=Re: Your Inquiry" class="btn btn-primary">Reply via Email</a>
+                        <button class="btn btn-danger" onclick="deleteInquiry('${inq.id}')">Delete</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('inquiry-modal').style.display = 'flex';
+
+            // Mark as read
+            if (!inq.isRead) {
+                fetch(`/api/inquiries/${id}/read`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                })
+                .then(() => loadInquiries());
+            }
+        }
+    })
+    .catch(err => console.error('Error loading inquiry:', err));
+}
+
+// Close inquiry modal
+function closeInquiryModal() {
+    document.getElementById('inquiry-modal').style.display = 'none';
+    loadInquiriesCount();
+}
+
+// Delete inquiry
+function deleteInquiry(id) {
+    if (!confirm('Are you sure you want to delete this inquiry?')) return;
+
+    const token = localStorage.getItem('token');
+    fetch(`/api/inquiries/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeInquiryModal();
+            loadInquiries();
+            loadInquiriesCount();
+        }
+    })
+    .catch(err => console.error('Error deleting inquiry:', err));
+}
+
+// Mark all inquiries as read
+function markAllInquiriesRead() {
+    const token = localStorage.getItem('token');
+    fetch('/api/inquiries/read-all', {
+        method: 'PUT',
+        headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            loadInquiries();
+            loadInquiriesCount();
+        }
+    })
+    .catch(err => console.error('Error marking all read:', err));
+}
+
+// Export inquiries to CSV
+function exportInquiries() {
+    window.location.href = '/api/inquiries/export/csv';
+}
+
+// Update showSection to load inquiries when section is shown
+const originalShowSection = showSection;
+showSection = function(sectionId) {
+    originalShowSection(sectionId);
+    if (sectionId === 'inquiries') {
+        loadInquiries();
+    }
+};
