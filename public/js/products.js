@@ -130,6 +130,9 @@ function renderProductDetail(product) {
         }).join('');
 
         detailView.innerHTML = '<div class="container">' +
+            '<button class="back-button" onclick="showProductsList()" style="margin-bottom:20px; padding:10px 20px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:8px; color:var(--text-secondary); cursor:pointer; display:flex; align-items:center; gap:8px;">' +
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>' +
+            'Back to Products</button>' +
             '<div class="product-detail-grid">' +
             '<div class="product-gallery">' +
             '<div class="main-product-image">' +
@@ -157,7 +160,7 @@ function renderProductDetail(product) {
             '</div>' +
             '</div>' +
             '<div class="action-buttons">' +
-            '<button class="btn-add-cart-detail" onclick="alert(\'Coming soon\')">ADD TO QUOTE</button>' +
+            '<button class="btn-add-cart-detail" onclick="openInquiryModal(\'' + product.name + '\')">SEND INQUIRY</button>' +
             '</div>' +
             '</div>' +
             '</div>' +
@@ -252,7 +255,22 @@ function showProductsList() {
     document.getElementById('page-hero').style.display = 'block';
     document.getElementById('product-detail-view').classList.remove('active');
     document.getElementById('product-detail-view').innerHTML = '';
+
+    // Update URL to remove product parameter
+    var url = new URL(window.location);
+    url.searchParams.delete('product');
+    window.history.pushState({}, '', url);
 }
+
+// Handle browser back button
+window.addEventListener('popstate', function() {
+    var productSlug = getParam('product');
+    if (productSlug) {
+        showProductDetail(productSlug);
+    } else {
+        showProductsList();
+    }
+});
 
 function updatePageInfo(category) {
     var titleEl = document.getElementById('page-title');
