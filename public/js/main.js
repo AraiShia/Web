@@ -1,10 +1,33 @@
+var lastScrollPosition = 0;
+
 document.addEventListener('DOMContentLoaded', function() {
     initSlider();
     initNavigation();
     initContactForm();
     loadFeaturedProducts();
     initCategoryFilter();
+    setupHistoryNavigation();
 });
+
+function setupHistoryNavigation() {
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.returnTo) {
+            setTimeout(function() {
+                window.scrollTo(0, e.state.scrollPosition);
+            }, 100);
+        } else {
+            setTimeout(function() {
+                window.scrollTo(0, 0);
+            }, 100);
+        }
+    });
+}
+
+function navigateToProductDetail(slug) {
+    lastScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+    history.pushState({ returnTo: 'homepage', scrollPosition: lastScrollPosition }, '', '/products.html?product=' + slug);
+    window.location.href = '/products.html?product=' + slug;
+}
 
 // Slider Functionality
 function initSlider() {
@@ -151,12 +174,11 @@ function loadFeaturedProducts() {
 }
 
 function createProductCard(product) {
-    const url = '/products.html?product=' + product.slug;
     const imageHtml = product.images && product.images.length > 0
         ? `<img src="${product.images[0]}" alt="${product.name}">`
         : `<span class="product-placeholder">🪑</span>`;
     return `
-        <div class="product-card">
+        <div class="product-card" onclick="navigateToProductDetail('${product.slug}')">
             <div class="product-image-wrapper">
                 ${imageHtml}
                 ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
@@ -165,7 +187,7 @@ function createProductCard(product) {
                 <span class="product-category">${product.category}</span>
                 <h3 class="product-title">${product.name}</h3>
                 <p class="product-description">${product.description}</p>
-                <a href="${url}" class="product-button">VIEW DETAILS</a>
+                <span class="product-button">VIEW DETAILS</span>
             </div>
         </div>
     `;
@@ -191,52 +213,7 @@ function initCategoryFilter() {
 
 // Product Detail Modal
 function showProductDetail(slug) {
-    fetch(`/api/products/${slug}`)
-    .then(response => response.json())
-    .then(product => {
-        const modal = document.getElementById('product-modal');
-        const detailContainer = document.getElementById('modal-product-detail');
-        
-        if (!modal || !detailContainer) return;
-
-        detailContainer.innerHTML = `
-            <div class="main-product-image">
-                <span>🪑</span>
-            </div>
-            <div class="product-info-detail">
-                <span class="product-category">${product.category}</span>
-                <h1>${product.name}</h1>
-                <div class="product-description-detail">
-                    <h3>DESCRIPTION</h3>
-                    <p>${product.description}</p>
-                </div>
-                <div class="product-features-detail">
-                    <h3>FEATURES</h3>
-                    <ul>
-                        ${product.features.map(f => `<li>✓ ${f}</li>`).join('')}
-                    </ul>
-                </div>
-                <div class="option-group">
-                    <label>COLOR</label>
-                    <div class="option-buttons">
-                        <button class="option-btn selected">BLACK</button>
-                        <button class="option-btn">WHITE</button>
-                        <button class="option-btn">BLUE</button>
-                    </div>
-                </div>
-                <div class="action-buttons">
-                    <button class="btn-add-cart-detail" onclick="alert('Coming soon')">ADD TO QUOTE</button>
-                </div>
-            </div>
-        `;
-        
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    })
-    .catch(error => {
-        console.error('Error loading product:', error);
-        alert('Product not found');
-    });
+    navigateToProductDetail(slug);
 }
 
 function closeProductModal() {
