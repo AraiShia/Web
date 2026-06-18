@@ -280,12 +280,19 @@ function showProductDetail(slug) {
 }
 
 function showProductsList() {
+    var currentCategory = getCurrentCategory();
+    
     document.getElementById('products-grid').style.display = 'grid';
     document.getElementById('filters-bar').style.display = 'block';
     document.getElementById('category-tabs').parentElement.style.display = 'block';
     document.getElementById('page-hero').style.display = 'block';
     document.getElementById('product-detail-view').classList.remove('active');
     document.getElementById('product-detail-view').innerHTML = '';
+
+    // Re-render products for current category
+    updatePageInfo(currentCategory);
+    updateCategoryTabs(currentCategory);
+    renderProducts(currentCategory);
 
     // Update URL to remove product parameter
     var url = new URL(window.location);
