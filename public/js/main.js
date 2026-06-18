@@ -11,9 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function setupHistoryNavigation() {
     window.addEventListener('popstate', function(e) {
-        if (e.state && e.state.returnTo) {
+        var savedScrollPosition = sessionStorage.getItem('homepageScrollPosition');
+        if (savedScrollPosition !== null) {
             setTimeout(function() {
-                window.scrollTo(0, e.state.scrollPosition);
+                window.scrollTo(0, parseInt(savedScrollPosition));
             }, 100);
         } else {
             setTimeout(function() {
@@ -25,8 +26,9 @@ function setupHistoryNavigation() {
 
 function navigateToProductDetail(slug) {
     lastScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-    history.pushState({ returnTo: 'homepage', scrollPosition: lastScrollPosition }, '', '/products.html?product=' + slug);
-    window.location.href = '/products.html?product=' + slug;
+    sessionStorage.setItem('homepageScrollPosition', lastScrollPosition);
+    history.replaceState({ returnTo: 'homepage', scrollPosition: lastScrollPosition }, '', '/products.html?product=' + slug);
+    location.replace('/products.html?product=' + slug);
 }
 
 // Slider Functionality

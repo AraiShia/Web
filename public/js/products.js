@@ -294,7 +294,13 @@ function showProductsList() {
 }
 
 // Handle browser back button
-window.addEventListener('popstate', function() {
+window.addEventListener('popstate', function(e) {
+    // If came from homepage, clear flag and let browser handle it
+    if (sessionStorage.getItem('cameFromHomepage') === 'true') {
+        sessionStorage.removeItem('cameFromHomepage');
+        return; // Let browser handle naturally (go to homepage)
+    }
+    
     var productSlug = getParam('product');
     if (productSlug) {
         showProductDetail(productSlug);
@@ -339,6 +345,12 @@ function updateCategoryTabs(category) {
 function init() {
     var currentCategory = getCurrentCategory();
     var productSlug = getParam('product');
+
+    // Check if we came from homepage
+    var referrer = document.referrer;
+    if (referrer && (referrer.includes('localhost') || referrer.includes(window.location.hostname)) && !referrer.includes('products.html')) {
+        sessionStorage.setItem('cameFromHomepage', 'true');
+    }
 
     if (productSlug) {
         showProductDetail(productSlug);
@@ -387,6 +399,12 @@ function init() {
     });
 
     window.addEventListener('popstate', function(e) {
+        // If came from homepage, clear flag and let browser handle it
+        if (sessionStorage.getItem('cameFromHomepage') === 'true') {
+            sessionStorage.removeItem('cameFromHomepage');
+            return; // Let browser handle naturally (go to homepage)
+        }
+        
         if (e.state && e.state.product) {
             showProductDetail(e.state.product);
         } else {
