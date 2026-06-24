@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article - Soinp Gaming</title>
+    <meta id="meta-description" name="description" content="">
+    <meta id="meta-keywords" name="keywords" content="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/article.css">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --text-secondary: #9ca3af;
+            --text-tertiary: #6b7280;
+        }
+        
+        .article-detail {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        .article-cover {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .article-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+        .article-cover-emoji {
+            font-size: 120px;
+        }
+        .article-header {
+            margin-bottom: 40px;
+        }
+        .breadcrumb {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .article-header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .article-info {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+        .article-info span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .article-body {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .article-body p {
+            margin-bottom: 24px;
+        }
+        .article-body h2,
+        .article-body h3 {
+            color: #fff;
+            margin: 40px 0 20px;
+        }
+        .article-body ul,
+        .article-body ol {
+            margin-bottom: 24px;
+            padding-left: 24px;
+        }
+        .article-body li {
+            margin-bottom: 12px;
+        }
+        .article-tags {
+            display: flex;
+            gap: 10px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        .article-tag {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .share-section {
+            padding: 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .share-section h3 {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .share-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .share-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .share-btn:hover {
+            transform: translateY(-2px);
+        }
+        .share-wechat { background: #07c160; color: #fff; }
+        .share-weibo { background: #e6162d; color: #fff; }
+        .share-linkedin { background: #0077b5; color: #fff; }
+        .share-facebook { background: #1877f2; color: #fff; }
+        .share-twitter { background: #1da1f2; color: #fff; }
+        .share-copy { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .related-articles {
+            padding: 60px 0;
+        }
+        .related-articles h2 {
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 30px;
+        }
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        @media (max-width: 992px) {
+            .related-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+            .article-header h1 {
+                font-size: 28px;
+            }
+            .article-cover {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Discount Banner -->
+    <div id="discountBanner" class="discount-banner">
+        <div class="container" style="display:flex; align-items:center; justify-content:center; gap:20px;">
+            <span>🔥 MEMORIAL DAY SALE: Up to 50% OFF Gaming Chairs + Desks!</span>
+            <a href="/products.html?category=gaming-chairs" class="banner-btn">SHOP NOW</a>
+            <button onclick="document.getElementById('discountBanner').style.display='none'" style="background:none; border:none; color:#fff; cursor:pointer; font-size:20px;">×</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <nav class="navbar">
+            <a href="/" class="logo">
+                <span class="logo-icon">🎮</span>
+                <span class="logo-text">SOINP</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/">HOME</a></li>
+                <li class="dropdown">
+                    <a href="/products.html">PRODUCTS</a>
+                    <div class="dropdown-content">
+                        <a href="/products.html?category=gaming-chairs">Gaming Chairs</a>
+                        <a href="/products.html?category=gaming-desks">Gaming Desks</a>
+                        <a href="/products.html?category=mouse-pads">Mouse Pads</a>
+                        <a href="/products.html?category=accessories">Accessories</a>
+                    </div>
+                </li>
+                <li><a href="/articles.html" class="active">ARTICLES</a></li>
+                <li><a href="/#contact">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Article Detail -->
+    <main class="article-detail">
+        <div id="article-content">
+            <div class="loading" style="text-align:center; padding:100px 0;">Loading article...</div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>SOINP</h3>
+                    <p>Premium gaming furniture for pro gamers worldwide.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Products</h4>
+                    <ul>
+                        <li><a href="/products.html?category=gaming-chairs">Gaming Chairs</a></li>
+                        <li><a href="/products.html?category=gaming-desks">Gaming Desks</a></li>
+                        <li><a href="/products.html?category=mouse-pads">Mouse Pads</a></li>
+                        <li><a href="/products.html?category=accessories">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="/articles.html">Articles</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Soinp Gaming. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function getParam(name) {
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function getCategoryLabel(category) {
+            var labels = {
+                'news': 'NEWS',
+                'guide': 'GUIDE',
+                'blog': 'BLOG',
+                'case': 'CASE STUDY'
+            };
+            return labels[category] || category.toUpperCase();
+        }
+
+        async function loadArticle() {
+            var slug = getParam('slug');
+            if (!slug) {
+                document.getElementById('article-content').innerHTML = '<div class="error" style="text-align:center; padding:100px 0;">Article not found</div>';
+                return;
+            }
+
+            try {
+                var response = await fetch('/api/articles/' + slug);
+                if (!response.ok) {
+                    throw new Error('Article not found');
+                }
+                var article = await response.json();
+
+                // Update page title and meta
+                document.title = article.seo?.metaTitle || article.title + ' - Soinp Gaming';
+                var metaDesc = document.getElementById('meta-description');
+                if (metaDesc && article.seo?.metaDescription) {
+                    metaDesc.setAttribute('content', article.seo.metaDescription);
+                }
+                var metaKeywords = document.getElementById('meta-keywords');
+                if (metaKeywords && article.seo?.keywords) {
+                    metaKeywords.setAttribute('content', article.seo.keywords);
+                }
+
+                // Render article
+                var tagsHtml = article.tags.map(function(tag) {
+                    return '<span class="article-tag">#' + tag + '</span>';
+                }).join('');
+
+                var coverHtml = article.coverImage 
+                    ? '<img src="' + article.coverImage + '" alt="' + article.title + '">'
+                    : '<span class="article-cover-emoji">📰</span>';
+
+                document.getElementById('article-content').innerHTML = 
+                    '<div class="article-cover">' + coverHtml + '</div>' +
+                    '<div class="article-header">' +
+                        '<div class="breadcrumb">' +
+                            '<a href="/">Home</a> / ' +
+                            '<a href="/articles.html">Articles</a> / ' +
+                            '<a href="/articles.html?category=' + article.category + '">' + getCategoryLabel(article.category) + '</a>' +
+                        '</div>' +
+                        '<h1>' + article.title + '</h1>' +
+                        '<div class="article-info">' +
+                            '<span>👤 ' + article.author + '</span>' +
+                            '<span>📅 ' + article.publishedAt + '</span>' +
+                            '<span>👁 ' + article.views + ' views</span>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="article-tags">' + tagsHtml + '</div>' +
+                    '<div class="article-body">' + article.content + '</div>' +
+                    '<div class="share-section">' +
+                        '<h3>Share this article</h3>' +
+                        '<div class="share-buttons">' +
+                            '<button class="share-btn share-wechat" onclick="shareWechat()">💬 WeChat</button>' +
+                            '<button class="share-btn share-weibo" onclick="shareWeibo()">🔴 Weibo</button>' +
+                            '<button class="share-btn share-linkedin" onclick="shareLinkedIn()">💼 LinkedIn</button>' +
+                            '<button class="share-btn share-facebook" onclick="shareFacebook()">📘 Facebook</button>' +
+                            '<button class="share-btn share-twitter" onclick="shareTwitter()">🐦 Twitter</button>' +
+                            '<button class="share-btn share-copy" onclick="copyLink()">🔗 Copy Link</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="related-articles">' +
+                        '<h2>Related Articles</h2>' +
+                        '<div id="related-articles" class="related-grid"></div>' +
+                    '</div>';
+
+                // Load related articles
+                loadRelatedArticles(article.category, article.slug);
+
+            } catch (error) {
+                console.error('Error loading article:', error);
+                document.getElementById('article-content').innerHTML = '<div class="error" style="text-align:center; padding:100px 0;">Failed to load article</div>';
+            }
+        }
+
+        async function loadRelatedArticles(category, currentSlug) {
+            try {
+                var response = await fetch('/api/articles?category=' + category + '&limit=3');
+                var data = await response.json();
+                var related = data.articles.filter(function(a) { return a.slug !== currentSlug; }).slice(0, 3);
+
+                if (related.length === 0) {
+                    document.getElementById('related-articles').innerHTML = '<p style="color:var(--text-secondary);">No related articles found</p>';
+                    return;
+                }
+
+                document.getElementById('related-articles').innerHTML = related.map(function(article) {
+                    var categoryLabels = {
+                        'news': 'NEWS',
+                        'guide': 'GUIDE',
+                        'blog': 'BLOG',
+                        'case': 'CASE STUDY'
+                    };
+                    return '<article class="article-card" onclick="window.location.href=\'/article.html?slug=' + article.slug + '\'">' +
+                        '<div class="article-image">' +
+                        (article.coverImage ? '<img src="' + article.coverImage + '" alt="' + article.title + '">' : '<span class="article-emoji">📰</span>') +
+                        '</div>' +
+                        '<div class="article-content">' +
+                        '<span class="article-category">' + (categoryLabels[article.category] || article.category) + '</span>' +
+                        '<h3 class="article-title">' + article.title + '</h3>' +
+                        '<p class="article-excerpt">' + article.excerpt + '</p>' +
+                        '<div class="article-meta">' +
+                        '<span class="article-views">👁 ' + article.views + '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</article>';
+                }).join('');
+            } catch (error) {
+                console.error('Error loading related articles:', error);
+            }
+        }
+
+        function getCurrentUrl() {
+            return window.location.href;
+        }
+
+        function shareWechat() {
+            alert('Share this page on WeChat:\n\n' + getCurrentUrl() + '\n\n(Use WeChat scan to open)');
+        }
+
+        function shareWeibo() {
+            var url = 'https://service.weibo.com/share/share.php?url=' + encodeURIComponent(getCurrentUrl());
+            window.open(url, '_blank');
+        }
+
+        function shareLinkedIn() {
+            var url = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(getCurrentUrl());
+            window.open(url, '_blank');
+        }
+
+        function shareFacebook() {
+            var url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(getCurrentUrl());
+            window.open(url, '_blank');
+        }
+
+        function shareTwitter() {
+            var url = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(getCurrentUrl());
+            window.open(url, '_blank');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(getCurrentUrl()).then(function() {
+                alert('Link copied to clipboard!');
+            }).catch(function() {
+                alert('Failed to copy link');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadArticle);
+    </script>
+</body>
+</html>
