@@ -48,12 +48,14 @@ const productRoutes = require('./routes/products');
 const contactRoutes = require('./routes/contact');
 const newsletterRoutes = require('./routes/newsletter');
 const uploadRoutes = require('./routes/upload');
+const articlesRoutes = require('./routes/articles');
 app.use('/api/auth', authRoutes);
 app.use('/api/inquiries', requireAuth, require('./routes/inquiries'));
 app.use('/api/products', productRoutes);
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/upload', requireAuth, uploadRoutes);
+app.use('/api/articles', articlesRoutes);
 
 // Sitemap.xml - 自动生成
 app.get('/sitemap.xml', (req, res) => {
