@@ -54,6 +54,9 @@ function showSection(sectionId) {
     if (sectionId === 'products') {
         loadProducts();
     }
+    if (sectionId === 'articles') {
+        loadArticles();
+    }
 }
 
 function logout() {
@@ -673,5 +676,210 @@ showSection = function(sectionId) {
     originalShowSection(sectionId);
     if (sectionId === 'inquiries') {
         loadInquiries();
+    }
+}
+
+// Articles Management
+let allArticles = [];
+
+async function loadArticles() {
+    const tbody = document.getElementById('articles-table-body');
+    if (!tbody) return;
+
+    try {
+        const response = await fetch('/api/articles?limit=100');
+        const data = await response.json();
+        allArticles = data.articles;
+        renderArticlesTable(allArticles);
+    } catch (error) {
+        console.error('Error loading articles:', error);
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:40px; color:#ff6b6b;">Failed to load articles</td></tr>';
+    }
+}
+
+function renderArticlesTable(articles) {
+    const tbody = document.getElementById('articles-table-body');
+    if (!tbody) return;
+    
+    if (articles.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:40px; color:#666;">No articles found</td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = articles.map(article => {
+        const categoryColors = {
+            'news': '#6366f1',
+            'guide': '#10b981',
+            'blog': '#f59e0b',
+            'case': '#ec4899'
+        };
+        const color = categoryColors[article.category] || '#6366f1';
+        
+        return '<tr>' +
+            '<td>' + article.id + '</td>' +
+            '<td>' + article.title + '</td>' +
+            '<td><span class="badge" style="background:' + color + '">' + article.category + '</span></td>' +
+            '<td>' + article.author + '</td>' +
+            '<td>' + article.views + '</td>' +
+            '<td>' + (article.isFeatured ? '✓' : '—') + '</td>' +
+            '<td><span class="badge ' + (article.isPublished ? 'badge-success' : 'badge-draft') + '">' + (article.isPublished ? 'Published' : 'Draft') + '</span></td>' +
+            '<td>' +
+                '<button class="edit-btn" onclick="editArticle(\'' + article.id + '\')">✏️</button>' +
+                '<button class="delete-btn" onclick="deleteArticle(\'' + article.id + '\')">🗑️</button>' +
+            '</td>' +
+        '</tr>';
+    }).join('');
+}
+
+function filterArticles() {
+    const category = document.getElementById('article-category-filter').value;
+    const search = document.getElementById('article-search').value.toLowerCase();
+    
+    let filtered = allArticles;
+    if (category !== 'all') {
+        filtered = filtered.filter(a => a.category === category);
+    }
+    if (search) {
+        filtered = filtered.filter(a => 
+            a.title.toLowerCase().includes(search) ||
+            a.author.toLowerCase().includes(search)
+        );
+    }
+    renderArticlesTable(filtered);
+}
+
+function showArticleModal(article = null) {
+    const isEdit = article !== null;
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.cssText = 'position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; z-index:1000;';
+    
+    modal.innerHTML = `
+        <div style="background:#1a1a2e; border-radius:12px; padding:30px; max-width:600px; width:90%; max-height:90vh; overflow-y:auto;">
+            <h2 style="color:#fff; margin-bottom:20px;">${isEdit ? 'Edit Article' : 'Add New Article'}</h2>
+            <form id="article-form">
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">Title</label>
+                    <input type="text" name="title" value="${article?.title || ''}" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">Category</label>
+                    <select name="category" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
+                        <option value="news" ${article?.category === 'news' ? 'selected' : ''}>News</option>
+                        <option value="guide" ${article?.category === 'guide' ? 'selected' : ''}>Guide</option>
+                        <option value="blog" ${article?.category === 'blog' ? 'selected' : ''}>Blog</option>
+                        <option value="case" ${article?.category === 'case' ? 'selected' : ''}>Case Study</option>
+                    </select>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">Author</label>
+                    <input type="text" name="author" value="${article?.author || 'Soinp Team'}" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">Excerpt</label>
+                    <textarea name="excerpt" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff; min-height:80px;">${article?.excerpt || ''}</textarea>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">Content (HTML)</label>
+                    <textarea name="content" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff; min-height:200px;">${article?.content || ''}</textarea>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">Tags (comma-separated)</label>
+                    <input type="text" name="tags" value="${article?.tags?.join(', ') || ''}" style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">
+                        <input type="checkbox" name="isFeatured" ${article?.isFeatured ? 'checked' : ''}> Featured Article
+                    </label>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">
+                        <input type="checkbox" name="isPublished" ${article?.isPublished !== false ? 'checked' : ''}> Published
+                    </label>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end;">
+                    <button type="button" onclick="this.closest('.modal').remove()" style="padding:10px 20px; background:#333; border:none; border-radius:8px; color:#fff; cursor:pointer;">Cancel</button>
+                    <button type="submit" style="padding:10px 20px; background:#6366f1; border:none; border-radius:8px; color:#fff; cursor:pointer;">${isEdit ? 'Update' : 'Create'}</button>
+                </div>
+            </form>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    document.getElementById('article-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        
+        const articleData = {
+            title: formData.get('title'),
+            category: formData.get('category'),
+            author: formData.get('author'),
+            excerpt: formData.get('excerpt'),
+            content: formData.get('content'),
+            tags: formData.get('tags').split(',').map(t => t.trim()).filter(t => t),
+            isFeatured: formData.get('isFeatured') === 'on',
+            isPublished: formData.get('isPublished') === 'on'
+        };
+        
+        const token = localStorage.getItem('token');
+        const url = isEdit ? '/api/articles/' + article.id : '/api/articles';
+        const method = isEdit ? 'PUT' : 'POST';
+        
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(articleData)
+            });
+            
+            if (response.ok) {
+                modal.remove();
+                loadArticles();
+            } else {
+                alert('Failed to save article');
+            }
+        } catch (error) {
+            console.error('Error saving article:', error);
+            alert('Failed to save article');
+        }
+    });
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+function editArticle(id) {
+    const article = allArticles.find(a => a.id === id);
+    if (article) {
+        showArticleModal(article);
+    }
+}
+
+async function deleteArticle(id) {
+    if (!confirm('Are you sure you want to delete this article?')) return;
+    
+    const token = localStorage.getItem('token');
+    
+    try {
+        const response = await fetch('/api/articles/' + id, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        
+        if (response.ok) {
+            loadArticles();
+        } else {
+            alert('Failed to delete article');
+        }
+    } catch (error) {
+        console.error('Error deleting article:', error);
+        alert('Failed to delete article');
     }
 };

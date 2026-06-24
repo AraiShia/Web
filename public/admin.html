@@ -59,6 +59,17 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#articles" onclick="showSection('articles')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+                                <path d="M7 7h10"/>
+                                <path d="M7 12h10"/>
+                                <path d="M7 17h10"/>
+                            </svg>
+                            <span>Articles</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="#orders" onclick="showSection('orders')">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
@@ -583,6 +594,43 @@
                         </tr>
                     </tbody>
                 </table>
+            </section>
+
+            <!-- Articles Section -->
+            <section id="articles" class="content-section">
+                <div class="section-header">
+                    <h2>Articles Management</h2>
+                    <button class="add-product-btn" onclick="showArticleModal()">Add New Article</button>
+                </div>
+                <div class="filter-bar">
+                    <select id="article-category-filter" onchange="filterArticles()">
+                        <option value="all">All Categories</option>
+                        <option value="news">News</option>
+                        <option value="guide">Guides</option>
+                        <option value="blog">Blog</option>
+                        <option value="case">Case Studies</option>
+                    </select>
+                    <input type="text" id="article-search" placeholder="Search articles..." onkeyup="filterArticles()">
+                </div>
+                <div class="table-container">
+                    <table class="products-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Author</th>
+                                <th>Views</th>
+                                <th>Featured</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="articles-table-body">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
             </section>
 
             <!-- Settings Section -->
