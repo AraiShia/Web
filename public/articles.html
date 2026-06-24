@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles - Soinp Gaming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/article.css">
+</head>
+<body>
+    <!-- Discount Banner -->
+    <div id="discountBanner" class="discount-banner">
+        <div class="container" style="display:flex; align-items:center; justify-content:center; gap:20px;">
+            <span>🔥 MEMORIAL DAY SALE: Up to 50% OFF Gaming Chairs + Desks!</span>
+            <a href="/products.html?category=gaming-chairs" class="banner-btn">SHOP NOW</a>
+            <button onclick="document.getElementById('discountBanner').style.display='none'" style="background:none; border:none; color:#fff; cursor:pointer; font-size:20px;">×</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <nav class="navbar">
+            <a href="/" class="logo">
+                <span class="logo-icon">🎮</span>
+                <span class="logo-text">SOINP</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="/">HOME</a></li>
+                <li class="dropdown">
+                    <a href="/products.html">PRODUCTS</a>
+                    <div class="dropdown-content">
+                        <a href="/products.html?category=gaming-chairs">Gaming Chairs</a>
+                        <a href="/products.html?category=gaming-desks">Gaming Desks</a>
+                        <a href="/products.html?category=mouse-pads">Mouse Pads</a>
+                        <a href="/products.html?category=accessories">Accessories</a>
+                    </div>
+                </li>
+                <li><a href="/articles.html" class="active">ARTICLES</a></li>
+                <li><a href="/#contact">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1 id="page-title">ARTICLES</h1>
+            <p id="page-description">News, guides, and stories from the gaming world</p>
+        </div>
+    </section>
+
+    <!-- Articles Section -->
+    <section class="articles-section">
+        <div class="container">
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="all">ALL</button>
+                <button class="category-tab" data-category="news">NEWS</button>
+                <button class="category-tab" data-category="guide">GUIDES</button>
+                <button class="category-tab" data-category="blog">BLOG</button>
+                <button class="category-tab" data-category="case">CASE STUDIES</button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search articles...">
+                <button id="search-btn" class="search-btn">🔍</button>
+            </div>
+
+            <!-- Articles Grid -->
+            <div id="articles-grid" class="articles-grid">
+                <div class="loading">Loading articles...</div>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination" class="pagination"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>SOINP</h3>
+                    <p>Premium gaming furniture for pro gamers worldwide.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Products</h4>
+                    <ul>
+                        <li><a href="/products.html?category=gaming-chairs">Gaming Chairs</a></li>
+                        <li><a href="/products.html?category=gaming-desks">Gaming Desks</a></li>
+                        <li><a href="/products.html?category=mouse-pads">Mouse Pads</a></li>
+                        <li><a href="/products.html?category=accessories">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="/articles.html">Articles</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                        <li><a href="/cookie-policy.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Soinp Gaming. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/articles.js"></script>
+</body>
+</html>
