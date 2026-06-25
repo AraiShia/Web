@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadFeaturedProducts();
     initCategoryFilter();
     setupHistoryNavigation();
+    loadLatestArticles();
 });
 
 function setupHistoryNavigation() {
@@ -277,6 +278,44 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('section').forEach(section => {
     section.style.opacity = '0';
     section.style.transform = 'translateY(30px)';
-    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';        
     observer.observe(section);
 });
+
+// Load Latest Articles
+async function loadLatestArticles() {
+    const container = document.getElementById('latest-articles-grid');
+    if (!container) return;
+
+    try {
+        const response = await fetch('/api/articles?limit=3');
+        const data = await response.json();
+        
+        if (data.articles && data.articles.length > 0) {
+            const categoryLabels = {
+                'news': 'NEWS',
+                'guide': 'GUIDE',
+                'blog': 'BLOG',
+                'case': 'CASE STUDY'
+            };
+            
+            container.innerHTML = data.articles.map(article => `
+                <a href="/article.html?slug=${article.slug}" class="article-preview-card">
+                    <div class="article-preview-image">
+                        ${article.coverImage ? '<img src="' + article.coverImage + '" alt="' + article.title + '">' : '<span>📰</span>'}
+                    </div>
+                    <div class="article-preview-content">
+                        <span class="article-preview-category">${categoryLabels[article.category] || article.category}</span>
+                        <h3 class="article-preview-title">${article.title}</h3>
+                        <p class="article-preview-excerpt">${article.excerpt}</p>
+                        <span class="article-preview-date">${article.publishedAt}</span>
+                    </div>
+                </a>
+            `).join('');
+        } else {
+            container.innerHTML = '<p style="color:var(--text-secondary); text-align:center; grid-column:1/-1;">No articles available</p>';
+        }
+    } catch (error) {
+        console.error('Error loading latest articles:', error);
+    }
+}
