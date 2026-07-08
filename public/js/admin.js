@@ -30,13 +30,55 @@ document.addEventListener('DOMContentLoaded', function() {
         const newHash = window.location.hash.replace('#', '') || 'dashboard';
         showSection(newHash);
     });
+
+    // 更新语言按钮状态
+    updateLanguageButtons();
+    
+    // 初始化页面翻译
+    translatePage();
+    
+    // 监听语言变化
+    onLanguageChange(function() {
+        updateLanguageButtons();
+        translatePage();
+        if (currentSection === 'products') loadProducts();
+        if (currentSection === 'articles') loadArticles();
+        if (currentSection === 'inquiries') loadInquiries();
+    });
 });
+
+let currentSection = 'dashboard';
+
+function updateLanguageButtons() {
+    const lang = getCurrentLanguage();
+    document.getElementById('lang-en').className = 'lang-btn' + (lang === 'en' ? ' active' : '');
+    document.getElementById('lang-zh').className = 'lang-btn' + (lang === 'zh' ? ' active' : '');
+}
+
+function translatePage() {
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n');
+        const translation = t(key);
+        if (translation && translation !== key) {
+            el.textContent = translation;
+        }
+    });
+    
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n-placeholder');
+        const translation = t(key);
+        if (translation && translation !== key) {
+            el.placeholder = translation;
+        }
+    });
+}
 
 // Global variable to store uploaded image URLs
 let uploadedImages = [];
 let editingProductId = null;
 
 function showSection(sectionId) {
+    currentSection = sectionId;
     document.querySelectorAll('.content-section').forEach(section => {
         section.classList.remove('active');
     });
@@ -60,7 +102,7 @@ function showSection(sectionId) {
 }
 
 function logout() {
-    if (confirm('Are you sure you want to logout?')) {
+    if (confirm(t('areYouSure') + ' ' + t('logoutConfirm'))) {
         localStorage.removeItem('token');
         window.location.href = '/login.html';
     }
@@ -89,12 +131,12 @@ function loadProducts() {
         if (products && products.length > 0) {
             container.innerHTML = products.map(product => createProductCard(product)).join('');
         } else {
-            container.innerHTML = '<div style="text-align:center; padding:60px; color:#666;">No products available. Click "Add Product" to create one.</div>';
+            container.innerHTML = '<div style="text-align:center; padding:60px; color:#666;">' + t('noProductsAvailable') + '</div>';
         }
     })
     .catch(error => {
         console.error('Error loading products:', error);
-        container.innerHTML = '<div style="text-align:center; padding:60px; color:#ff6b6b;">Failed to load products</div>';
+        container.innerHTML = '<div style="text-align:center; padding:60px; color:#ff6b6b;">' + t('failedToLoadProducts') + '</div>';
     });
 }
 
@@ -106,8 +148,8 @@ function createProductCard(product) {
             <div class="category">${product.category}</div>
             <div class="price">$${product.price}${product.originalPrice ? ` <span style="font-size:14px; color:#666; text-decoration:line-through;">$${product.originalPrice}</span>` : ''}</div>
             <div class="actions">
-                <button class="edit-btn" onclick="editProduct('${productId}')">Edit</button>
-                <button class="delete-btn" onclick="deleteProduct('${productId}')">Delete</button>
+                <button class="edit-btn" onclick="editProduct('${productId}')">${t('edit')}</button>
+                <button class="delete-btn" onclick="deleteProduct('${productId}')">${t('delete')}</button>
             </div>
         </div>
     `;
@@ -121,13 +163,13 @@ function handleImageUpload(input) {
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     if (!allowedTypes.includes(file.type)) {
-        alert('Only image files (JPG, PNG, WEBP, GIF) are allowed!');
+        alert(t('onlyImageFiles'));
         return;
     }
 
     // Validate file size (10MB)
     if (file.size > 10 * 1024 * 1024) {
-        alert('File size must be less than 10MB!');
+        alert(t('fileSizeLimit'));
         return;
     }
 
@@ -150,12 +192,12 @@ function handleImageUpload(input) {
             uploadedImages.push(data.url);
             renderUploadedImages();
         } else {
-            alert('Upload failed: ' + data.message);
+            alert(t('uploadFailed') + ' ' + data.message);
         }
     })
     .catch(error => {
         console.error('Error uploading image:', error);
-        alert('Failed to upload image');
+        alert(t('failedToUpload'));
     })
     .finally(() => {
         // Reset file input
@@ -242,7 +284,7 @@ function removeImage(index) {
 
 function openProductModal() {
     editingProductId = null;
-    document.getElementById('modal-title').textContent = 'Add Product';
+    document.getElementById('modal-title').textContent = t('addProduct');
     document.getElementById('product-form').reset();
     uploadedImages = [];
     renderUploadedImages();
@@ -303,14 +345,14 @@ document.getElementById('product-form').addEventListener('submit', function(e) {
     })
     .then(response => response.json())
     .then(() => {
-        alert(isEdit ? 'Product updated successfully!' : 'Product added successfully!');
+        alert(isEdit ? t('productUpdated') : t('productAdded'));
         closeModal();
         loadProducts();
         uploadedImages = [];
     })
     .catch(error => {
         console.error('Error saving product:', error);
-        alert('Failed to save product');
+        alert(t('failedToSaveProduct'));
     });
 });
 
@@ -338,7 +380,7 @@ function editProduct(id) {
         // 设置编辑状态
         editingProductId = id;
 
-        document.getElementById('modal-title').textContent = 'Edit Product';
+        document.getElementById('modal-title').textContent = t('editProduct');
         document.getElementById('product-name').value = product.name || '';
         document.getElementById('product-category').value = product.category || '';
         document.getElementById('product-price').value = product.price || '';
@@ -362,7 +404,7 @@ function editProduct(id) {
 }
 
 function deleteProduct(id) {
-    if (!confirm('Are you sure you want to delete this product?')) return;
+    if (!confirm(t('areYouSure') + ' ' + t('deleteThisProduct'))) return;
     
     const token = localStorage.getItem('token');
     fetch(`/api/products/${id}`, {
@@ -371,19 +413,20 @@ function deleteProduct(id) {
     })
     .then(response => response.json())
     .then(() => {
-        alert('Product deleted successfully!');
+        alert(t('productDeleted'));
         loadProducts();
     })
     .catch(error => {
         console.error('Error deleting product:', error);
-        alert('Failed to delete product');
+        alert(t('failedToSaveProduct'));
     });
 }
 
 // Content Management
 function editContent(page) {
     document.getElementById('content-page').value = page;
-    document.getElementById('content-modal-title').textContent = `Edit ${page.charAt(0).toUpperCase() + page.slice(1)} Page Content`;
+    const pageNames = { 'home': t('homePage'), 'about': t('aboutPage'), 'contact': t('contactPage'), 'products': t('productsPage') };
+    document.getElementById('content-modal-title').textContent = t('edit') + ' ' + (pageNames[page] || page) + ' ' + t('pageContent');
     
     fetch(`/api/content/${page}`)
     .then(response => response.json())
@@ -427,12 +470,12 @@ document.getElementById('content-form').addEventListener('submit', function(e) {
     })
     .then(response => response.json())
     .then(() => {
-        alert('Content updated successfully!');
+        alert(t('contentUpdated'));
         closeContentModal();
     })
     .catch(error => {
         console.error('Error updating content:', error);
-        alert('Failed to update content');
+        alert(t('failedToSaveProduct'));
     });
 });
 
@@ -476,7 +519,7 @@ function filterProducts() {
         if (products.length > 0) {
             container.innerHTML = products.map(createProductCard).join('');
         } else {
-            container.innerHTML = '<div style="text-align:center; padding:60px; color:#666;">No products found</div>';
+            container.innerHTML = '<div style="text-align:center; padding:60px; color:#666;">' + t('noProductsFound') + '</div>';
         }
     })
     .catch(error => {
@@ -530,12 +573,12 @@ function loadInquiries() {
 
             container.innerHTML = data.inquiries.map(inquiry => createInquiryCard(inquiry)).join('');
         } else {
-            container.innerHTML = '<div style="text-align:center; padding:60px; color:#666;">No inquiries yet</div>';
+            container.innerHTML = '<div style="text-align:center; padding:60px; color:#666;">' + t('noInquiriesYet') + '</div>';
         }
     })
     .catch(error => {
         console.error('Error loading inquiries:', error);
-        container.innerHTML = '<div style="text-align:center; padding:60px; color:#ff6b6b;">Failed to load inquiries</div>';
+        container.innerHTML = '<div style="text-align:center; padding:60px; color:#ff6b6b;">' + t('failedToLoadInquiries') + '</div>';
     });
 }
 
@@ -544,7 +587,7 @@ function createInquiryCard(inquiry) {
     const date = new Date(inquiry.createdAt);
     const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
     const statusClass = inquiry.isRead ? 'read' : 'unread';
-    const statusText = inquiry.isRead ? 'Read' : 'New';
+    const statusText = inquiry.isRead ? t('read') : t('new');
 
     return `
         <div class="inquiry-card ${statusClass}" onclick="viewInquiry('${inquiry.id}')">
@@ -556,7 +599,7 @@ function createInquiryCard(inquiry) {
                 <h4>${inquiry.name}</h4>
                 <p class="inquiry-email">${inquiry.email}</p>
                 ${inquiry.company ? `<p class="inquiry-company">${inquiry.company}</p>` : ''}
-                ${inquiry.product ? `<p class="inquiry-product"><strong>Product:</strong> ${inquiry.product}</p>` : ''}
+                ${inquiry.product ? `<p class="inquiry-product"><strong>${t('product')}:</strong> ${inquiry.product}</p>` : ''}
             </div>
             <div class="inquiry-preview">${inquiry.message.substring(0, 100)}${inquiry.message.length > 100 ? '...' : ''}</div>
         </div>
@@ -579,31 +622,31 @@ function viewInquiry(id) {
             document.getElementById('inquiry-detail').innerHTML = `
                 <div class="inquiry-detail-content">
                     <div class="detail-row">
-                        <span class="detail-label">Name:</span>
+                        <span class="detail-label">${t('name')}:</span>
                         <span class="detail-value">${inq.name}</span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Email:</span>
+                        <span class="detail-label">${t('email')}:</span>
                         <span class="detail-value"><a href="mailto:${inq.email}">${inq.email}</a></span>
                     </div>
-                    ${inq.phone ? `<div class="detail-row"><span class="detail-label">Phone:</span><span class="detail-value">${inq.phone}</span></div>` : ''}
-                    ${inq.company ? `<div class="detail-row"><span class="detail-label">Company:</span><span class="detail-value">${inq.company}</span></div>` : ''}
-                    ${inq.product ? `<div class="detail-row"><span class="detail-label">Product:</span><span class="detail-value">${inq.product}</span></div>` : ''}
+                    ${inq.phone ? `<div class="detail-row"><span class="detail-label">${t('phone')}:</span><span class="detail-value">${inq.phone}</span></div>` : ''}
+                    ${inq.company ? `<div class="detail-row"><span class="detail-label">${t('company')}:</span><span class="detail-value">${inq.company}</span></div>` : ''}
+                    ${inq.product ? `<div class="detail-row"><span class="detail-label">${t('product')}:</span><span class="detail-value">${inq.product}</span></div>` : ''}
                     <div class="detail-row">
-                        <span class="detail-label">Submitted:</span>
+                        <span class="detail-label">${t('submitted')}:</span>
                         <span class="detail-value">${formattedDate}</span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Status:</span>
-                        <span class="detail-value ${inq.isRead ? 'read' : 'unread'}">${inq.isRead ? 'Read' : 'Unread'}</span>
+                        <span class="detail-label">${t('status')}:</span>
+                        <span class="detail-value ${inq.isRead ? 'read' : 'unread'}">${inq.isRead ? t('read') : t('unread')}</span>
                     </div>
                     <div class="detail-message">
-                        <span class="detail-label">Message:</span>
+                        <span class="detail-label">${t('message')}:</span>
                         <div class="message-box">${inq.message}</div>
                     </div>
                     <div class="detail-actions">
-                        <a href="mailto:${inq.email}?subject=Re: Your Inquiry" class="btn btn-primary">Reply via Email</a>
-                        <button class="btn btn-danger" onclick="deleteInquiry('${inq.id}')">Delete</button>
+                        <a href="mailto:${inq.email}?subject=Re: Your Inquiry" class="btn btn-primary">${t('replyViaEmail')}</a>
+                        <button class="btn btn-danger" onclick="deleteInquiry('${inq.id}')">${t('delete')}</button>
                     </div>
                 </div>
             `;
@@ -630,7 +673,7 @@ function closeInquiryModal() {
 
 // Delete inquiry
 function deleteInquiry(id) {
-    if (!confirm('Are you sure you want to delete this inquiry?')) return;
+    if (!confirm(t('areYouSure') + ' ' + t('deleteThisInquiry'))) return;
 
     const token = localStorage.getItem('token');
     fetch(`/api/inquiries/${id}`, {
@@ -693,7 +736,7 @@ async function loadArticles() {
         renderArticlesTable(allArticles);
     } catch (error) {
         console.error('Error loading articles:', error);
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:40px; color:#ff6b6b;">Failed to load articles</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:40px; color:#ff6b6b;">' + t('failedToLoadArticles') + '</td></tr>';
     }
 }
 
@@ -702,7 +745,7 @@ function renderArticlesTable(articles) {
     if (!tbody) return;
     
     if (articles.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:40px; color:#666;">No articles found</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:40px; color:#666;">' + t('noArticlesFound') + '</td></tr>';
         return;
     }
     
@@ -722,10 +765,10 @@ function renderArticlesTable(articles) {
             '<td>' + article.author + '</td>' +
             '<td>' + article.views + '</td>' +
             '<td>' + (article.isFeatured ? '✓' : '—') + '</td>' +
-            '<td><span class="badge ' + (article.isPublished ? 'badge-success' : 'badge-draft') + '">' + (article.isPublished ? 'Published' : 'Draft') + '</span></td>' +
+            '<td><span class="badge ' + (article.isPublished ? 'badge-success' : 'badge-draft') + '">' + (article.isPublished ? t('published') : t('draft')) + '</span></td>' +
             '<td>' +
-                '<button class="edit-btn" onclick="editArticle(\'' + article.id + '\')">✏️</button>' +
-                '<button class="delete-btn" onclick="deleteArticle(\'' + article.id + '\')">🗑️</button>' +
+                '<button class="edit-btn" onclick="editArticle(\'' + article.id + '\')">' + t('edit') + '</button>' +
+                '<button class="delete-btn" onclick="deleteArticle(\'' + article.id + '\')">' + t('delete') + '</button>' +
             '</td>' +
         '</tr>';
     }).join('');
@@ -756,50 +799,50 @@ function showArticleModal(article = null) {
     
     modal.innerHTML = `
         <div style="background:#1a1a2e; border-radius:12px; padding:30px; max-width:600px; width:90%; max-height:90vh; overflow-y:auto;">
-            <h2 style="color:#fff; margin-bottom:20px;">${isEdit ? 'Edit Article' : 'Add New Article'}</h2>
+            <h2 style="color:#fff; margin-bottom:20px;">${isEdit ? t('edit') + ' ' + t('article') : t('addNewArticle')}</h2>
             <form id="article-form">
                 <div style="margin-bottom:15px;">
-                    <label style="color:#fff; display:block; margin-bottom:5px;">Title</label>
+                    <label style="color:#fff; display:block; margin-bottom:5px;">${t('title')}</label>
                     <input type="text" name="title" value="${article?.title || ''}" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
                 </div>
                 <div style="margin-bottom:15px;">
-                    <label style="color:#fff; display:block; margin-bottom:5px;">Category</label>
+                    <label style="color:#fff; display:block; margin-bottom:5px;">${t('category')}</label>
                     <select name="category" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
-                        <option value="news" ${article?.category === 'news' ? 'selected' : ''}>News</option>
-                        <option value="guide" ${article?.category === 'guide' ? 'selected' : ''}>Guide</option>
-                        <option value="blog" ${article?.category === 'blog' ? 'selected' : ''}>Blog</option>
-                        <option value="case" ${article?.category === 'case' ? 'selected' : ''}>Case Study</option>
+                        <option value="news" ${article?.category === 'news' ? 'selected' : ''}>${t('news')}</option>
+                        <option value="guide" ${article?.category === 'guide' ? 'selected' : ''}>${t('guides')}</option>
+                        <option value="blog" ${article?.category === 'blog' ? 'selected' : ''}>${t('blog')}</option>
+                        <option value="case" ${article?.category === 'case' ? 'selected' : ''}>${t('caseStudies')}</option>
                     </select>
                 </div>
                 <div style="margin-bottom:15px;">
-                    <label style="color:#fff; display:block; margin-bottom:5px;">Author</label>
+                    <label style="color:#fff; display:block; margin-bottom:5px;">${t('author')}</label>
                     <input type="text" name="author" value="${article?.author || 'Soinp Team'}" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
                 </div>
                 <div style="margin-bottom:15px;">
-                    <label style="color:#fff; display:block; margin-bottom:5px;">Excerpt</label>
+                    <label style="color:#fff; display:block; margin-bottom:5px;">${t('excerpt')}</label>
                     <textarea name="excerpt" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff; min-height:80px;">${article?.excerpt || ''}</textarea>
                 </div>
                 <div style="margin-bottom:15px;">
-                    <label style="color:#fff; display:block; margin-bottom:5px;">Content (HTML)</label>
+                    <label style="color:#fff; display:block; margin-bottom:5px;">${t('content')}</label>
                     <textarea name="content" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff; min-height:200px;">${article?.content || ''}</textarea>
                 </div>
                 <div style="margin-bottom:15px;">
-                    <label style="color:#fff; display:block; margin-bottom:5px;">Tags (comma-separated)</label>
+                    <label style="color:#fff; display:block; margin-bottom:5px;">${t('tags')}</label>
                     <input type="text" name="tags" value="${article?.tags?.join(', ') || ''}" style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
                 </div>
                 <div style="margin-bottom:15px;">
                     <label style="color:#fff; display:block; margin-bottom:5px;">
-                        <input type="checkbox" name="isFeatured" ${article?.isFeatured ? 'checked' : ''}> Featured Article
+                        <input type="checkbox" name="isFeatured" ${article?.isFeatured ? 'checked' : ''}> ${t('featuredArticle')}
                     </label>
                 </div>
                 <div style="margin-bottom:15px;">
                     <label style="color:#fff; display:block; margin-bottom:5px;">
-                        <input type="checkbox" name="isPublished" ${article?.isPublished !== false ? 'checked' : ''}> Published
+                        <input type="checkbox" name="isPublished" ${article?.isPublished !== false ? 'checked' : ''}> ${t('published')}
                     </label>
                 </div>
                 <div style="display:flex; gap:10px; justify-content:flex-end;">
-                    <button type="button" onclick="this.closest('.modal').remove()" style="padding:10px 20px; background:#333; border:none; border-radius:8px; color:#fff; cursor:pointer;">Cancel</button>
-                    <button type="submit" style="padding:10px 20px; background:#6366f1; border:none; border-radius:8px; color:#fff; cursor:pointer;">${isEdit ? 'Update' : 'Create'}</button>
+                    <button type="button" onclick="this.closest('.modal').remove()" style="padding:10px 20px; background:#333; border:none; border-radius:8px; color:#fff; cursor:pointer;">${t('cancel')}</button>
+                    <button type="submit" style="padding:10px 20px; background:#6366f1; border:none; border-radius:8px; color:#fff; cursor:pointer;">${isEdit ? t('update') : t('create')}</button>
                 </div>
             </form>
         </div>
@@ -840,11 +883,11 @@ function showArticleModal(article = null) {
                 modal.remove();
                 loadArticles();
             } else {
-                alert('Failed to save article');
+                alert(t('failedToSaveArticle'));
             }
         } catch (error) {
             console.error('Error saving article:', error);
-            alert('Failed to save article');
+            alert(t('failedToSaveArticle'));
         }
     });
     
@@ -863,7 +906,7 @@ function editArticle(id) {
 }
 
 async function deleteArticle(id) {
-    if (!confirm('Are you sure you want to delete this article?')) return;
+    if (!confirm(t('areYouSure') + ' ' + t('deleteThisArticle'))) return;
     
     const token = localStorage.getItem('token');
     
@@ -876,10 +919,10 @@ async function deleteArticle(id) {
         if (response.ok) {
             loadArticles();
         } else {
-            alert('Failed to delete article');
+            alert(t('articleDeleted'));
         }
     } catch (error) {
         console.error('Error deleting article:', error);
-        alert('Failed to delete article');
+        alert(t('articleDeleted'));
     }
 };

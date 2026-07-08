@@ -23,7 +23,7 @@
                                 <rect x="14" y="14" width="7" height="7"/>
                                 <rect x="3" y="14" width="7" height="7"/>
                             </svg>
-                            <span>Dashboard</span>
+                            <span data-i18n="dashboard">Dashboard</span>
                         </a>
                     </li>
                     <li>
@@ -34,7 +34,7 @@
                                 <path d="M17 17c0-2-3-4.5-3-7.5S14 4 14 4"/>
                                 <path d="M5 17c0-2 3-4.5 3-7.5S5 4 5 4"/>
                             </svg>
-                            <span>Products</span>
+                            <span data-i18n="products">Products</span>
                         </a>
                     </li>
                     <li>
@@ -42,7 +42,7 @@
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                             </svg>
-                            <span>Inquiries</span>
+                            <span data-i18n="inquiries">Inquiries</span>
                             <span class="badge" id="inquiry-badge" style="display:none;">0</span>
                         </a>
                     </li>
@@ -55,7 +55,7 @@
                                 <line x1="16" y1="17" x2="8" y2="17"/>
                                 <polyline points="10 9 9 9 8 9"/>
                             </svg>
-                            <span>Page Content</span>
+                            <span data-i18n="pageContent">Page Content</span>
                         </a>
                     </li>
                     <li>
@@ -66,7 +66,7 @@
                                 <path d="M7 12h10"/>
                                 <path d="M7 17h10"/>
                             </svg>
-                            <span>Articles</span>
+                            <span data-i18n="articles">Articles</span>
                         </a>
                     </li>
                     <li>
@@ -76,7 +76,7 @@
                                 <line x1="3" y1="6" x2="21" y2="6"/>
                                 <path d="M16 10a4 4 0 0 1-8 0"/>
                             </svg>
-                            <span>Orders</span>
+                            <span data-i18n="orders">Orders</span>
                         </a>
                     </li>
                     <li>
@@ -85,7 +85,7 @@
                                 <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
                                 <circle cx="12" cy="12" r="3"/>
                             </svg>
-                            <span>Settings</span>
+                            <span data-i18n="settings">Settings</span>
                         </a>
                     </li>
                 </ul>
@@ -97,7 +97,7 @@
                         <polyline points="16 17 21 12 16 7"/>
                         <line x1="21" y1="12" x2="9" y2="12"/>
                     </svg>
-                    <span>Logout</span>
+                    <span data-i18n="logout">Logout</span>
                 </button>
             </div>
         </aside>
@@ -119,8 +119,12 @@
                         </svg>
                         <span class="badge">3</span>
                     </div>
+                    <div class="language-switch">
+                        <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">EN</button>
+                        <button class="lang-btn" id="lang-zh" onclick="setLanguage('zh')">中文</button>
+                    </div>
                     <div class="user-info">
-                        <span class="user-name">Admin</span>
+                        <span class="user-name" data-i18n="admin">Admin</span>
                         <div class="user-avatar">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -134,8 +138,8 @@
             <!-- Dashboard Section -->
             <section id="dashboard" class="content-section active">
                 <div class="section-header">
-                    <h2>Dashboard</h2>
-                    <p>Welcome back, Admin</p>
+                    <h2 data-i18n="dashboard">Dashboard</h2>
+                    <p data-i18n="welcomeBack">Welcome back, Admin</p>
                 </div>
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -149,7 +153,7 @@
                         </div>
                         <div class="stat-info">
                             <div class="stat-value">12</div>
-                            <div class="stat-label">Products</div>
+                            <div class="stat-label" data-i18n="stats.products">Products</div>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -162,7 +166,7 @@
                         </div>
                         <div class="stat-info">
                             <div class="stat-value">28</div>
-                            <div class="stat-label">Orders</div>
+                            <div class="stat-label" data-i18n="stats.orders">Orders</div>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -174,7 +178,7 @@
                         </div>
                         <div class="stat-info">
                             <div class="stat-value">$45,231</div>
-                            <div class="stat-label">Revenue</div>
+                            <div class="stat-label" data-i18n="stats.revenue">Revenue</div>
                         </div>
                     </div>
                     <div class="stat-card">
@@ -186,57 +190,23 @@
                         </div>
                         <div class="stat-info">
                             <div class="stat-value">1,245</div>
-                            <div class="stat-label">Customers</div>
+                            <div class="stat-label" data-i18n="stats.customers">Customers</div>
                         </div>
                     </div>
                 </div>
                 <div class="dashboard-content">
                     <div class="recent-orders">
-                        <h3>Recent Orders</h3>
-                        <!-- <table class="orders-table">
-                            <thead>
-                                <tr>
-                                    <th>Order ID</th>
-                                    <th>Customer</th>
-                                    <th>Product</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#ORD-001</td>
-                                    <td>John Doe</td>
-                                    <td>Pro Gaming Chair X1</td>
-                                    <td>$299</td>
-                                    <td><span class="status completed">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#ORD-002</td>
-                                    <td>Jane Smith</td>
-                                    <td>Ergonomic Chair Pro</td>
-                                    <td>$449</td>
-                                    <td><span class="status processing">Processing</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#ORD-003</td>
-                                    <td>Mike Johnson</td>
-                                    <td>RGB Gaming Chair</td>
-                                    <td>$399</td>
-                                    <td><span class="status pending">Pending</span></td>
-                                </tr>
-                            </tbody>
-                        </table> -->
+                        <h3 data-i18n="recentOrders">Recent Orders</h3>
                     </div>
                     <div class="quick-actions">
-                        <h3>Quick Actions</h3>
+                        <h3 data-i18n="quickActions">Quick Actions</h3>
                         <div class="action-buttons">
                             <button class="action-btn" onclick="showSection('products'); document.getElementById('add-product-btn').click()">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M12 5v14"/>
                                     <path d="M5 12h14"/>
                                 </svg>
-                                <span>Add Product</span>
+                                <span data-i18n="addProduct">Add Product</span>
                             </button>
                             <button class="action-btn" onclick="showSection('content')">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -246,7 +216,7 @@
                                     <line x1="16" y1="17" x2="8" y2="17"/>
                                     <polyline points="10 9 9 9 8 9"/>
                                 </svg>
-                                <span>Edit Content</span>
+                                <span data-i18n="editContentBtn">Edit Content</span>
                             </button>
                             <button class="action-btn" onclick="showSection('orders')">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -254,7 +224,7 @@
                                     <line x1="3" y1="6" x2="21" y2="6"/>
                                     <path d="M16 10a4 4 0 0 1-8 0"/>
                                 </svg>
-                                <span>View Orders</span>
+                                <span data-i18n="viewOrders">View Orders</span>
                             </button>
                         </div>
                     </div>
@@ -264,33 +234,33 @@
             <!-- Products Section -->
             <section id="products" class="content-section">
                 <div class="section-header">
-                    <h2>Products</h2>
+                    <h2 data-i18n="products">Products</h2>
                     <button id="add-product-btn" class="add-btn" onclick="openProductModal()">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 5v14"/>
                             <path d="M5 12h14"/>
                         </svg>
-                        <span>Add Product</span>
+                        <span data-i18n="addProduct">Add Product</span>
                     </button>
                 </div>
                 <div class="filter-bar">
                     <select id="category-filter">
-                        <option value="all">All Categories</option>
+                        <option value="all" data-i18n="allCategories">All Categories</option>
                         <option value="gaming-chairs">Gaming Chairs</option>
                         <option value="gaming-desks">Gaming Desks</option>
                         <option value="accessories">Accessories</option>
                     </select>
-                    <input type="text" id="search-product" placeholder="Search products...">
+                    <input type="text" id="search-product" data-i18n-placeholder="searchProducts" placeholder="Search products...">
                 </div>
                 <div class="products-list" id="products-list">
-                    <div style="text-align:center; padding:60px; color:#666;">Loading products...</div>
+                    <div style="text-align:center; padding:60px; color:#666;" data-i18n="loadingProducts">Loading products...</div>
                 </div>
             </section>
 
             <!-- Inquiries Section -->
             <section id="inquiries" class="content-section">
                 <div class="section-header">
-                    <h2>Inquiries</h2>
+                    <h2 data-i18n="inquiries">Inquiries</h2>
                     <div class="header-actions">
                         <button class="btn btn-success" onclick="exportInquiries()">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -298,25 +268,25 @@
                                 <polyline points="7 10 12 15 17 10"/>
                                 <line x1="12" y1="15" x2="12" y2="3"/>
                             </svg>
-                            Export CSV
+                            <span data-i18n="exportCSV">Export CSV</span>
                         </button>
-                        <button class="btn btn-secondary" onclick="markAllInquiriesRead()">Mark All Read</button>
+                        <button class="btn btn-secondary" onclick="markAllInquiriesRead()" data-i18n="markAllRead">Mark All Read</button>
                     </div>
                 </div>
                 
                 <div class="inquiries-stats">
                     <div class="inquiry-stat-card">
                         <div class="stat-number" id="total-inquiries">0</div>
-                        <div class="stat-label">Total Inquiries</div>
+                        <div class="stat-label" data-i18n="totalInquiries">Total Inquiries</div>
                     </div>
                     <div class="inquiry-stat-card unread">
                         <div class="stat-number" id="unread-inquiries">0</div>
-                        <div class="stat-label">Unread</div>
+                        <div class="stat-label" data-i18n="unread">Unread</div>
                     </div>
                 </div>
 
                 <div class="inquiries-list" id="inquiries-list">
-                    <div class="loading">Loading inquiries...</div>
+                    <div class="loading" data-i18n="loadingInquiries">Loading inquiries...</div>
                 </div>
             </section>
 
@@ -324,7 +294,7 @@
             <div class="modal-overlay" id="inquiry-modal" style="display:none;">
                 <div class="modal-content" style="max-width:600px;">
                     <div class="modal-header">
-                        <h3>Inquiry Details</h3>
+                        <h3 data-i18n="inquiryDetails">Inquiry Details</h3>
                         <button class="modal-close" onclick="closeInquiryModal()">&times;</button>
                     </div>
                     <div class="modal-body" id="inquiry-detail"></div>
@@ -504,7 +474,7 @@
             <!-- Content Management Section -->
             <section id="content" class="content-section">
                 <div class="section-header">
-                    <h2>Page Content</h2>
+                    <h2 data-i18n="pageContent">Page Content</h2>
                 </div>
                 <div class="content-grid">
                     <div class="content-card" onclick="editContent('home')">
@@ -512,23 +482,23 @@
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                             <polyline points="9 22 9 12 15 12 15 22"/>
                         </svg>
-                        <h3>Home Page</h3>
-                        <p>Hero content, banners, featured products</p>
+                        <h3 data-i18n="homePage">Home Page</h3>
+                        <p data-i18n="heroContent">Hero content, banners, featured products</p>
                     </div>
                     <div class="content-card" onclick="editContent('about')">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                             <circle cx="12" cy="7" r="4"/>
                         </svg>
-                        <h3>About Page</h3>
-                        <p>Company information, highlights, stats</p>
+                        <h3 data-i18n="aboutPage">About Page</h3>
+                        <p data-i18n="companyInfo">Company information, highlights, stats</p>
                     </div>
                     <div class="content-card" onclick="editContent('contact')">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                         </svg>
-                        <h3>Contact Page</h3>
-                        <p>Contact information, form settings</p>
+                        <h3 data-i18n="contactPage">Contact Page</h3>
+                        <p data-i18n="contactInfo">Contact information, form settings</p>
                     </div>
                     <div class="content-card" onclick="editContent('products')">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -537,8 +507,8 @@
                             <path d="M17 17c0-2-3-4.5-3-7.5S14 4 14 4"/>
                             <path d="M5 17c0-2 3-4.5 3-7.5S5 4 5 4"/>
                         </svg>
-                        <h3>Products Page</h3>
-                        <p>Category descriptions, filters</p>
+                        <h3 data-i18n="productsPage">Products Page</h3>
+                        <p data-i18n="categoryDescriptions">Category descriptions, filters</p>
                     </div>
                 </div>
             </section>
@@ -546,19 +516,19 @@
             <!-- Orders Section -->
             <section id="orders" class="content-section">
                 <div class="section-header">
-                    <h2>Orders</h2>
+                    <h2 data-i18n="orders">Orders</h2>
                 </div>
                 <table class="orders-table full">
                     <thead>
                         <tr>
-                            <th>Order ID</th>
-                            <th>Customer</th>
-                            <th>Email</th>
-                            <th>Product</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                            <th>Action</th>
+                            <th data-i18n="orderId">Order ID</th>
+                            <th data-i18n="customer">Customer</th>
+                            <th data-i18n="email">Email</th>
+                            <th data-i18n="product">Product</th>
+                            <th data-i18n="amount">Amount</th>
+                            <th data-i18n="status">Status</th>
+                            <th data-i18n="date">Date</th>
+                            <th data-i18n="action">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -568,9 +538,9 @@
                             <td>john@example.com</td>
                             <td>Pro Gaming Chair X1</td>
                             <td>$299</td>
-                            <td><span class="status completed">Completed</span></td>
+                            <td><span class="status completed" data-i18n="completed">Completed</span></td>
                             <td>2024-01-15</td>
-                            <td><button class="view-btn">View</button></td>
+                            <td><button class="view-btn" data-i18n="view">View</button></td>
                         </tr>
                         <tr>
                             <td>#ORD-002</td>
@@ -578,9 +548,9 @@
                             <td>jane@example.com</td>
                             <td>Ergonomic Chair Pro</td>
                             <td>$449</td>
-                            <td><span class="status processing">Processing</span></td>
+                            <td><span class="status processing" data-i18n="processing">Processing</span></td>
                             <td>2024-01-14</td>
-                            <td><button class="view-btn">View</button></td>
+                            <td><button class="view-btn" data-i18n="view">View</button></td>
                         </tr>
                         <tr>
                             <td>#ORD-003</td>
@@ -588,9 +558,9 @@
                             <td>mike@example.com</td>
                             <td>RGB Gaming Chair</td>
                             <td>$399</td>
-                            <td><span class="status pending">Pending</span></td>
+                            <td><span class="status pending" data-i18n="pending">Pending</span></td>
                             <td>2024-01-13</td>
-                            <td><button class="view-btn">View</button></td>
+                            <td><button class="view-btn" data-i18n="view">View</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -599,31 +569,31 @@
             <!-- Articles Section -->
             <section id="articles" class="content-section">
                 <div class="section-header">
-                    <h2>Articles Management</h2>
-                    <button class="add-product-btn" onclick="showArticleModal()">Add New Article</button>
+                    <h2 data-i18n="articleManagement">Articles Management</h2>
+                    <button class="add-product-btn" onclick="showArticleModal()" data-i18n="addNewArticle">Add New Article</button>
                 </div>
                 <div class="filter-bar">
                     <select id="article-category-filter" onchange="filterArticles()">
-                        <option value="all">All Categories</option>
-                        <option value="news">News</option>
-                        <option value="guide">Guides</option>
-                        <option value="blog">Blog</option>
-                        <option value="case">Case Studies</option>
+                        <option value="all" data-i18n="allCategories">All Categories</option>
+                        <option value="news" data-i18n="news">News</option>
+                        <option value="guide" data-i18n="guides">Guides</option>
+                        <option value="blog" data-i18n="blog">Blog</option>
+                        <option value="case" data-i18n="caseStudies">Case Studies</option>
                     </select>
-                    <input type="text" id="article-search" placeholder="Search articles..." onkeyup="filterArticles()">
+                    <input type="text" id="article-search" data-i18n-placeholder="searchArticles" placeholder="Search articles..." onkeyup="filterArticles()">
                 </div>
                 <div class="table-container">
                     <table class="products-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Author</th>
-                                <th>Views</th>
-                                <th>Featured</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th data-i18n="id">ID</th>
+                                <th data-i18n="title">Title</th>
+                                <th data-i18n="category">Category</th>
+                                <th data-i18n="author">Author</th>
+                                <th data-i18n="views">Views</th>
+                                <th data-i18n="featured">Featured</th>
+                                <th data-i18n="status">Status</th>
+                                <th data-i18n="actions">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="articles-table-body">
@@ -636,21 +606,21 @@
             <!-- Settings Section -->
             <section id="settings" class="content-section">
                 <div class="section-header">
-                    <h2>Settings</h2>
+                    <h2 data-i18n="settings">Settings</h2>
                 </div>
                 <div class="settings-form">
                     <div class="form-section">
-                        <h3>General Settings</h3>
+                        <h3 data-i18n="generalSettings">General Settings</h3>
                         <div class="form-row">
-                            <label>Site Name</label>
+                            <label data-i18n="siteName">Site Name</label>
                             <input type="text" value="Soinp Gaming">
                         </div>
                         <div class="form-row">
-                            <label>Site Email</label>
+                            <label data-i18n="siteEmail">Site Email</label>
                             <input type="email" value="support@soinpgaming.com">
                         </div>
                         <div class="form-row">
-                            <label>Currency</label>
+                            <label data-i18n="currency">Currency</label>
                             <select>
                                 <option>USD - US Dollar</option>
                                 <option>CNY - Chinese Yuan</option>
@@ -659,25 +629,25 @@
                         </div>
                     </div>
                     <div class="form-section">
-                        <h3>Discount Banner</h3>
+                        <h3 data-i18n="discountBanner">Discount Banner</h3>
                         <div class="form-row">
-                            <label>Enable Banner</label>
+                            <label data-i18n="enableBanner">Enable Banner</label>
                             <div class="toggle-switch">
                                 <input type="checkbox" id="banner-toggle" checked>
                                 <label for="banner-toggle"></label>
                             </div>
                         </div>
                         <div class="form-row">
-                            <label>Discount Text</label>
+                            <label data-i18n="discountText">Discount Text</label>
                             <input type="text" value="Up to 30% Off - Limited Time Only!">
                         </div>
                         <div class="form-row">
-                            <label>Discount Code</label>
+                            <label data-i18n="discountCode">Discount Code</label>
                             <input type="text" value="SOINP2024">
                         </div>
                     </div>
                     <div class="form-row actions">
-                        <button class="save-btn">Save Changes</button>
+                        <button class="save-btn" data-i18n="saveChanges">Save Changes</button>
                     </div>
                 </div>
             </section>
@@ -688,16 +658,16 @@
     <div class="modal-overlay" id="product-modal">
         <div class="modal-content admin-modal">
             <div class="modal-header">
-                <h3 id="modal-title">Add Product</h3>
+                <h3 id="modal-title" data-i18n="addProduct">Add Product</h3>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <form class="product-form" id="product-form">
                 <div class="form-row">
-                    <label>Product Name</label>
+                    <label data-i18n="productName">Product Name</label>
                     <input type="text" id="product-name" required>
                 </div>
                 <div class="form-row">
-                    <label>Category</label>
+                    <label data-i18n="category">Category</label>
                     <select id="product-category" required>
                         <option value="gaming-chairs">Gaming Chairs</option>
                         <option value="gaming-desks">Gaming Desks</option>
@@ -706,19 +676,19 @@
                     </select>
                 </div>
                 <div class="form-row">
-                    <label>Price</label>
+                    <label data-i18n="price">Price</label>
                     <input type="number" id="product-price" required>
                 </div>
                 <div class="form-row">
-                    <label>Original Price (Optional)</label>
+                    <label data-i18n="originalPrice">Original Price (Optional)</label>
                     <input type="number" id="product-original-price">
                 </div>
                 <div class="form-row">
-                    <label>Badge (Optional)</label>
-                    <input type="text" id="product-badge" placeholder="Hot, New, Sale">
+                    <label data-i18n="badge">Badge (Optional)</label>
+                    <input type="text" id="product-badge" data-i18n-placeholder="badgePlaceholder" placeholder="Hot, New, Sale">
                 </div>
                 <div class="form-row">
-                    <label>Product Images</label>
+                    <label data-i18n="productImages">Product Images</label>
                     <div class="image-upload-area" id="image-upload-area">
                         <input type="file" id="product-image" accept="image/*" style="display:none;" onchange="handleImageUpload(this)">
                         <div class="upload-placeholder" onclick="document.getElementById('product-image').click()">
@@ -727,27 +697,27 @@
                                 <circle cx="8.5" cy="8.5" r="1.5"/>
                                 <polyline points="21 15 16 10 5 21"/>
                             </svg>
-                            <p>Click to upload image</p>
-                            <span>PNG, JPG, WEBP up to 5MB</span>
+                            <p data-i18n="clickToUpload">Click to upload image</p>
+                            <span data-i18n="uploadFormat">PNG, JPG, WEBP up to 5MB</span>
                         </div>
                         <div class="uploaded-images" id="uploaded-images"></div>
                     </div>
                 </div>
                 <div class="form-row">
-                    <label>Description</label>
+                    <label data-i18n="description">Description</label>
                     <textarea id="product-description" rows="4" required></textarea>
                 </div>
                 <div class="form-row">
-                    <label>Features (comma separated)</label>
-                    <input type="text" id="product-features" placeholder="Feature 1, Feature 2, Feature 3">
+                    <label data-i18n="features">Features (comma separated)</label>
+                    <input type="text" id="product-features" data-i18n-placeholder="featuresPlaceholder" placeholder="Feature 1, Feature 2, Feature 3">
                 </div>
                 <div class="form-row">
-                    <label>Stock</label>
+                    <label data-i18n="stock">Stock</label>
                     <input type="number" id="product-stock" value="0">
                 </div>
                 <div class="form-row actions">
-                    <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="save-btn">Save Product</button>
+                    <button type="button" class="cancel-btn" onclick="closeModal()" data-i18n="cancel">Cancel</button>
+                    <button type="submit" class="save-btn" data-i18n="saveProduct">Save Product</button>
                 </div>
             </form>
         </div>
@@ -757,39 +727,40 @@
     <div class="modal-overlay" id="content-modal">
         <div class="modal-content admin-modal large">
             <div class="modal-header">
-                <h3 id="content-modal-title">Edit Home Page Content</h3>
+                <h3 id="content-modal-title" data-i18n="editHomePageContent">Edit Home Page Content</h3>
                 <button class="modal-close" onclick="closeContentModal()">&times;</button>
             </div>
             <form class="content-form" id="content-form">
                 <input type="hidden" id="content-page">
                 <div class="form-row">
-                    <label>Hero Title</label>
+                    <label data-i18n="heroTitle">Hero Title</label>
                     <input type="text" id="hero-title" value="UNLEASH YOUR GAMING POTENTIAL">
                 </div>
                 <div class="form-row">
-                    <label>Hero Subtitle</label>
+                    <label data-i18n="heroSubtitle">Hero Subtitle</label>
                     <textarea id="hero-subtitle" rows="3">Discover premium gaming furniture built for champions. Perfect fusion of exceptional quality, ergonomic design and cutting-edge style.</textarea>
                 </div>
                 <div class="form-row">
-                    <label>Features Title</label>
+                    <label data-i18n="featuresTitle">Features Title</label>
                     <input type="text" id="features-title" value="WHY CHOOSE US">
                 </div>
                 <div class="form-row">
-                    <label>About Title</label>
+                    <label data-i18n="aboutTitle">About Title</label>
                     <input type="text" id="about-title" value="BORN FROM PASSION, BUILT FOR VICTORY">
                 </div>
                 <div class="form-row">
-                    <label>About Description</label>
+                    <label data-i18n="aboutDescription">About Description</label>
                     <textarea id="about-description" rows="4">Founded by gamers, built for gamers. We understand the needs of pro players and casual gamers alike, delivering furniture that elevates your gaming performance.</textarea>
                 </div>
                 <div class="form-row actions">
-                    <button type="button" class="cancel-btn" onclick="closeContentModal()">Cancel</button>
-                    <button type="submit" class="save-btn">Save Content</button>
+                    <button type="button" class="cancel-btn" onclick="closeContentModal()" data-i18n="cancel">Cancel</button>
+                    <button type="submit" class="save-btn" data-i18n="saveContent">Save Content</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <script src="js/i18n.js"></script>
     <script src="js/admin.js"></script>
 </body>
 </html>
