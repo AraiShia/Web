@@ -791,11 +791,91 @@ function filterArticles() {
     renderArticlesTable(filtered);
 }
 
+let articleImages = [];
+
+function handleArticleImageUpload(input, modal) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+        alert(t('onlyImageFiles'));
+        return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+        alert(t('fileSizeLimit'));
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const uploadArea = modal.querySelector('#article-image-upload-area');
+    uploadArea.innerHTML += '<div class="upload-progress"><div class="upload-progress-bar" style="width: 0%"></div></div>';
+
+    const token = localStorage.getItem('token');
+    fetch('/api/upload/image', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            articleImages.push(data.url);
+            renderArticleImages(modal);
+        } else {
+            alert(t('uploadFailed') + ' ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error uploading image:', error);
+        alert(t('failedToUpload'));
+    })
+    .finally(() => {
+        input.value = '';
+        const progress = uploadArea.querySelector('.upload-progress');
+        if (progress) progress.remove();
+    });
+}
+
+function renderArticleImages(modal) {
+    const container = modal.querySelector('#article-uploaded-images');
+    
+    container.innerHTML = articleImages.map((url, index) => `
+        <div class="uploaded-image${index === 0 ? ' is-main' : ''}" style="position:relative; display:inline-block; margin:5px; width:100px; height:100px;">
+            ${index === 0 ? '<span style="position:absolute; top:5px; left:5px; background:#6366f1; color:#fff; font-size:10px; padding:2px 5px; border-radius:3px;">MAIN</span>' : ''}
+            <img src="${url}" alt="Article image ${index + 1}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+            <div style="position:absolute; bottom:5px; right:5px;">
+                <button onclick="removeArticleImage(${index}, modal)" style="background:rgba(255,0,0,0.8); border:none; color:#fff; width:20px; height:20px; border-radius:50%; font-size:12px; cursor:pointer;">&times;</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function removeArticleImage(index, modal) {
+    articleImages.splice(index, 1);
+    renderArticleImages(modal);
+}
+
 function showArticleModal(article = null) {
     const isEdit = article !== null;
+    articleImages = article?.images ? [...article.images] : [];
+    
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.style.cssText = 'position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; z-index:1000;';
+    
+    const existingImagesHtml = articleImages.map((url, index) => `
+        <div class="uploaded-image${index === 0 ? ' is-main' : ''}" style="position:relative; display:inline-block; margin:5px; width:100px; height:100px;">
+            ${index === 0 ? '<span style="position:absolute; top:5px; left:5px; background:#6366f1; color:#fff; font-size:10px; padding:2px 5px; border-radius:3px;">MAIN</span>' : ''}
+            <img src="${url}" alt="Article image ${index + 1}" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+            <div style="position:absolute; bottom:5px; right:5px;">
+                <button onclick="removeArticleImage(${index}, this.closest('.modal'))" style="background:rgba(255,0,0,0.8); border:none; color:#fff; width:20px; height:20px; border-radius:50%; font-size:12px; cursor:pointer;">&times;</button>
+            </div>
+        </div>
+    `).join('');
     
     modal.innerHTML = `
         <div style="background:#1a1a2e; border-radius:12px; padding:30px; max-width:600px; width:90%; max-height:90vh; overflow-y:auto;">
@@ -817,6 +897,21 @@ function showArticleModal(article = null) {
                 <div style="margin-bottom:15px;">
                     <label style="color:#fff; display:block; margin-bottom:5px;">${t('author')}</label>
                     <input type="text" name="author" value="${article?.author || 'Soinp Team'}" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">${t('articleImage')}</label>
+                    <div id="article-image-upload-area" style="border:2px dashed #333; border-radius:8px; padding:20px; text-align:center; background:#0f0f1a;">
+                        <input type="file" id="article-image-input" accept="image/*" style="display:none;" onchange="handleArticleImageUpload(this, this.closest('.modal'))">
+                        <div onclick="this.previousElementSibling.click()" style="color:#666; cursor:pointer;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:block; margin:0 auto 10px;">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <polyline points="21 15 16 10 5 21"/>
+                            </svg>
+                            <p>${t('clickToUpload')}</p>
+                        </div>
+                        <div id="article-uploaded-images" style="margin-top:15px;">${existingImagesHtml}</div>
+                    </div>
                 </div>
                 <div style="margin-bottom:15px;">
                     <label style="color:#fff; display:block; margin-bottom:5px;">${t('excerpt')}</label>
@@ -858,6 +953,7 @@ function showArticleModal(article = null) {
             title: formData.get('title'),
             category: formData.get('category'),
             author: formData.get('author'),
+            images: articleImages,
             excerpt: formData.get('excerpt'),
             content: formData.get('content'),
             tags: formData.get('tags').split(',').map(t => t.trim()).filter(t => t),
