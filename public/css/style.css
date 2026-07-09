@@ -750,6 +750,9 @@ body {
 
 .product-info {
     padding: 30px;
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
 }
 
 .product-category {
@@ -800,7 +803,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    margin-top: 15px;
+    margin-top: auto;
 }
 
 .product-button:hover {
