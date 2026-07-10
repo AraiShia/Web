@@ -3,7 +3,14 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-const DATA_FILE = path.join(__dirname, '../data/articles.json');
+// 生产环境数据存储在 persistent/data 目录，避免 Git 更新丢失
+const DATA_DIR = path.join(__dirname, '../../persistent/data');
+const DATA_FILE = path.join(DATA_DIR, 'articles.json');
+
+// 确保数据目录存在
+if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+}
 
 // Helper functions
 function readArticles() {

@@ -41,3 +41,6 @@ images/*.webp
 
 # Uploads
 uploads/
+
+# Persistent data (articles, products, uploaded files)
+persistent/
