@@ -48,7 +48,7 @@ function createArticleCard(article) {
 
     return '<article class="article-card" onclick="navigateToArticle(\'' + article.slug + '\')">' +
         '<div class="article-image">' +
-        (article.coverImage ? '<img src="' + article.coverImage + '" alt="' + article.title + '">' : '<span class="article-emoji">📰</span>') +
+        (article.images && article.images.length > 0 ? '<img src="' + article.images[0] + '" alt="' + article.title + '">' : '<span class="article-emoji">📰</span>') +
         badgeHtml +
         '</div>' +
         '<div class="article-content">' +

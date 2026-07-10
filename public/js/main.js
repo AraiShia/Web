@@ -302,7 +302,7 @@ async function loadLatestArticles() {
             container.innerHTML = data.articles.map(article => `
                 <a href="/article.html?slug=${article.slug}" class="article-preview-card">
                     <div class="article-preview-image">
-                        ${article.coverImage ? '<img src="' + article.coverImage + '" alt="' + article.title + '">' : '<span>📰</span>'}
+                        ${article.images && article.images.length > 0 ? '<img src="' + article.images[0] + '" alt="' + article.title + '">' : '<span>📰</span>'}
                     </div>
                     <div class="article-preview-content">
                         <span class="article-preview-category">${categoryLabels[article.category] || article.category}</span>

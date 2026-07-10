@@ -303,8 +303,8 @@
                     return '<span class="article-tag">#' + tag + '</span>';
                 }).join('');
 
-                var coverHtml = article.coverImage 
-                    ? '<img src="' + article.coverImage + '" alt="' + article.title + '">'
+                var coverHtml = article.images && article.images.length > 0 
+                    ? '<img src="' + article.images[0] + '" alt="' + article.title + '">'
                     : '<span class="article-cover-emoji">📰</span>';
 
                 document.getElementById('article-content').innerHTML = 
@@ -369,7 +369,7 @@
                     };
                     return '<article class="article-card" onclick="window.location.href=\'/article.html?slug=' + article.slug + '\'">' +
                         '<div class="article-image">' +
-                        (article.coverImage ? '<img src="' + article.coverImage + '" alt="' + article.title + '">' : '<span class="article-emoji">📰</span>') +
+                        (article.images && article.images.length > 0 ? '<img src="' + article.images[0] + '" alt="' + article.title + '">' : '<span class="article-emoji">📰</span>') +
                         '</div>' +
                         '<div class="article-content">' +
                         '<span class="article-category">' + (categoryLabels[article.category] || article.category) + '</span>' +
