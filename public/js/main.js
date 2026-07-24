@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initCategoryFilter();
     setupHistoryNavigation();
     loadLatestArticles();
+    loadGallery();
 });
 
 function setupHistoryNavigation() {
@@ -317,5 +318,27 @@ async function loadLatestArticles() {
         }
     } catch (error) {
         console.error('Error loading latest articles:', error);
+    }
+}
+
+// Load Gallery
+async function loadGallery() {
+    const container = document.getElementById('gallery-grid');
+    if (!container) return;
+
+    try {
+        const response = await fetch('/api/gallery');
+        const data = await response.json();
+        const galleryItems = data.gallery || [];
+
+        container.innerHTML = galleryItems.map(item => `
+            <div class="gallery-item">
+                ${item.image
+                    ? `<img src="${item.image}" alt="${item.alt}"><span class="gallery-overlay">+</span>`
+                    : `<span class="gallery-placeholder">🖼️</span><span class="gallery-overlay">+</span>`}
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading gallery:', error);
     }
 }

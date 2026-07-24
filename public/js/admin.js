@@ -99,6 +99,9 @@ function showSection(sectionId) {
     if (sectionId === 'articles') {
         loadArticles();
     }
+    if (sectionId === 'gallery-admin') {
+        loadGallery();
+    }
 }
 
 function logout() {
@@ -1022,3 +1025,112 @@ async function deleteArticle(id) {
         alert(t('articleDeleted'));
     }
 };
+
+// Gallery Management
+let galleryImages = [];
+
+async function loadGallery() {
+    const container = document.getElementById('gallery-admin-grid');
+    if (!container) return;
+
+    try {
+        const response = await fetch('/api/gallery');
+        const data = await response.json();
+        galleryImages = data.gallery || [];
+
+        container.innerHTML = galleryImages.map((item, index) => `
+            <div class="gallery-admin-item">
+                ${item.image
+                    ? `<img src="${item.image}" alt="${item.alt}">`
+                    : '<div class="gallery-admin-placeholder">🖼️</div>'}
+                <button class="gallery-admin-delete-btn" onclick="deleteGalleryImage(${index})" style="${item.image ? '' : 'display:none;'}">&times;</button>
+                <div class="gallery-admin-overlay">
+                    <button class="gallery-admin-upload-btn" onclick="uploadGalleryImage(${index})">${t('uploadImage') || 'Upload'}</button>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading gallery:', error);
+    }
+}
+
+function uploadGalleryImage(index) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = async function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('/api/upload/image', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token },
+                body: formData
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                await updateGalleryImage(index, data.url);
+            } else {
+                alert(data.message || 'Upload failed');
+            }
+        } catch (error) {
+            console.error('Error uploading:', error);
+            alert('Upload failed');
+        }
+    };
+    input.click();
+}
+
+async function updateGalleryImage(index, imageUrl) {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`/api/gallery/${galleryImages[index].id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ image: imageUrl, alt: 'Gallery Image ' + (index + 1) })
+        });
+
+        if (response.ok) {
+            loadGallery();
+        } else {
+            alert('Failed to update gallery');
+        }
+    } catch (error) {
+        console.error('Error updating gallery:', error);
+        alert('Failed to update gallery');
+    }
+}
+
+async function deleteGalleryImage(index) {
+    if (!confirm(t('areYouSure') + ' ' + (t('deleteThisImage') || 'Delete this image?'))) return;
+
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`/api/gallery/${galleryImages[index].id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ image: '', alt: 'Gallery Image ' + (index + 1) })
+        });
+
+        if (response.ok) {
+            loadGallery();
+        } else {
+            alert('Failed to delete image');
+        }
+    } catch (error) {
+        console.error('Error deleting gallery image:', error);
+        alert('Failed to delete image');
+    }
+}

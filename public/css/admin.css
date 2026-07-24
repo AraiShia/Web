@@ -593,6 +593,94 @@ body {
     color: var(--text-muted);
 }
 
+/* Gallery Admin Styles */
+.gallery-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.gallery-admin-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    position: relative;
+}
+
+.gallery-admin-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-admin-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+    color: var(--text-muted);
+    font-size: 48px;
+}
+
+.gallery-admin-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-admin-item:hover .gallery-admin-overlay {
+    opacity: 1;
+}
+
+.gallery-admin-upload-btn {
+    padding: 10px 20px;
+    background: var(--accent-color);
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gallery-admin-upload-btn:hover {
+    background: var(--accent-color-hover);
+    transform: scale(1.05);
+}
+
+.gallery-admin-delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 0, 0, 0.8);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-admin-item:hover .gallery-admin-delete-btn {
+    opacity: 1;
+}
+
 /* Orders Table Full */
 .orders-table.full {
     margin-top: 0;
