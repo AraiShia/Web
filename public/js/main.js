@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupHistoryNavigation();
     loadLatestArticles();
     loadGallery();
+    loadCategories();
 });
 
 function setupHistoryNavigation() {
@@ -340,5 +341,33 @@ async function loadGallery() {
         `).join('');
     } catch (error) {
         console.error('Error loading gallery:', error);
+    }
+}
+
+// Load Categories
+async function loadCategories() {
+    const container = document.getElementById('categories-grid');
+    if (!container) return;
+
+    try {
+        const response = await fetch('/api/categories');
+        const data = await response.json();
+        const categories = data.categories || [];
+
+        container.innerHTML = categories.map(cat => `
+            <a href="/products.html?category=${cat.id}" class="category-card">
+                <div class="category-image-wrapper">
+                    <img src="${cat.image}" alt="${cat.name}" class="category-image">
+                    <span class="category-badge ${cat.isComingSoon ? 'coming-soon' : ''}">${cat.badge}</span>
+                </div>
+                <div class="category-info">
+                    <h3 class="category-title">${cat.name}</h3>
+                    <p class="category-description">${cat.description}</p>
+                    <span class="category-count">${cat.isComingSoon ? 'COMING SOON' : cat.productCount + ' PRODUCTS'}</span>
+                </div>
+            </a>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading categories:', error);
     }
 }

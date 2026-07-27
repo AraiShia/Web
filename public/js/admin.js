@@ -102,6 +102,9 @@ function showSection(sectionId) {
     if (sectionId === 'gallery-admin') {
         loadGallery();
     }
+    if (sectionId === 'categories-admin') {
+        loadCategories();
+    }
 }
 
 function logout() {
@@ -1133,4 +1136,153 @@ async function deleteGalleryImage(index) {
         console.error('Error deleting gallery image:', error);
         alert('Failed to delete image');
     }
+}
+
+// Categories Management
+let allCategories = [];
+
+async function loadCategories() {
+    const container = document.getElementById('categories-admin-grid');
+    if (!container) return;
+
+    try {
+        const response = await fetch('/api/categories');
+        const data = await response.json();
+        allCategories = data.categories || [];
+
+        container.innerHTML = allCategories.map(cat => `
+            <div class="category-admin-item">
+                ${cat.image
+                    ? `<img src="${cat.image}" alt="${cat.name}" class="category-admin-image">`
+                    : `<div class="category-admin-placeholder" onclick="uploadCategoryImage('${cat.id}')">🖼️</div>`}
+                <div class="category-admin-content">
+                    <h3 class="category-admin-name">${cat.name}</h3>
+                    <p class="category-admin-desc">${cat.description}</p>
+                    <div class="category-admin-actions">
+                        <button class="category-admin-upload-btn" onclick="uploadCategoryImage('${cat.id}')">${t('uploadImage')}</button>
+                        <button class="category-admin-edit-btn" onclick="editCategory('${cat.id}')">${t('edit')}</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading categories:', error);
+    }
+}
+
+function uploadCategoryImage(categoryId) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = async function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('/api/upload/image', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token },
+                body: formData
+            });
+            const data = await response.json();
+
+            if (data.success) {
+                await updateCategory(categoryId, { image: data.url });
+            } else {
+                alert(data.message || 'Upload failed');
+            }
+        } catch (error) {
+            console.error('Error uploading:', error);
+            alert('Upload failed');
+        }
+    };
+    input.click();
+}
+
+async function updateCategory(categoryId, updates) {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`/api/categories/${categoryId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(updates)
+        });
+
+        if (response.ok) {
+            loadCategories();
+        } else {
+            alert('Failed to update category');
+        }
+    } catch (error) {
+        console.error('Error updating category:', error);
+        alert('Failed to update category');
+    }
+}
+
+function editCategory(categoryId) {
+    const category = allCategories.find(c => c.id === categoryId);
+    if (!category) return;
+
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.cssText = 'position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; z-index:1000;';
+
+    modal.innerHTML = `
+        <div style="background:#1a1a2e; border-radius:12px; padding:30px; max-width:500px; width:90%;">
+            <h2 style="color:#fff; margin-bottom:20px;">${t('edit') + ' ' + t('category')}</h2>
+            <form id="category-form">
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">${t('name')}</label>
+                    <input type="text" name="name" value="${category.name}" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">${t('description')}</label>
+                    <textarea name="description" required style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff; min-height:80px;">${category.description}</textarea>
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">${t('badge') || 'Badge'}</label>
+                    <input type="text" name="badge" value="${category.badge}" style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
+                </div>
+                <div style="margin-bottom:15px;">
+                    <label style="color:#fff; display:block; margin-bottom:5px;">
+                        <input type="checkbox" name="isComingSoon" ${category.isComingSoon ? 'checked' : ''}> ${t('comingSoon') || 'Coming Soon'}
+                    </label>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:flex-end;">
+                    <button type="button" onclick="this.closest('.modal').remove()" style="padding:10px 20px; background:#333; border:none; border-radius:8px; color:#fff; cursor:pointer;">${t('cancel')}</button>
+                    <button type="submit" style="padding:10px 20px; background:#6366f1; border:none; border-radius:8px; color:#fff; cursor:pointer;">${t('save') || 'Save'}</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    document.getElementById('category-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        const updates = {
+            name: formData.get('name'),
+            description: formData.get('description'),
+            badge: formData.get('badge'),
+            isComingSoon: formData.get('isComingSoon') === 'on'
+        };
+
+        await updateCategory(categoryId, updates);
+        modal.remove();
+    });
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
 }

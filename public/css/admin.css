@@ -681,6 +681,92 @@ body {
     opacity: 1;
 }
 
+/* Categories Admin Styles */
+.categories-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.category-admin-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.category-admin-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+}
+
+.category-admin-placeholder {
+    width: 100%;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+    color: var(--text-muted);
+    font-size: 48px;
+    cursor: pointer;
+}
+
+.category-admin-content {
+    padding: 15px;
+}
+
+.category-admin-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.category-admin-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.category-admin-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.category-admin-actions button {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.category-admin-upload-btn {
+    background: var(--accent-color);
+    color: #000;
+}
+
+.category-admin-upload-btn:hover {
+    background: var(--accent-color-hover);
+}
+
+.category-admin-edit-btn {
+    background: rgba(0, 212, 255, 0.1);
+    color: #00d4ff;
+}
+
+.category-admin-edit-btn:hover {
+    background: rgba(0, 212, 255, 0.2);
+}
+
 /* Orders Table Full */
 .orders-table.full {
     margin-top: 0;

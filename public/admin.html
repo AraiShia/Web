@@ -69,6 +69,17 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#categories-admin" onclick="showSection('categories-admin')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                            </svg>
+                            <span data-i18n="categories">Categories</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="#articles" onclick="showSection('articles')">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
@@ -530,6 +541,17 @@
                 </div>
                 <p class="section-desc" data-i18n="galleryDesc">Manage gallery images displayed on the homepage</p>
                 <div class="gallery-admin-grid" id="gallery-admin-grid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Categories Section -->
+            <section id="categories-admin" class="content-section">
+                <div class="section-header">
+                    <h2 data-i18n="categories">Categories</h2>
+                </div>
+                <p class="section-desc" data-i18n="categoriesDesc">Manage product categories with images and descriptions</p>
+                <div class="categories-admin-grid" id="categories-admin-grid">
                     <!-- Populated by JavaScript -->
                 </div>
             </section>
