@@ -30,16 +30,16 @@ function initDefaultData() {
                     name: 'GAMING DESKS',
                     description: 'Spacious desktop space with smart cable management for the perfect gaming station.',
                     image: '/cate_pic/DESK.png',
-                    badge: 'COMING SOON',
-                    isComingSoon: true
+                    badge: 'NEW',
+                    isComingSoon: false
                 },
                 {
                     id: 'accessories',
                     name: 'ACCESSORIES',
                     description: 'Mouse pads, headset stands, wrist rests and more to enhance your gaming experience.',
                     image: '/cate_pic/accessories.png',
-                    badge: 'COMING SOON',
-                    isComingSoon: true
+                    badge: 'NEW',
+                    isComingSoon: false
                 }
             ]
         };
