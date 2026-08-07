@@ -105,6 +105,9 @@ function showSection(sectionId) {
     if (sectionId === 'categories-admin') {
         loadCategories();
     }
+    if (sectionId === 'banner-admin') {
+        loadBannerAdmin();
+    }
 }
 
 function logout() {
@@ -998,6 +1001,52 @@ function showArticleModal(article = null) {
             modal.remove();
         }
     });
+}
+
+// Banner Management
+async function loadBannerAdmin() {
+    try {
+        const response = await fetch('/api/banner');
+        const data = await response.json();
+        const banner = data.banner || {};
+
+        document.getElementById('banner-enabled').checked = banner.enabled !== false;
+        document.getElementById('banner-badge-input').value = banner.badge || '';
+        document.getElementById('banner-text-input').value = banner.text || '';
+        document.getElementById('banner-code-input').value = banner.code || '';
+    } catch (error) {
+        console.error('Error loading banner:', error);
+    }
+}
+
+async function saveBanner() {
+    const bannerData = {
+        enabled: document.getElementById('banner-enabled').checked,
+        badge: document.getElementById('banner-badge-input').value,
+        text: document.getElementById('banner-text-input').value,
+        code: document.getElementById('banner-code-input').value
+    };
+
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch('/api/banner', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(bannerData)
+        });
+
+        if (response.ok) {
+            alert(t('savedSuccessfully') || 'Banner saved successfully');
+        } else {
+            alert('Failed to save banner');
+        }
+    } catch (error) {
+        console.error('Error saving banner:', error);
+        alert('Failed to save banner');
+    }
 }
 
 function editArticle(id) {

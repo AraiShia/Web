@@ -91,6 +91,15 @@
                         </a>
                     </li>
                     <li>
+                        <a href="#banner-admin" onclick="showSection('banner-admin')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 11l18-5v12L3 14v-3z"/>
+                                <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>
+                            </svg>
+                            <span data-i18n="banner">Banner</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="#orders" onclick="showSection('orders')">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
@@ -553,6 +562,37 @@
                 <p class="section-desc" data-i18n="categoriesDesc">Manage product categories with images and descriptions</p>
                 <div class="categories-admin-grid" id="categories-admin-grid">
                     <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Banner Section -->
+            <section id="banner-admin" class="content-section">
+                <div class="section-header">
+                    <h2 data-i18n="banner">Banner</h2>
+                </div>
+                <p class="section-desc" data-i18n="bannerDesc">Manage the discount banner displayed at the top of the homepage</p>
+                <div class="banner-admin-form" style="max-width:600px; margin-top:20px;">
+                    <div style="margin-bottom:20px;">
+                        <label style="color:#fff; display:flex; align-items:center; gap:10px;">
+                            <input type="checkbox" id="banner-enabled">
+                            <span data-i18n="enableBanner">Enable Banner</span>
+                        </label>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <label style="color:#fff; display:block; margin-bottom:5px;" data-i18n="bannerBadge">Badge Text</label>
+                        <input type="text" id="banner-badge-input" placeholder="SPECIAL OFFER" style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <label style="color:#fff; display:block; margin-bottom:5px;" data-i18n="bannerText">Banner Text</label>
+                        <input type="text" id="banner-text-input" placeholder="Up to 15% Off - Limited Time Only!" style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
+                    </div>
+                    <div style="margin-bottom:20px;">
+                        <label style="color:#fff; display:block; margin-bottom:5px;" data-i18n="bannerCode">Coupon Code</label>
+                        <input type="text" id="banner-code-input" placeholder="USE: SOINP2026" style="width:100%; padding:10px; border:1px solid #333; border-radius:8px; background:#0f0f1a; color:#fff;">
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button onclick="saveBanner()" style="padding:10px 20px; background:#00ff88; border:none; border-radius:8px; color:#000; font-weight:600; cursor:pointer;" data-i18n="save">Save</button>
+                    </div>
                 </div>
             </section>
 

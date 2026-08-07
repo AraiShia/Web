@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadLatestArticles();
     loadGallery();
     loadCategories();
+    loadBanner();
 });
 
 function setupHistoryNavigation() {
@@ -369,5 +370,43 @@ async function loadCategories() {
         `).join('');
     } catch (error) {
         console.error('Error loading categories:', error);
+    }
+}
+
+// Load Banner
+async function loadBanner() {
+    const banner = document.getElementById('discountBanner');
+    if (!banner) return;
+
+    try {
+        const response = await fetch('/api/banner');
+        const data = await response.json();
+        const bannerData = data.banner || {};
+
+        if (bannerData.enabled === false) {
+            banner.style.display = 'none';
+            return;
+        }
+
+        document.getElementById('banner-badge').textContent = bannerData.badge || '';
+        document.getElementById('banner-text').textContent = bannerData.text || '';
+        document.getElementById('banner-code').textContent = bannerData.code || '';
+
+        // 隐藏空字段
+        ['banner-badge', 'banner-text', 'banner-code'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el && !el.textContent.trim()) {
+                el.style.display = 'none';
+            } else if (el) {
+                el.style.display = '';
+            }
+        });
+
+        // 检查关闭状态
+        if (sessionStorage.getItem('bannerClosed') === 'true') {
+            banner.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Error loading banner:', error);
     }
 }
