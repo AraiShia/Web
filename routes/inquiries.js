@@ -6,7 +6,7 @@ const { requireAuth } = require('./auth');
 const router = express.Router();
 
 // 询盘数据文件路径
-const INQUIRIES_FILE = path.join(__dirname, '../../persistent/data/inquiries.json');
+const INQUIRIES_FILE = path.join(__dirname, '../persistent/data/inquiries.json');
 
 // 确保目录和文件存在
 function ensureInquiriesFile() {

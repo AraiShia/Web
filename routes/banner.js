@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 // 生产环境数据存储在 persistent/data 目录
-const DATA_DIR = path.join(__dirname, '../../persistent/data');
+const DATA_DIR = path.join(__dirname, '../persistent/data');
 const DATA_FILE = path.join(DATA_DIR, 'banner.json');
 
 // 确保数据目录存在
