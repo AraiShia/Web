@@ -23,22 +23,46 @@ app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
 // Hostinger 配置：数据和上传目录在 persistent 文件夹，避免 Git 更新丢失
 // 自动检测 persistent 目录的实际位置
+// 优先选择包含实际 JSON 数据文件的目录，避免被空目录误导
 function findPersistentDir() {
     const candidates = [
         process.env.PERSISTENT_DIR,
         path.join(__dirname, 'persistent'),
         path.join(__dirname, '../persistent'),
         path.join(__dirname, '../../persistent'),
-        path.join(__dirname, '../../../persistent')
+        path.join(__dirname, '../../../persistent'),
+        path.join(__dirname, '../../../../persistent'),
     ].filter(Boolean);
 
+    // 判断 persistent/data/ 下是否有实际的 JSON 数据文件
+    function hasData(dir) {
+        try {
+            const dataDir = path.join(dir, 'data');
+            if (!fs.existsSync(dataDir)) return false;
+            const files = fs.readdirSync(dataDir);
+            return files.some(f => f.endsWith('.json'));
+        } catch (e) {
+            return false;
+        }
+    }
+
+    // 第一轮：优先找有数据的 persistent
+    for (const dir of candidates) {
+        if (hasData(dir)) {
+            console.log('Persistent dir found (with data):', dir);
+            return dir;
+        }
+    }
+
+    // 第二轮：退而求其次，找任何存在的 persistent
     for (const dir of candidates) {
         if (fs.existsSync(dir)) {
             console.log('Persistent dir found:', dir);
             return dir;
         }
     }
-    // 默认使用 ../persistent
+
+    // 最终 fallback
     const fallback = path.join(__dirname, '../persistent');
     console.log('Persistent dir fallback:', fallback);
     return fallback;
@@ -53,9 +77,9 @@ global.PERSISTENT_DIR = PERSISTENT_DIR;
 global.UPLOAD_DIR = UPLOAD_DIR;
 global.DATA_DIR = DATA_DIR;
 
-// 确保目录存在
-if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+// 确保目录存在（仅在确认了正确的 persistent 路径后才创建）
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 // 如果 persistent 中没有 products.json，从项目默认数据初始化
 const PERSISTENT_PRODUCTS = path.join(DATA_DIR, 'products.json');
