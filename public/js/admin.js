@@ -110,6 +110,7 @@ function showSection(sectionId) {
     }
     if (sectionId === 'settings') {
         loadSettingsBanner();
+        loadThemeSetting();
     }
 }
 
@@ -1094,6 +1095,47 @@ async function saveSettingsBanner() {
     } catch (error) {
         console.error('Error saving settings banner:', error);
         alert('Failed to save banner');
+    }
+}
+
+async function loadThemeSetting() {
+    try {
+        const response = await fetch('/api/theme');
+        const data = await response.json();
+        const select = document.getElementById('theme-select');
+        if (select) {
+            select.value = data.theme || 'dark';
+        }
+    } catch (error) {
+        console.error('Error loading theme setting:', error);
+    }
+}
+
+async function saveTheme() {
+    const select = document.getElementById('theme-select');
+    if (!select) return;
+
+    const theme = select.value;
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('/api/theme', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ theme })
+        });
+
+        if (response.ok) {
+            alert(t('savedSuccessfully') || 'Theme saved successfully');
+        } else {
+            alert('Failed to save theme');
+        }
+    } catch (error) {
+        console.error('Error saving theme:', error);
+        alert('Failed to save theme');
     }
 }
 
