@@ -108,6 +108,9 @@ function showSection(sectionId) {
     if (sectionId === 'banner-admin') {
         loadBannerAdmin();
     }
+    if (sectionId === 'settings') {
+        loadSettingsBanner();
+    }
 }
 
 function logout() {
@@ -1045,6 +1048,51 @@ async function saveBanner() {
         }
     } catch (error) {
         console.error('Error saving banner:', error);
+        alert('Failed to save banner');
+    }
+}
+
+// Settings page banner controls - share the same banner.json source
+async function loadSettingsBanner() {
+    try {
+        const response = await fetch('/api/banner');
+        const data = await response.json();
+        const banner = data.banner || {};
+
+        document.getElementById('banner-toggle').checked = banner.enabled !== false;
+        document.getElementById('banner-text-settings').value = banner.text || '';
+        document.getElementById('banner-code-settings').value = banner.code || '';
+    } catch (error) {
+        console.error('Error loading settings banner:', error);
+    }
+}
+
+async function saveSettingsBanner() {
+    const bannerData = {
+        enabled: document.getElementById('banner-toggle').checked,
+        badge: 'SPECIAL OFFER',
+        text: document.getElementById('banner-text-settings').value,
+        code: document.getElementById('banner-code-settings').value
+    };
+
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch('/api/banner', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(bannerData)
+        });
+
+        if (response.ok) {
+            alert(t('savedSuccessfully') || 'Banner saved successfully');
+        } else {
+            alert('Failed to save banner');
+        }
+    } catch (error) {
+        console.error('Error saving settings banner:', error);
         alert('Failed to save banner');
     }
 }

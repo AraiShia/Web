@@ -722,15 +722,15 @@
                         </div>
                         <div class="form-row">
                             <label data-i18n="discountText">Discount Text</label>
-                            <input type="text" value="Up to 30% Off - Limited Time Only!">
+                            <input type="text" id="banner-text-settings" value="Up to 30% Off - Limited Time Only!">
                         </div>
                         <div class="form-row">
                             <label data-i18n="discountCode">Discount Code</label>
-                            <input type="text" value="SOINP2024">
+                            <input type="text" id="banner-code-settings" value="SOINP2024">
                         </div>
                     </div>
                     <div class="form-row actions">
-                        <button class="save-btn" data-i18n="saveChanges">Save Changes</button>
+                        <button class="save-btn" onclick="saveSettingsBanner()" data-i18n="saveChanges">Save Changes</button>
                     </div>
                 </div>
             </section>
