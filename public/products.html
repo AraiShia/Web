@@ -13,8 +13,8 @@
       gtag('config', 'G-66K6Q4C47N');
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
     <script src="js/theme.js"></script>
+    <link rel="stylesheet" href="css/style.css">
     <script src="js/banner.js"></script>
 </head>
 <body>
@@ -253,22 +253,22 @@
             overflow-y: auto;
         }
         .inquiry-modal-content {
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
-            border: 1px solid rgba(0, 255, 136, 0.2);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 20px;
             width: 100%;
             max-width: 550px;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 50px var(--shadow-color);
         }
         .inquiry-modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 25px 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--border-color);
         }
         .inquiry-modal-header h3 {
             color: var(--accent-color);
@@ -279,8 +279,8 @@
         .inquiry-modal-close {
             width: 36px;
             height: 36px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--surface-bg-strong);
+            border: 1px solid var(--border-color);
             border-radius: 50%;
             color: var(--text-secondary);
             font-size: 20px;
@@ -316,8 +316,8 @@
         .inquiry-input, .inquiry-textarea {
             width: 100%;
             padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--surface-bg);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             font-size: 15px;
             color: var(--text-primary);
@@ -330,8 +330,8 @@
         .inquiry-input:focus, .inquiry-textarea:focus {
             outline: none;
             border-color: var(--accent-color);
-            background: rgba(0, 255, 136, 0.03);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+            background: var(--accent-surface);
+            box-shadow: 0 0 20px var(--accent-glow);
         }
         .inquiry-textarea {
             resize: vertical;
@@ -349,8 +349,8 @@
             flex-wrap: wrap;
             gap: 8px;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--surface-bg);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             min-height: 50px;
         }
@@ -359,8 +359,8 @@
             align-items: center;
             gap: 6px;
             padding: 6px 12px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            background: var(--accent-surface-hover);
+            border: 1px solid var(--border-color);
             border-radius: 20px;
             font-size: 13px;
             color: var(--accent-color);
@@ -406,8 +406,8 @@
         .inquiry-submit-btn {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, var(--accent-color) 0%, #00cc6a 100%);
-            color: #0d0d0d;
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-hover) 100%);
+            color: var(--primary-color);
             border: none;
             border-radius: 12px;
             font-size: 16px;
@@ -419,7 +419,7 @@
         }
         .inquiry-submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            box-shadow: 0 10px 30px var(--accent-shadow);
         }
         .inquiry-submit-btn:disabled {
             opacity: 0.6;
