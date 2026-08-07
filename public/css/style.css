@@ -32,24 +32,26 @@
     --border-strong: rgba(255, 255, 255, 0.25);
     --image-overlay: rgba(255, 255, 255, 0.2);
     --badge-bg: rgba(0, 0, 0, 0.3);
+    --header-shadow: none;
 }
 
 [data-theme="light"] {
     --primary-color: #ffffff;
-    --secondary-color: #f5f5f5;
-    --accent-color: #2c3e50;
-    --accent-color-hover: #1a252f;
-    --accent-gradient-end: #1a252f;
-    --neon-blue: #3498db;
-    --neon-purple: #9b59b6;
-    --text-primary: #1a1a1a;
-    --text-secondary: #555555;
-    --text-muted: #888888;
-    --border-color: #e8e8e8;
-    --gradient-start: #ffffff;
-    --gradient-end: #f8f9fa;
-    --header-bg: rgba(255, 255, 255, 0.98);
-    --dropdown-bg: rgba(255, 255, 255, 0.98);
+    --secondary-color: #f5f7fa;
+    --accent-color: #1e3a5f;
+    --accent-color-hover: #152a45;
+    --accent-gradient-end: #152a45;
+    --neon-blue: #2980b9;
+    --neon-purple: #5d6d7e;
+    --text-primary: #111111;
+    --text-secondary: #333333;
+    --text-muted: #666666;
+    --border-color: #e0e4e8;
+    --gradient-start: #f5f7fa;
+    --gradient-end: #ffffff;
+    --header-bg: #ffffff;
+    --header-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    --dropdown-bg: #ffffff;
     --overlay-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(245, 245, 245, 0.75) 50%, rgba(255, 255, 255, 0.8) 100%);
     --card-bg: #ffffff;
     --card-bg-solid: #ffffff;
@@ -185,6 +187,7 @@ body {
     background: var(--header-bg);
     backdrop-filter: blur(15px);
     border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--header-shadow);
     padding: 20px 0;
     position: fixed;
     top: 44px;
@@ -417,7 +420,7 @@ body {
 
 .slide-badge {
     display: inline-block;
-    background: rgba(0, 255, 136, 0.15);
+    background: var(--surface-bg-strong);
     border: 1px solid var(--accent-color);
     color: var(--accent-color);
     padding: 10px 30px;
