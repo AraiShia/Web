@@ -5,7 +5,8 @@ const { requireAuth } = require('./auth');
 
 const router = express.Router();
 
-const DATA_FILE = path.join(__dirname, '../persistent/data/products.json');
+// 数据文件（由 server.js 自动检测并设置到 global.DATA_DIR）
+const DATA_FILE = path.join(global.DATA_DIR || path.join(__dirname, '../persistent/data'), 'products.json');
 console.log('DATA_FILE =', DATA_FILE);
 
 // 读取产品数据

@@ -5,9 +5,8 @@ const sharp = require('sharp');
 const fs = require('fs');
 const router = express.Router();
 
-// Hostinger 配置：上传目录在 public_html 外，避免 Git 更新丢失
-// 本地开发用 ./uploads，Hostinger 生产环境用 ../public_html/uploads
-const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, '../persistent/uploads');
+// 上传目录（由 server.js 自动检测并设置到 global.UPLOAD_DIR）
+const UPLOAD_DIR = global.UPLOAD_DIR || process.env.UPLOAD_DIR || path.join(__dirname, '../persistent/uploads');
 
 // 确保上传目录存在
 if (!fs.existsSync(UPLOAD_DIR)) {

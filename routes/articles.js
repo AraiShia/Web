@@ -3,8 +3,8 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-// 生产环境数据存储在 persistent/data 目录，避免 Git 更新丢失
-const DATA_DIR = path.join(__dirname, '../persistent/data');
+// 数据目录（由 server.js 自动检测并设置到 global.DATA_DIR）
+const DATA_DIR = global.DATA_DIR || path.join(__dirname, '../persistent/data');
 const DATA_FILE = path.join(DATA_DIR, 'articles.json');
 
 // 确保数据目录存在
