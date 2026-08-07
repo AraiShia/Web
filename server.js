@@ -22,8 +22,9 @@ app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
 // Hostinger 配置：数据和上传目录在 persistent 文件夹，避免 Git 更新丢失
-const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, '../persistent/uploads');
-const DATA_DIR = path.join(__dirname, '../persistent/data');
+// __dirname = .../nodejs, persistent 在 nodejs 的上两级，即 ../../persistent
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(__dirname, '../../persistent/uploads');
+const DATA_DIR = path.join(__dirname, '../../persistent/data');
 
 // 确保目录存在
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
