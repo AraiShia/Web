@@ -5,17 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Soinp Gaming</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="js/theme.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/banner.js"></script>
     <style>
-        :root {
-            --primary-color: #0d0d0d;
-            --secondary-color: #1a1a2e;
-            --accent-color: #00ff88;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --text-muted: #666666;
-            --border-color: rgba(0, 255, 136, 0.2);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -24,7 +17,7 @@
 
         body {
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -32,7 +25,7 @@
         }
 
         .login-container {
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--surface-bg);
             border: 1px solid var(--border-color);
             border-radius: 30px;
             padding: 60px;
@@ -97,7 +90,7 @@
         .form-group input {
             width: 100%;
             padding: 16px 20px;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 15px;
             font-size: 15px;
@@ -108,7 +101,7 @@
 
         .form-group input:focus {
             border-color: var(--accent-color);
-            box-shadow: 0 0 25px rgba(0, 255, 136, 0.15);
+            box-shadow: 0 0 25px var(--accent-glow);
         }
 
         .form-group input::placeholder {
@@ -135,7 +128,7 @@
 
         .login-btn {
             padding: 18px;
-            background: linear-gradient(135deg, var(--accent-color) 0%, #00cc6a 100%);
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-hover) 100%);
             color: var(--primary-color);
             border: none;
             border-radius: 15px;
@@ -145,12 +138,12 @@
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 25px rgba(0, 255, 136, 0.3);
+            box-shadow: 0 4px 25px var(--accent-shadow);
         }
 
         .login-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 35px rgba(0, 255, 136, 0.5);
+            box-shadow: 0 8px 35px var(--accent-shadow-strong);
         }
 
         .login-btn:disabled {
@@ -172,12 +165,12 @@
         }
 
         .forgot-password a:hover {
-            color: #00cc6a;
+            color: var(--accent-color-hover);
         }
 
         .error-message {
-            background: rgba(255, 107, 107, 0.1);
-            border: 1px solid rgba(255, 107, 107, 0.3);
+            background: var(--error-surface);
+            border: 1px solid var(--error-border);
             border-radius: 12px;
             padding: 15px;
             color: #ff6b6b;
@@ -186,7 +179,7 @@
         }
 
         .success-message {
-            background: rgba(0, 255, 136, 0.1);
+            background: var(--accent-surface);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 15px;
@@ -197,6 +190,18 @@
     </style>
 </head>
 <body>
+    <!-- Discount Banner -->
+    <div class="discount-banner" id="discountBanner">
+        <div class="container">
+            <div class="discount-content">
+                <span class="discount-badge" id="banner-badge"></span>
+                <span class="discount-text" id="banner-text"></span>
+                <span class="discount-code" id="banner-code"></span>
+            </div>
+            <button class="banner-close" onclick="closeBanner()">&times;</button>
+        </div>
+    </div>
+
     <div class="login-container">
         <h1 class="logo">SOINP</h1>
         <p class="tagline">Admin Panel Login</p>

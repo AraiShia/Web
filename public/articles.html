@@ -7,14 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/article.css">
+    <script src="js/theme.js"></script>
+    <script src="js/banner.js"></script>
 </head>
 <body>
     <!-- Discount Banner -->
-    <div id="discountBanner" class="discount-banner">
-        <div class="container" style="display:flex; align-items:center; justify-content:center; gap:20px;">
-            <span>🔥 MEMORIAL DAY SALE: Up to 50% OFF Gaming Chairs + Desks!</span>
-            <a href="/products.html?category=gaming-chairs" class="banner-btn">SHOP NOW</a>
-            <button onclick="document.getElementById('discountBanner').style.display='none'" style="background:none; border:none; color:#fff; cursor:pointer; font-size:20px;">×</button>
+    <div class="discount-banner" id="discountBanner">
+        <div class="container">
+            <div class="discount-content">
+                <span class="discount-badge" id="banner-badge"></span>
+                <span class="discount-text" id="banner-text"></span>
+                <span class="discount-code" id="banner-code"></span>
+            </div>
+            <button class="banner-close" onclick="closeBanner()">&times;</button>
         </div>
     </div>
 

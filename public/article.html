@@ -7,15 +7,19 @@
     <meta id="meta-description" name="description" content="">
     <meta id="meta-keywords" name="keywords" content="">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="js/theme.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/article.css">
+    <script src="js/banner.js"></script>
     <style>
+        /* Article-specific purple accent (overrides site green) */
         :root {
-            --primary-color: #6366f1;
-            --text-secondary: #9ca3af;
-            --text-tertiary: #6b7280;
+            --article-primary: #6366f1;
+            --article-primary-rgb: 99, 102, 241;
+            --article-accent-rgb: 168, 85, 247;
+            --article-cover-bg: linear-gradient(135deg, rgba(var(--article-primary-rgb), 0.3), rgba(var(--article-accent-rgb), 0.3));
         }
-        
+
         .article-detail {
             max-width: 900px;
             margin: 0 auto;
@@ -24,7 +28,7 @@
         .article-cover {
             width: 100%;
             height: 400px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3));
+            background: var(--article-cover-bg);
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -51,7 +55,7 @@
             color: var(--text-secondary);
         }
         .breadcrumb a {
-            color: var(--primary-color);
+            color: var(--article-primary);
             text-decoration: none;
         }
         .breadcrumb a:hover {
@@ -60,7 +64,7 @@
         .article-header h1 {
             font-size: 42px;
             font-weight: 800;
-            color: #fff;
+            color: var(--text-primary);
             margin-bottom: 20px;
             line-height: 1.2;
         }
@@ -86,7 +90,7 @@
         }
         .article-body h2,
         .article-body h3 {
-            color: #fff;
+            color: var(--text-primary);
             margin: 40px 0 20px;
         }
         .article-body ul,
@@ -105,20 +109,20 @@
         }
         .article-tag {
             padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--surface-bg-strong);
+            border: 1px solid var(--border-color);
             border-radius: 20px;
             font-size: 14px;
             color: var(--text-secondary);
         }
         .share-section {
             padding: 40px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
         }
         .share-section h3 {
             font-size: 18px;
-            color: #fff;
+            color: var(--text-primary);
             margin-bottom: 20px;
         }
         .share-buttons {
@@ -146,13 +150,13 @@
         .share-linkedin { background: #0077b5; color: #fff; }
         .share-facebook { background: #1877f2; color: #fff; }
         .share-twitter { background: #1da1f2; color: #fff; }
-        .share-copy { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .share-copy { background: var(--surface-bg-strong); color: var(--text-primary); }
         .related-articles {
             padding: 60px 0;
         }
         .related-articles h2 {
             font-size: 28px;
-            color: #fff;
+            color: var(--text-primary);
             margin-bottom: 30px;
         }
         .related-grid {
@@ -180,11 +184,14 @@
 </head>
 <body>
     <!-- Discount Banner -->
-    <div id="discountBanner" class="discount-banner">
-        <div class="container" style="display:flex; align-items:center; justify-content:center; gap:20px;">
-            <span>🔥 MEMORIAL DAY SALE: Up to 50% OFF Gaming Chairs + Desks!</span>
-            <a href="/products.html?category=gaming-chairs" class="banner-btn">SHOP NOW</a>
-            <button onclick="document.getElementById('discountBanner').style.display='none'" style="background:none; border:none; color:#fff; cursor:pointer; font-size:20px;">×</button>
+    <div class="discount-banner" id="discountBanner">
+        <div class="container">
+            <div class="discount-content">
+                <span class="discount-badge" id="banner-badge"></span>
+                <span class="discount-text" id="banner-text"></span>
+                <span class="discount-code" id="banner-code"></span>
+            </div>
+            <button class="banner-close" onclick="closeBanner()">&times;</button>
         </div>
     </div>
 

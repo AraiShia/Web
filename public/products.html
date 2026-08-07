@@ -14,15 +14,17 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
+    <script src="js/banner.js"></script>
 </head>
 <body>
     <!-- Discount Banner -->
     <div class="discount-banner" id="discountBanner">
         <div class="container">
             <div class="discount-content">
-                <span class="discount-badge">SPECIAL OFFER</span>
-                <span class="discount-text">Up to 30% Off - Limited Time Only!</span>
-                <span class="discount-code">USE: SOINP2024</span>
+                <span class="discount-badge" id="banner-badge"></span>
+                <span class="discount-text" id="banner-text"></span>
+                <span class="discount-code" id="banner-code"></span>
             </div>
             <button class="banner-close" onclick="closeBanner()">&times;</button>
         </div>

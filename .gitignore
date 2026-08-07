@@ -44,3 +44,4 @@ uploads/
 
 # Persistent data (articles, products, uploaded files)
 persistent/
+data/

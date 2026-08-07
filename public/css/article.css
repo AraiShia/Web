@@ -1,11 +1,15 @@
 /* Articles Page Styles */
+/* Article-specific purple accent (overrides site green) */
 :root {
-    --primary-color: #6366f1;
-    --primary-gradient: linear-gradient(135deg, #6366f1, #a855f7);
-    --accent-gradient: linear-gradient(135deg, #f97316, #ef4444);
-    --text-primary: #ffffff;
-    --text-secondary: #9ca3af;
-    --text-tertiary: #6b7280;
+    --article-primary: #6366f1;
+    --article-primary-rgb: 99, 102, 241;
+    --article-accent-rgb: 168, 85, 247;
+    --article-orange-rgb: 249, 115, 22;
+    --article-red-rgb: 239, 68, 68;
+    --article-primary-gradient: linear-gradient(135deg, var(--article-primary), #a855f7);
+    --article-accent-gradient: linear-gradient(135deg, #f97316, #ef4444);
+    --article-image-bg: linear-gradient(135deg, rgba(var(--article-primary-rgb), 0.2), rgba(var(--article-accent-rgb), 0.2));
+    --article-cover-bg: linear-gradient(135deg, rgba(var(--article-primary-rgb), 0.3), rgba(var(--article-accent-rgb), 0.3));
 }
 
 .articles-section {
@@ -23,8 +27,8 @@
 
 .category-tab {
     padding: 12px 24px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--surface-bg-strong);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     color: var(--text-secondary);
     cursor: pointer;
@@ -34,7 +38,7 @@
 
 .category-tab:hover,
 .category-tab.active {
-    background: var(--primary-gradient);
+    background: var(--article-primary-gradient);
     color: #fff;
     border-color: transparent;
 }
@@ -49,25 +53,25 @@
 .search-bar input {
     flex: 1;
     padding: 12px 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    color: #fff;
+    color: var(--text-primary);
     font-size: 16px;
 }
 
 .search-bar input:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: var(--article-primary);
 }
 
 .search-bar input::placeholder {
-    color: var(--text-tertiary);
+    color: var(--text-muted);
 }
 
 .search-btn {
     padding: 12px 20px;
-    background: var(--primary-gradient);
+    background: var(--article-primary-gradient);
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -100,8 +104,8 @@
 }
 
 .article-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--surface-bg);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     overflow: hidden;
     cursor: pointer;
@@ -110,14 +114,14 @@
 
 .article-card:hover {
     transform: translateY(-5px);
-    border-color: var(--primary-color);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: var(--article-primary);
+    box-shadow: 0 20px 40px var(--shadow-color);
 }
 
 .article-image {
     position: relative;
     height: 200px;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
+    background: var(--article-image-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -138,7 +142,7 @@
     top: 15px;
     left: 15px;
     padding: 6px 12px;
-    background: var(--accent-gradient);
+    background: var(--article-accent-gradient);
     border-radius: 20px;
     font-size: 12px;
     font-weight: 700;
@@ -152,18 +156,18 @@
 .article-category {
     display: inline-block;
     padding: 4px 12px;
-    background: rgba(99, 102, 241, 0.2);
+    background: rgba(var(--article-primary-rgb), 0.2);
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--article-primary);
     margin-bottom: 12px;
 }
 
 .article-title {
     font-size: 20px;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-primary);
     margin-bottom: 12px;
     line-height: 1.4;
 }
@@ -183,7 +187,7 @@
     display: flex;
     gap: 16px;
     font-size: 13px;
-    color: var(--text-tertiary);
+    color: var(--text-muted);
 }
 
 .article-author {
@@ -201,22 +205,23 @@
     min-width: 40px;
     height: 40px;
     padding: 0 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--surface-bg-strong);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    color: #fff;
+    color: var(--text-primary);
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .page-btn:hover,
 .page-btn.active {
-    background: var(--primary-gradient);
+    background: var(--article-primary-gradient);
     border-color: transparent;
+    color: #fff;
 }
 
 .page-ellipsis {
-    color: var(--text-tertiary);
+    color: var(--text-muted);
     padding: 0 8px;
     display: flex;
     align-items: center;

@@ -31,6 +31,7 @@
       gtag('config', 'G-66K6Q4C47N');
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="js/theme.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <style>
         /* Cookie Toggle Switch Styles */
@@ -104,7 +105,7 @@
                 </p>
             </div>
             <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                <button onclick="acceptCookies()" style="padding: 12px 28px; background: linear-gradient(135deg, var(--accent-color) 0%, #00cc6a 100%); color: #0d0d0d; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; white-space: nowrap;">
+                <button onclick="acceptCookies()" style="padding: 12px 28px; background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-hover) 100%); color: var(--primary-color); border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; white-space: nowrap;">
                     Accept All
                 </button>
                 <button onclick="acceptEssentialCookies()" style="padding: 12px 28px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; white-space: nowrap;">
@@ -126,15 +127,15 @@
             </div>
             
             <div style="margin-bottom: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 15px; background: var(--surface-bg); border-radius: 10px;">
                     <div>
                         <h4 style="color: var(--text-primary); margin: 0 0 5px 0;">Essential Cookies</h4>
                         <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Required for the website to function properly</p>
                     </div>
                     <span style="color: var(--accent-color); font-weight: 600;">Always On</span>
                 </div>
-                
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px;">
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 15px; background: var(--surface-bg); border-radius: 10px;">
                     <div>
                         <h4 style="color: var(--text-primary); margin: 0 0 5px 0;">Analytics Cookies</h4>
                         <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Help us improve our website</p>
@@ -144,8 +145,8 @@
                         <span class="cookie-toggle-slider"></span>
                     </label>
                 </div>
-                
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px;">
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--surface-bg); border-radius: 10px;">
                     <div>
                         <h4 style="color: var(--text-primary); margin: 0 0 5px 0;">Marketing Cookies</h4>
                         <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Used to deliver personalized advertisements</p>
@@ -157,7 +158,7 @@
                 </div>
             </div>
             
-            <button onclick="saveCookieSettings()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent-color) 0%, #00cc6a 100%); color: #0d0d0d; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 16px;">
+            <button onclick="saveCookieSettings()" style="width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-color-hover) 100%); color: var(--primary-color); border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 16px;">
                 Save Preferences
             </button>
         </div>
